@@ -1,6 +1,17 @@
 import { motion, type PanInfo } from "framer-motion";
-import { useRef, useState, useEffect, useCallback, type TouchEvent } from "react";
-import { containerVariant, fadeUpVariant, itemVariant, VP } from "../../lib/animations";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type TouchEvent,
+} from "react";
+import {
+  containerVariant,
+  fadeUpVariant,
+  itemVariant,
+  VP,
+} from "../../lib/animations";
 
 const STEPS = [
   {
@@ -48,10 +59,12 @@ const STEPS = [
 ];
 
 const isTouchDevice = () =>
-  typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches;
+  typeof window !== "undefined" &&
+  window.matchMedia("(pointer: coarse)").matches;
 
 export function HowItWorks() {
   const [activeIndex, setActiveIndex] = useState(0);
+
   const indexRef = useRef(0);
   const wheelBuffer = useRef(0);
   const lockedRef = useRef(false);
@@ -62,6 +75,7 @@ export function HowItWorks() {
 
   const goToStep = useCallback((next: number) => {
     const clamped = Math.max(0, Math.min(STEPS.length - 1, next));
+
     indexRef.current = clamped;
     setActiveIndex(clamped);
   }, []);
@@ -75,6 +89,7 @@ export function HowItWorks() {
 
   const lock = useCallback(() => {
     if (isTouchDevice()) return;
+
     document.body.style.overflow = "hidden";
     lockedRef.current = true;
   }, []);
@@ -118,13 +133,19 @@ export function HowItWorks() {
 
       if (next < 0) {
         unlock();
-        window.scrollBy({ top: -window.innerHeight * 0.8, behavior: "smooth" });
+        window.scrollBy({
+          top: -window.innerHeight * 0.8,
+          behavior: "smooth",
+        });
         return;
       }
 
       if (next >= STEPS.length) {
         unlock();
-        window.scrollBy({ top: window.innerHeight * 0.8, behavior: "smooth" });
+        window.scrollBy({
+          top: window.innerHeight * 0.8,
+          behavior: "smooth",
+        });
         return;
       }
 
@@ -132,18 +153,24 @@ export function HowItWorks() {
     };
 
     window.addEventListener("wheel", onWheel, { passive: false });
+
     return () => window.removeEventListener("wheel", onWheel);
   }, [goToStep, unlock]);
 
   const handleTouchStart = useCallback((event: TouchEvent<HTMLElement>) => {
     const touch = event.touches[0];
-    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+
+    touchStartRef.current = {
+      x: touch.clientX,
+      y: touch.clientY,
+    };
   }, []);
 
   const handleTouchEnd = useCallback(
     (event: TouchEvent<HTMLElement>) => {
       const start = touchStartRef.current;
       const touch = event.changedTouches[0];
+
       touchStartRef.current = null;
 
       if (!start || !touch) return;
@@ -153,9 +180,7 @@ export function HowItWorks() {
       const absX = Math.abs(deltaX);
       const absY = Math.abs(deltaY);
 
-      if (Math.max(absX, absY) < SWIPE_THRESHOLD) {
-        return;
-      }
+      if (Math.max(absX, absY) < SWIPE_THRESHOLD) return;
 
       if (absX >= absY) {
         moveStep(deltaX < 0 ? 1 : -1);
@@ -168,7 +193,7 @@ export function HowItWorks() {
   );
 
   const handleDragEnd = useCallback(
-    (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    (_: unknown, info: PanInfo) => {
       const shouldMove =
         Math.abs(info.offset.x) > SWIPE_THRESHOLD ||
         Math.abs(info.velocity.x) > 360;
@@ -185,67 +210,44 @@ export function HowItWorks() {
   return (
     <section
       id="how-section"
-      className="relative bg-[#09090B] h-[80vh] flex flex-col overflow-hidden"
+      className="relative flex min-h-screen flex-col overflow-hidden bg-[#09090B] py-10 md:h-[80vh] md:min-h-0 md:py-0"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* ========================
-          HEADER — fixed, never scrolls
-      ======================== */}
+      {/* HEADER */}
       <motion.div
         variants={containerVariant}
         initial="hidden"
         whileInView="visible"
         viewport={VP}
-        className="w-full flex flex-col items-center text-center px-4 pt-7 md:pt-9 pb-3 flex-shrink-0"
+        className="flex w-full flex-shrink-0 flex-col items-center px-4 pb-5 pt-0 text-center md:pb-3 md:pt-9"
       >
-        {/* Eyebrow */}
         <motion.span
           variants={itemVariant}
-          className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-primary mb-3"
+          className="mb-3 font-mono text-[10.5px] uppercase tracking-[0.18em] text-primary"
         >
           How it works
         </motion.span>
 
-        {/* Title */}
         <motion.h2
           variants={fadeUpVariant}
-          className="text-[20px] sm:text-[26px] md:text-[32px] font-bold leading-[1.1] tracking-[-0.025em] text-white"
+          className="max-w-[760px] text-[24px] font-bold leading-[1.1] tracking-[-0.025em] text-white sm:text-[26px] md:text-[32px]"
         >
           From deposit to payout,{" "}
           <span className="text-white/35">every step stays private.</span>
         </motion.h2>
 
-        {/* Subtitle */}
         <motion.p
           variants={itemVariant}
-          className="mt-2 md:mt-3 text-[13px] md:text-[14px] leading-[1.65] text-white/45 max-w-[480px]"
+          className="mt-3 max-w-[480px] text-[13px] leading-[1.65] text-white/45 md:text-[14px]"
         >
-          Stablecoin deposits, encrypted payroll runs, and wallet-native employee
-          claims — six steps, zero on-chain exposure.
+          Stablecoin deposits, encrypted payroll runs, and wallet-native
+          employee claims — six steps, zero on-chain exposure.
         </motion.p>
-
-        {/* Step progress dots */}
-        <div className="flex items-center gap-1.5 mt-3 md:mt-4">
-          {STEPS.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => goToStep(i)}
-              aria-label={`Show step ${i + 1}`}
-              aria-current={i === activeIndex ? "step" : undefined}
-              className={`border-0 p-0 cursor-pointer h-[3px] rounded-full transition-all duration-300 ${
-                i === activeIndex ? "w-5 bg-white/60" : "w-[6px] bg-white/20"
-              }`}
-            />
-          ))}
-        </div>
       </motion.div>
 
-      {/* ========================
-          STAGE — fills remaining height
-      ======================== */}
-      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 md:px-8 pb-5 md:pb-7 min-h-0">
+      {/* STAGE + PAGINATOR */}
+      <div className="flex flex-1 flex-col items-center justify-center px-4 pb-0 sm:px-6 md:min-h-0 md:px-8 md:pb-7">
         <motion.div
           key={activeIndex}
           initial={{ opacity: 0, y: 18, scale: 0.98 }}
@@ -255,34 +257,51 @@ export function HowItWorks() {
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.18}
           onDragEnd={handleDragEnd}
-          className="w-full max-w-[980px] h-full flex flex-col md:flex-row overflow-hidden border border-white/10 rounded-md bg-[#111113]"
+          className="flex w-full max-w-[980px] flex-col overflow-hidden rounded-md border border-white/10 bg-[#111113] md:h-full md:flex-row"
         >
-          {/* LEFT — text */}
-          <div className="md:w-1/2 flex flex-col justify-center px-6 py-7 sm:p-8 md:p-10 flex-shrink-0">
-            <div className="text-[10px] uppercase tracking-[0.35em] text-white/40 font-mono mb-3 md:mb-4">
-              Step {step.index}
-            </div>
-
-            <h3 className="text-xl sm:text-2xl md:text-[28px] lg:text-[34px] font-semibold leading-tight text-white">
-              {step.title}
-            </h3>
-
-            <p className="mt-3 md:mt-4 text-[13px] md:text-[14px] leading-[1.7] text-white/70 max-w-[42ch]">
-              {step.body}
-            </p>
-          </div>
-
-          {/* RIGHT — image, hidden on mobile */}
-          <div className="hidden md:flex flex-1 items-center justify-center bg-[#0E0F12]/60">
+          {/* IMAGE — visible on mobile and desktop */}
+          <div className="flex h-[220px] w-full items-center justify-center border-b border-white/10 bg-[#0E0F12]/60 p-4 sm:h-[260px] md:h-auto md:flex-1 md:border-b-0 md:border-l md:border-white/10 md:p-6 lg:p-8">
             <motion.img
               src={step.image}
-              className="w-full h-full object-contain p-6 lg:p-8"
+              alt={step.title}
+              className="h-full w-full object-contain"
               animate={{ scale: [1, 1.02, 1] }}
               transition={{ duration: 5, repeat: Infinity }}
               draggable={false}
             />
           </div>
+
+          {/* TEXT */}
+          <div className="flex flex-shrink-0 flex-col justify-center px-5 py-6 sm:p-8 md:order-first md:w-1/2 md:p-10">
+            <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.35em] text-white/40 md:mb-4">
+              Step {step.index}
+            </div>
+
+            <h3 className="text-xl font-semibold leading-tight text-white sm:text-2xl md:text-[28px] lg:text-[34px]">
+              {step.title}
+            </h3>
+
+            <p className="mt-3 max-w-[42ch] text-[13px] leading-[1.7] text-white/70 md:mt-4 md:text-[14px]">
+              {step.body}
+            </p>
+          </div>
         </motion.div>
+
+        {/* PAGINATOR — now below the card */}
+        <div className="mt-5 flex items-center justify-center gap-1.5 md:mt-4">
+          {STEPS.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => goToStep(i)}
+              aria-label={`Show step ${i + 1}`}
+              aria-current={i === activeIndex ? "step" : undefined}
+              className={`h-[3px] cursor-pointer rounded-full border-0 p-0 transition-all duration-300 ${
+                i === activeIndex ? "w-5 bg-white/60" : "w-[6px] bg-white/20"
+              }`}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );
