@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { useRef, useState, useEffect, useCallback } from "react";
+import { motion, type PanInfo } from "framer-motion";
+import { useRef, useState, useEffect, useCallback, type TouchEvent } from "react";
 import { containerVariant, fadeUpVariant, itemVariant, VP } from "../../lib/animations";
 
 const STEPS = [
@@ -55,8 +55,23 @@ export function HowItWorks() {
   const indexRef = useRef(0);
   const wheelBuffer = useRef(0);
   const lockedRef = useRef(false);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
 
   const THRESHOLD = 80;
+  const SWIPE_THRESHOLD = 44;
+
+  const goToStep = useCallback((next: number) => {
+    const clamped = Math.max(0, Math.min(STEPS.length - 1, next));
+    indexRef.current = clamped;
+    setActiveIndex(clamped);
+  }, []);
+
+  const moveStep = useCallback(
+    (dir: number) => {
+      goToStep(indexRef.current + dir);
+    },
+    [goToStep]
+  );
 
   const lock = useCallback(() => {
     if (isTouchDevice()) return;
@@ -113,13 +128,57 @@ export function HowItWorks() {
         return;
       }
 
-      indexRef.current = next;
-      setActiveIndex(next);
+      goToStep(next);
     };
 
     window.addEventListener("wheel", onWheel, { passive: false });
     return () => window.removeEventListener("wheel", onWheel);
-  }, [unlock]);
+  }, [goToStep, unlock]);
+
+  const handleTouchStart = useCallback((event: TouchEvent<HTMLElement>) => {
+    const touch = event.touches[0];
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+  }, []);
+
+  const handleTouchEnd = useCallback(
+    (event: TouchEvent<HTMLElement>) => {
+      const start = touchStartRef.current;
+      const touch = event.changedTouches[0];
+      touchStartRef.current = null;
+
+      if (!start || !touch) return;
+
+      const deltaX = touch.clientX - start.x;
+      const deltaY = touch.clientY - start.y;
+      const absX = Math.abs(deltaX);
+      const absY = Math.abs(deltaY);
+
+      if (Math.max(absX, absY) < SWIPE_THRESHOLD) {
+        return;
+      }
+
+      if (absX >= absY) {
+        moveStep(deltaX < 0 ? 1 : -1);
+        return;
+      }
+
+      moveStep(deltaY < 0 ? 1 : -1);
+    },
+    [moveStep]
+  );
+
+  const handleDragEnd = useCallback(
+    (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+      const shouldMove =
+        Math.abs(info.offset.x) > SWIPE_THRESHOLD ||
+        Math.abs(info.velocity.x) > 360;
+
+      if (!shouldMove) return;
+
+      moveStep(info.offset.x < 0 || info.velocity.x < 0 ? 1 : -1);
+    },
+    [moveStep]
+  );
 
   const step = STEPS[activeIndex];
 
@@ -127,6 +186,8 @@ export function HowItWorks() {
     <section
       id="how-section"
       className="relative bg-[#09090B] h-[80vh] flex flex-col overflow-hidden"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       {/* ========================
           HEADER — fixed, never scrolls
@@ -167,9 +228,13 @@ export function HowItWorks() {
         {/* Step progress dots */}
         <div className="flex items-center gap-1.5 mt-3 md:mt-4">
           {STEPS.map((_, i) => (
-            <div
+            <button
               key={i}
-              className={`h-[3px] rounded-full transition-all duration-300 ${
+              type="button"
+              onClick={() => goToStep(i)}
+              aria-label={`Show step ${i + 1}`}
+              aria-current={i === activeIndex ? "step" : undefined}
+              className={`border-0 p-0 cursor-pointer h-[3px] rounded-full transition-all duration-300 ${
                 i === activeIndex ? "w-5 bg-white/60" : "w-[6px] bg-white/20"
               }`}
             />
@@ -186,6 +251,10 @@ export function HowItWorks() {
           initial={{ opacity: 0, y: 18, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.18}
+          onDragEnd={handleDragEnd}
           className="w-full max-w-[980px] h-full flex flex-col md:flex-row overflow-hidden border border-white/10 rounded-md bg-[#111113]"
         >
           {/* LEFT — text */}

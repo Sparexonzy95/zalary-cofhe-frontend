@@ -122,7 +122,7 @@ export function Faq() {
   };
 
   return (
-    <section className="relative py-24 bg-[#1c1c1c] overflow-hidden">
+    <section className="relative py-20 sm:py-24 bg-[#1c1c1c] overflow-hidden">
       {/* dark ambient background */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute -top-40 right-[-10%] h-[60vh] w-[45vw] bg-black/50 blur-[160px]" />
@@ -130,7 +130,7 @@ export function Faq() {
       </div>
 
       <motion.div
-        className="mx-auto max-w-[820px] px-4"
+        className="mx-auto w-full max-w-[820px] min-w-0 px-4"
         onMouseMove={handleMouseMove}
         initial={{ opacity: 0, scale: 0.97, y: 30 }}
         whileInView={{ opacity: 1, scale: 1, y: 0 }}
@@ -138,15 +138,15 @@ export function Faq() {
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
         {/* HEADER */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-semibold text-white tracking-tight">
+        <div className="text-center mb-12 max-[320px]:mb-10">
+          <h2 className="text-3xl max-[320px]:text-[27px] font-semibold text-white tracking-tight leading-[1.08]">
             Frequently Asked Questions
           </h2>
         </div>
 
         {/* CATEGORY FILTER */}
-        <div className="flex justify-center mb-10">
-          <div className="flex rounded-full bg-white/[0.04] border border-white/10 p-1 backdrop-blur-md">
+        <div className="flex justify-center mb-10 max-[375px]:px-1 max-[320px]:w-full max-[320px]:mb-9">
+          <div className="flex rounded-full bg-white/[0.04] border border-white/10 p-1 backdrop-blur-md max-[375px]:max-w-full max-[320px]:grid max-[320px]:w-full max-[320px]:max-w-[22rem] max-[320px]:grid-cols-2 max-[320px]:gap-1 max-[320px]:rounded-[14px]">
             {CATEGORIES.map((cat) => {
               const isActive = activeCategory === cat;
 
@@ -157,7 +157,7 @@ export function Faq() {
                     setActiveCategory(cat);
                     setOpenQuestion(null);
                   }}
-                  className="relative px-4 py-1.5 text-[11px] uppercase tracking-widest"
+                  className="relative px-4 py-1.5 text-[11px] uppercase tracking-widest max-[375px]:px-2.5 max-[375px]:text-[10px] max-[375px]:tracking-[0.1em] max-[320px]:min-w-0 max-[320px]:rounded-[10px] max-[320px]:px-2.5 max-[320px]:py-2 max-[320px]:text-[10px] max-[320px]:tracking-[0.12em]"
                 >
                   {isActive && (
                     <motion.div
@@ -172,7 +172,7 @@ export function Faq() {
                   )}
 
                   <span
-                    className={`relative z-10 transition ${isActive ? "text-white" : "text-white/45"
+                    className={`relative z-10 transition max-[320px]:block max-[320px]:min-w-0 max-[320px]:truncate ${isActive ? "text-white" : "text-white/45"
                       }`}
                   >
                     {cat}
@@ -184,14 +184,14 @@ export function Faq() {
         </div>
 
         {/* FAQ LIST */}
-        <div className="space-y-3">
+        <div className="min-w-0 space-y-3">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeCategory}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="space-y-3"
+              className="min-w-0 space-y-3"
             >
               {filtered.map((faq) => {
                 const isOpen = openQuestion === faq.q;
@@ -212,6 +212,7 @@ export function Faq() {
                     transition={{ type: "spring", stiffness: 200, damping: 22 }}
                     className="
     relative
+    min-w-0
     rounded-[3px]
     border border-white/10
     bg-white/[0.03]
@@ -223,10 +224,10 @@ export function Faq() {
                       onClick={() =>
                         setOpenQuestion(isOpen ? null : faq.q)
                       }
-                      className="w-full flex justify-between px-5 py-5 text-left"
+                      className="w-full min-w-0 flex items-start justify-between gap-4 px-5 py-5 text-left"
                     >
-                      <span className="text-white/80">{faq.q}</span>
-                      <span className="text-white/40">
+                      <span className="min-w-0 text-white/80 leading-snug">{faq.q}</span>
+                      <span className="shrink-0 text-white/40">
                         {isOpen ? "−" : "+"}
                       </span>
                     </button>
