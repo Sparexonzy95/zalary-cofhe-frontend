@@ -305,11 +305,22 @@ export function OnboardingProvider({
     };
   }
 
-  async function saveEmployeeProfile(payload: {
+async function saveEmployeeProfile(payload: {
     display_name?: string;
     email: string;
   }) {
-    const res = await api.post("/api/v1/onboarding/profile/employee/", payload);
+    const email = payload.email.trim().toLowerCase();
+
+    if (!email) {
+      throw new Error("Notification email is required.");
+    }
+
+    const res = await api.post("/api/v1/onboarding/profile/employee/", {
+      display_name: payload.display_name ?? "",
+      email,
+      notification_email: email,
+    });
+
     setProfile(res.data.profile);
 
     return res.data as {
