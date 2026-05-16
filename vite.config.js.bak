@@ -1,0 +1,30 @@
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+export default defineConfig({
+    plugins: [react()],
+    assetsInclude: ["**/*.wasm"],
+    resolve: {
+        dedupe: ["@cofhe/sdk", "iframe-shared-storage"],
+    },
+    optimizeDeps: {
+        include: ["iframe-shared-storage"],
+        exclude: [
+            "@cofhe/sdk",
+            "@cofhe/sdk/web",
+            "@cofhe/sdk/chains",
+        ],
+        esbuildOptions: {
+            target: "es2020",
+        },
+    },
+    build: {
+        commonjsOptions: {
+            transformMixedEsModules: true,
+        },
+        target: "es2020",
+    },
+    server: {
+        host: "0.0.0.0",
+        port: 5173,
+    },
+});
