@@ -34,8 +34,8 @@ function toApiEncryptedInput(encrypted: EncryptedInput) {
 
 function cancelRoutes(withdrawId: number | string) {
   return [
-    `/swaprouter/withdraws/${withdrawId}/submit_cancel/`,
-    `/swaprouter/withdraws/${withdrawId}/submit_cancel_with_payload/`
+    `/api/v1/swaprouter/withdraws/${withdrawId}/submit_cancel/`,
+    `/api/v1/swaprouter/withdraws/${withdrawId}/submit_cancel_with_payload/`
   ];
 }
 
@@ -706,3 +706,4 @@ export function useOneClickWithdraw({
     error,
   };
 }
+

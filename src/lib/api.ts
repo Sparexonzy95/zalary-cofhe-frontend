@@ -1,6 +1,38 @@
 import axios, { AxiosError } from "axios";
 import { env } from "./env";
 
+const API_PREFIX = "/api/v1";
+
+function normalizeApiPath(url?: string) {
+  if (!url) return url;
+
+  // Leave full external URLs untouched.
+  if (url.startsWith("http://") || url.startsWith("https://")) {
+    return url;
+  }
+
+  // Already correct.
+  if (url.startsWith(`${API_PREFIX}/`)) {
+    return url;
+  }
+
+  // Old backend API paths that must be mounted under /api/v1.
+  const oldBackendPrefixes = [
+    "/templates/",
+    "/runs/",
+    "/claims/",
+    "/employees/",
+    "/swaprouter/",
+    "/onboarding/",
+  ];
+
+  if (oldBackendPrefixes.some((prefix) => url.startsWith(prefix))) {
+    return `${API_PREFIX}${url}`;
+  }
+
+  return url;
+}
+
 export const api = axios.create({
   baseURL: env.apiBaseUrl,
   headers: {
@@ -55,10 +87,7 @@ function getOnboardingRoleFromDetail(detail: string): "employer" | "employee" | 
 }
 
 function isOnboardingRoute(pathname: string) {
-  return (
-    pathname.startsWith("/verify/") ||
-    pathname.startsWith("/onboarding/")
-  );
+  return pathname.startsWith("/verify/") || pathname.startsWith("/onboarding/");
 }
 
 function redirectToVerifyIfNeeded(error: unknown) {
@@ -84,6 +113,11 @@ function redirectToVerifyIfNeeded(error: unknown) {
 
   window.location.assign(hasWalletSession ? onboardingPath : verifyPath);
 }
+
+api.interceptors.request.use((config) => {
+  config.url = normalizeApiPath(config.url);
+  return config;
+});
 
 api.interceptors.response.use(
   (response) => response,

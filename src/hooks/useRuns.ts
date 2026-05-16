@@ -268,7 +268,7 @@ export function useRunAllocations(runId?: string) {
     queryKey: ["runAllocations", runId ?? ""],
     queryFn: async () => {
       try {
-        const res = await api.get<RunAllocation[]>(`/runs/${runId}/allocations/`);
+        const res = await api.get<RunAllocation[]>(`/api/v1/runs/${runId}/allocations/`);
 
         return res.data;
       } catch (error) {
@@ -758,3 +758,4 @@ export function useActivatePayroll(runId?: string) {
     },
   });
 }
+
