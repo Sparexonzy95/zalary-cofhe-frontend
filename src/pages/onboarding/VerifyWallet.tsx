@@ -4,6 +4,7 @@ import { ArrowRight, Wallet } from "lucide-react";
 import { Button, Card, useToast } from "../../components/ui";
 import { WalletConnectButton } from "../../components/WalletConnectButton";
 import {
+  employeeCompleted,
   useOnboarding,
   type OnboardingProfile,
   type OnboardingRole,
@@ -48,11 +49,7 @@ function profileIsCompleted(profile: OnboardingProfile, role: OnboardingRole) {
     );
   }
 
-  return Boolean(
-    profile.employee?.onboarding_completed &&
-      profile.employee?.notification_email &&
-      profile.employee?.private_access_enabled
-  );
+  return employeeCompleted(profile);
 }
 
 export function VerifyWalletPage({ role }: { role: OnboardingRole }) {

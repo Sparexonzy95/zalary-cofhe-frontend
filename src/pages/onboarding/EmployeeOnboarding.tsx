@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Check, Wallet } from "lucide-react";
 import { Button, Card, Field, useToast } from "../../components/ui";
 import { getSelfPermit } from "../../lib/cofhe";
-import { useOnboarding } from "../../lib/onboarding";
+import { employeeCompleted, useOnboarding } from "../../lib/onboarding";
 import { formatAddress } from "../../lib/utils";
 
 type EmployeeOnboardingStep = 0 | 1 | 2 | 3;
@@ -29,15 +29,6 @@ const EMPLOYEE_ONBOARDING_COPY: Record<
   2: { label: "Step 03", title: "Email verification" },
   3: { label: "Step 04", title: "Private salary access" },
 };
-
-function employeeProfileComplete(profile: ReturnType<typeof useOnboarding>["profile"]) {
-  return Boolean(
-    profile?.wallet_address &&
-      profile?.email_verified &&
-      profile?.employee?.notification_email &&
-      profile?.employee?.private_access_enabled
-  );
-}
 
 export function EmployeeOnboardingPage() {
   const navigate = useNavigate();
@@ -106,7 +97,7 @@ export function EmployeeOnboardingPage() {
   const employeeReady = Boolean(
     token &&
       profile &&
-      (isOnboarded("employee") || employeeProfileComplete(profile))
+      (isOnboarded("employee") || employeeCompleted(profile))
   );
 
   const activeStepCopy = EMPLOYEE_ONBOARDING_COPY[onboardingStep];

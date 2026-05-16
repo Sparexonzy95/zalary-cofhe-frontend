@@ -1,7 +1,7 @@
 import React from "react";
 import { AxiosHeaders } from "axios";
 import { api } from "./api";
-import { getWalletClients } from "./wallet";
+import { getActiveProvider, getWalletClients } from "./wallet";
 
 export type OnboardingRole = "employer" | "employee";
 
@@ -73,17 +73,34 @@ function clearStoredOnboarding() {
 
 async function getCurrentWalletNoPrompt(): Promise<string> {
   const eth = (window as Window & { ethereum?: any }).ethereum;
-  if (!eth) return "";
+  const providers: any[] = [];
 
   try {
-    const accounts = (await eth.request({
-      method: "eth_accounts",
-    })) as string[];
-
-    return normalizeAddress(accounts?.[0]);
+    providers.push(getActiveProvider());
   } catch {
-    return "";
+    // A wallet may not be connected yet. Fall back to the injected provider.
   }
+
+  if (eth && !providers.includes(eth)) {
+    providers.push(eth);
+  }
+
+  if (providers.length === 0) return "";
+
+  for (const provider of providers) {
+    try {
+      const accounts = (await provider.request({
+        method: "eth_accounts",
+      })) as string[];
+
+      const wallet = normalizeAddress(accounts?.[0]);
+      if (wallet) return wallet;
+    } catch {
+      // Try the next available provider.
+    }
+  }
+
+  return "";
 }
 
 api.interceptors.request.use((config) => {
@@ -147,12 +164,12 @@ function employerCompleted(profile: OnboardingProfile | null) {
   );
 }
 
-function employeeCompleted(profile: OnboardingProfile | null) {
+export function employeeCompleted(profile: OnboardingProfile | null) {
   if (!profile) return false;
 
   return Boolean(
-    profile.email_verified === true &&
-      profile.employee?.onboarding_completed === true &&
+    profile.wallet_address &&
+      profile.email_verified === true &&
       profile.employee?.notification_email &&
       profile.employee?.private_access_enabled === true
   );
