@@ -475,9 +475,10 @@ export function EmployeeOnboardingPage() {
                     <div className="employer-onboarding-slide-actions">
                       <Button
   type="button"
-  onClick={() =>
-    navigate("/employee/claims", { replace: true })
-  }
+  onClick={async () => {
+    await refresh();
+    window.location.assign("/employee/claims");
+  }}
 >
   Go to Claims Dashboard
   <ArrowRight size={15} strokeWidth={1.8} />
