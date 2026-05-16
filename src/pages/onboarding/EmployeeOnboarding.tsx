@@ -30,6 +30,15 @@ const EMPLOYEE_ONBOARDING_COPY: Record<
   3: { label: "Step 04", title: "Private salary access" },
 };
 
+function employeeProfileComplete(profile: ReturnType<typeof useOnboarding>["profile"]) {
+  return Boolean(
+    profile?.wallet_address &&
+      profile?.email_verified &&
+      profile?.employee?.notification_email &&
+      profile?.employee?.private_access_enabled
+  );
+}
+
 export function EmployeeOnboardingPage() {
   const navigate = useNavigate();
   const toast = useToast();
@@ -55,6 +64,7 @@ export function EmployeeOnboardingPage() {
   const [busy, setBusy] = React.useState(false);
   const [checking, setChecking] = React.useState(true);
   const [profileSubmitted, setProfileSubmitted] = React.useState(false);
+  const [completionRedirecting, setCompletionRedirecting] = React.useState(false);
   const [onboardingStep, setOnboardingStep] =
     React.useState<EmployeeOnboardingStep>(1);
 
@@ -83,28 +93,44 @@ export function EmployeeOnboardingPage() {
     }
   }, [profile]);
 
-  const employeeReady = Boolean(token && profile && isOnboarded("employee"));
   const profileSaved =
     profileSubmitted ||
     Boolean(profile?.employee?.notification_email || profile?.email);
+
   const emailVerified = Boolean(profile?.email_verified);
+
   const privateAccessEnabled = Boolean(
     profile?.employee?.private_access_enabled
   );
+
+  const employeeReady = Boolean(
+    token &&
+      profile &&
+      (isOnboarded("employee") || employeeProfileComplete(profile))
+  );
+
   const activeStepCopy = EMPLOYEE_ONBOARDING_COPY[onboardingStep];
 
   React.useEffect(() => {
     if (!profile) return;
-    if (privateAccessEnabled || emailVerified) {
+
+    if (privateAccessEnabled || employeeReady) {
       setOnboardingStep(3);
       return;
     }
+
+    if (emailVerified) {
+      setOnboardingStep(3);
+      return;
+    }
+
     if (profileSaved) {
       setOnboardingStep(2);
       return;
     }
+
     setOnboardingStep(1);
-  }, [emailVerified, privateAccessEnabled, profile, profileSaved]);
+  }, [emailVerified, privateAccessEnabled, employeeReady, profile, profileSaved]);
 
   React.useEffect(() => {
     if (loading || checking) return;
@@ -115,11 +141,19 @@ export function EmployeeOnboardingPage() {
     }
 
     if (employeeReady) {
-      navigate("/employee/claims", { replace: true });
+      setCompletionRedirecting(true);
+
+      const timer = window.setTimeout(() => {
+        navigate("/employee/claims", { replace: true });
+      }, 500);
+
+      return () => window.clearTimeout(timer);
     }
+
+    return undefined;
   }, [loading, checking, token, profile, employeeReady, navigate]);
 
-  if (loading || checking || employeeReady || !token || !profile) {
+  if (loading || checking || completionRedirecting || !token || !profile) {
     return (
       <div className="onboarding-page employer-onboarding-page employee-onboarding-page dashboard-shell">
         <div className="employer-onboarding-head">
@@ -127,8 +161,9 @@ export function EmployeeOnboardingPage() {
             <div className="employer-kicker">Employee onboarding</div>
             <h1>Claim setup</h1>
             <p>
-              Confirming your verified wallet before opening your salary claim
-              workspace.
+              {completionRedirecting
+                ? "Opening your salary claim workspace."
+                : "Confirming your verified wallet before opening your salary claim workspace."}
             </p>
           </div>
         </div>
@@ -136,11 +171,13 @@ export function EmployeeOnboardingPage() {
         <div className="onboarding-grid employer-onboarding-grid">
           <Card
             className="employer-onboarding-card"
-            title="Checking access"
-            subtitle="Please wait."
+            title={completionRedirecting ? "Setup complete" : "Checking access"}
+            subtitle={completionRedirecting ? "Redirecting..." : "Please wait."}
           >
             <div className="success-box employer-onboarding-note">
-              Checking employee profile...
+              {completionRedirecting
+                ? "Private salary access is enabled. Redirecting to claims..."
+                : "Checking employee profile..."}
             </div>
           </Card>
         </div>
@@ -153,7 +190,7 @@ export function EmployeeOnboardingPage() {
     setBusy(true);
 
     try {
-      const result = await saveEmployeeProfile({
+      await saveEmployeeProfile({
         display_name: displayName,
         email,
       });
@@ -166,6 +203,7 @@ export function EmployeeOnboardingPage() {
 
       setProfileSubmitted(true);
       setOnboardingStep(2);
+      await refresh();
     } catch (error) {
       toast.push({
         kind: "error",
@@ -208,26 +246,20 @@ export function EmployeeOnboardingPage() {
 
     try {
       await getSelfPermit(false);
-      const updatedProfile = await markEmployeePrivateAccess();
+      await markEmployeePrivateAccess();
+      await refresh();
 
       toast.push({
         kind: "success",
         title: "Private salary access enabled",
-        message: "You can now view and claim private salary allocations.",
+        message: "Your claim workspace is ready.",
       });
 
-      if (
-        updatedProfile.employee?.onboarding_completed ||
-        isOnboarded("employee")
-      ) {
-        navigate("/employee/claims", { replace: true });
-      } else {
-        await refresh();
+      setCompletionRedirecting(true);
 
-        if (isOnboarded("employee")) {
-          navigate("/employee/claims", { replace: true });
-        }
-      }
+      window.setTimeout(() => {
+        navigate("/employee/claims", { replace: true });
+      }, 350);
     } catch (error) {
       toast.push({
         kind: "error",
@@ -261,7 +293,10 @@ export function EmployeeOnboardingPage() {
 
         <div className="employer-onboarding-side">
           <div className="employer-onboarding-wallet">
-            <span className="employer-onboarding-wallet-icon" aria-label="Verified wallet">
+            <span
+              className="employer-onboarding-wallet-icon"
+              aria-label="Verified wallet"
+            >
               <Wallet size={18} strokeWidth={1.8} aria-hidden="true" />
             </span>
             <strong>{formatAddress(profile.wallet_address)}</strong>
@@ -297,7 +332,9 @@ export function EmployeeOnboardingPage() {
               <button
                 key={step.number}
                 type="button"
-                className={`employer-onboarding-status-item${active ? " active" : ""}${complete ? " complete" : ""}`}
+                className={`employer-onboarding-status-item${
+                  active ? " active" : ""
+                }${complete ? " complete" : ""}`}
                 onClick={() => goToStep(step.step)}
                 disabled={disabled}
                 aria-current={active ? "step" : undefined}
@@ -331,7 +368,10 @@ export function EmployeeOnboardingPage() {
                 actions={
                   <div className="employer-onboarding-wallet-card">
                     <strong>{formatAddress(profile.wallet_address)}</strong>
-                    <span className="employer-onboarding-wallet-icon" aria-label="Verified wallet">
+                    <span
+                      className="employer-onboarding-wallet-icon"
+                      aria-label="Verified wallet"
+                    >
                       <Wallet size={18} strokeWidth={1.8} aria-hidden="true" />
                     </span>
                   </div>
@@ -436,8 +476,22 @@ export function EmployeeOnboardingPage() {
                 subtitle="Enable browser access for private claim details."
               >
                 {profile.employee?.private_access_enabled ? (
-                  <div className="success-box employer-onboarding-note">
-                    Private salary access enabled.
+                  <div className="form-stack">
+                    <div className="success-box employer-onboarding-note">
+                      Private salary access enabled.
+                    </div>
+
+                    <div className="employer-onboarding-slide-actions">
+                      <Button
+                        type="button"
+                        onClick={() =>
+                          navigate("/employee/claims", { replace: true })
+                        }
+                      >
+                        Go to Claims Dashboard
+                        <ArrowRight size={15} strokeWidth={1.8} />
+                      </Button>
+                    </div>
                   </div>
                 ) : (
                   <div className="form-stack">
