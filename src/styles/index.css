@@ -19470,32 +19470,80 @@ a.address-pill:hover {
 
 /* Verify wallet page: compact modern verification form */
 .app-dashboard-verify {
+  display: block !important;
+  width: 100% !important;
   min-height: 100vh !important;
   min-height: 100dvh !important;
+  padding: 0 !important;
+  gap: 0 !important;
   overflow-x: hidden !important;
   overflow-y: auto !important;
 }
 
 .app-content-verify {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  border-left: 0 !important;
   overflow-x: hidden !important;
   overflow-y: auto !important;
 }
 
 .app-content-verify .app-mobile-topbar {
+  box-sizing: border-box !important;
+  display: flex !important;
+  width: 100% !important;
+  flex: 0 0 auto !important;
+}
+
+.app-dashboard-verify .app-sidebar {
+  display: flex !important;
+  position: fixed !important;
+  left: 0.6rem !important;
+  top: 0.6rem !important;
+  z-index: 50 !important;
+  width: min(250px, calc(100vw - 1.2rem)) !important;
+  height: calc(100vh - 1.2rem) !important;
+  height: calc(100dvh - 1.2rem) !important;
+  transform: translateX(-110%) !important;
+  transition: transform 0.25s ease !important;
+}
+
+.app-dashboard-verify .app-sidebar.open {
+  transform: translateX(0) !important;
+}
+
+.app-dashboard-verify .sidebar-overlay {
   display: none !important;
 }
 
+.app-dashboard-verify .sidebar-overlay.open {
+  display: block !important;
+}
+
 .app-route-verify {
+  box-sizing: border-box !important;
   width: 100% !important;
+  max-width: none !important;
   min-height: 100vh !important;
   min-height: 100dvh !important;
-  display: grid !important;
-  place-items: center !important;
+  display: flex !important;
+  flex: 1 1 auto !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: calc(100vh - 3.25rem) !important;
+  min-height: calc(100dvh - 3.25rem) !important;
   margin: 0 !important;
-  padding: clamp(1rem, 3.5vh, 2.25rem) 0 !important;
+  padding: clamp(1rem, 4dvh, 1.5rem) 1rem !important;
   overflow-x: hidden !important;
   overflow-y: auto !important;
   animation: none !important;
+  clip-path: none !important;
+  filter: none !important;
+  transform: none !important;
 }
 
 .app-route-verify::before {
@@ -19525,8 +19573,10 @@ body:has(.onboarding-page.verify-wallet-page) *::-webkit-scrollbar {
 
 .onboarding-page.verify-wallet-page.dashboard-shell {
   position: relative !important;
-  width: min(calc(100vw - 2rem), 560px) !important;
-  max-width: 560px !important;
+  box-sizing: border-box !important;
+  width: min(560px, 100%) !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
   height: auto !important;
   min-height: 0 !important;
   display: block !important;
@@ -19582,7 +19632,11 @@ body:has(.onboarding-page.verify-wallet-page) *::-webkit-scrollbar {
 .onboarding-page.verify-wallet-page .verify-wallet-shell {
   display: block !important;
   position: static !important;
+  box-sizing: border-box !important;
   width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
   max-height: none !important;
   transform: none !important;
   overflow: visible !important;
@@ -19665,13 +19719,17 @@ body:has(.onboarding-page.verify-wallet-page) *::-webkit-scrollbar {
 }
 
 .onboarding-page.verify-wallet-page .verify-wallet-card.card {
+  box-sizing: border-box !important;
   display: grid !important;
   align-content: center !important;
   min-height: 0 !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
   padding: clamp(1rem, 2.4vw, 1.5rem) 0 0 !important;
   border: 0 !important;
   border-radius: 0 !important;
   background: transparent !important;
+  overflow: visible !important;
 }
 
 .onboarding-page.verify-wallet-page .verify-wallet-card.card > .card-head {
@@ -19691,11 +19749,15 @@ body:has(.onboarding-page.verify-wallet-page) *::-webkit-scrollbar {
 }
 
 .onboarding-page.verify-wallet-page .verify-wallet-stack {
+  min-width: 0 !important;
+  max-width: 100% !important;
   gap: clamp(1rem, 2.2vw, 1.35rem) !important;
 }
 
 .onboarding-page.verify-wallet-page .verify-wallet-field {
   display: grid !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
   gap: 1rem !important;
 }
 
@@ -19710,7 +19772,9 @@ body:has(.onboarding-page.verify-wallet-page) *::-webkit-scrollbar {
 
 .onboarding-page.verify-wallet-page .employer-onboarding-wallet-card,
 .onboarding-page.verify-wallet-page .verify-wallet-connect {
+  box-sizing: border-box !important;
   width: 100% !important;
+  max-width: 100% !important;
   min-width: 0 !important;
   min-height: clamp(3.9rem, 6vw, 4.7rem) !important;
   padding: 0.8rem clamp(0.95rem, 2.2vw, 1.25rem) !important;
@@ -19769,11 +19833,16 @@ body:has(.onboarding-page.verify-wallet-page) *::-webkit-scrollbar {
 }
 
 .onboarding-page.verify-wallet-page .employer-onboarding-slide-actions {
+  min-width: 0 !important;
+  max-width: 100% !important;
   margin-top: clamp(0.3rem, 1vw, 0.8rem) !important;
 }
 
 .onboarding-page.verify-wallet-page .employer-onboarding-slide-actions .btn {
+  box-sizing: border-box !important;
   width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
   min-height: clamp(3.3rem, 5.5vw, 3.9rem) !important;
   justify-content: center !important;
   gap: 0.75rem !important;
@@ -19796,19 +19865,32 @@ body:has(.onboarding-page.verify-wallet-page) *::-webkit-scrollbar {
   color: #09090b !important;
 }
 
+@media (max-width: 768px) {
+  .app-route-verify {
+    min-height: calc(100dvh - 3.25rem) !important;
+  }
+}
+
 @media (max-width: 560px) {
   .app-route-verify {
-    place-items: start center !important;
-    padding: clamp(0.85rem, 3.8vh, 1.35rem) 0 !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 1rem !important;
   }
 
   .onboarding-page.verify-wallet-page.dashboard-shell {
-    width: min(calc(100vw - 1rem), 34rem) !important;
-    max-width: calc(100vw - 1rem) !important;
+    width: 100% !important;
+    max-width: 100% !important;
     padding: 0 !important;
   }
 
   .onboarding-page.verify-wallet-page .verify-wallet-shell {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin-inline: auto !important;
     padding: 1rem !important;
     border-radius: 18px !important;
   }
@@ -19867,8 +19949,9 @@ body:has(.onboarding-page.verify-wallet-page) *::-webkit-scrollbar {
 
 @media (max-height: 620px) {
   .app-route-verify {
-    place-items: start center !important;
-    padding: 0.75rem 0 !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0.75rem 1rem !important;
   }
 
   .onboarding-page.verify-wallet-page .verify-wallet-shell {

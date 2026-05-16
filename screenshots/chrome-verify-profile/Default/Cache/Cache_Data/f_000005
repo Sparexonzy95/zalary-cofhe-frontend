@@ -1,0 +1,204 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/app/router.tsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=f27aff5b"; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+import { createBrowserRouter } from "/node_modules/.vite/deps/react-router-dom.js?v=ebe01aab";
+import { AppDashboard } from "/src/app/AppDashboard.tsx?t=1778924501090";
+import { LandingPage } from "/src/pages/LandingPage.tsx";
+import { WelcomePage } from "/src/pages/WelcomePage.tsx";
+import { VerifyWalletPage } from "/src/pages/onboarding/VerifyWallet.tsx?t=1778924501090";
+import { EmployerOnboardingPage } from "/src/pages/onboarding/EmployerOnboarding.tsx?t=1778924501090";
+import { EmployeeOnboardingPage } from "/src/pages/onboarding/EmployeeOnboarding.tsx?t=1778924501090";
+import { AccountPage } from "/src/pages/AccountPage.tsx?t=1778924501090";
+import { EmployerDashboardPage } from "/src/pages/employer/EmployerDashboard.tsx";
+import { CreateTemplatePage } from "/src/pages/employer/CreateTemplate.tsx";
+import { TemplateDetailPage } from "/src/pages/employer/TemplateDetail.tsx";
+import { RunDetailPage } from "/src/pages/employer/RunDetail.tsx";
+import { ClaimsDashboardPage } from "/src/pages/employee/ClaimsDashboard.tsx";
+import { ClaimDetailPage } from "/src/pages/employee/ClaimDetail.tsx";
+import { RequireOnboarding } from "/src/components/RequireOnboarding.tsx?t=1778924501090";
+function NotFound() {
+  return /* @__PURE__ */ jsxDEV("div", { className: "card", style: { margin: "2rem auto", maxWidth: 400, textAlign: "center" }, children: /* @__PURE__ */ jsxDEV("h2", { children: "Page not found" }, void 0, false, {
+    fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+    lineNumber: 20,
+    columnNumber: 7
+  }, this) }, void 0, false, {
+    fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+    lineNumber: 19,
+    columnNumber: 5
+  }, this);
+}
+_c = NotFound;
+function WelcomeOverlayPage() {
+  return /* @__PURE__ */ jsxDEV("div", { className: "welcome-modal-route", children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "welcome-modal-background", "aria-hidden": "true", children: /* @__PURE__ */ jsxDEV(EmployerDashboardPage, {}, void 0, false, {
+      fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+      lineNumber: 29,
+      columnNumber: 9
+    }, this) }, void 0, false, {
+      fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+      lineNumber: 28,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV(WelcomePage, {}, void 0, false, {
+      fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+      lineNumber: 31,
+      columnNumber: 7
+    }, this)
+  ] }, void 0, true, {
+    fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+    lineNumber: 27,
+    columnNumber: 5
+  }, this);
+}
+_c2 = WelcomeOverlayPage;
+export const router = createBrowserRouter(
+  [
+    { path: "/", element: /* @__PURE__ */ jsxDEV(LandingPage, {}, void 0, false, {
+      fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+      lineNumber: 37,
+      columnNumber: 23
+    }, this) },
+    {
+      element: /* @__PURE__ */ jsxDEV(AppDashboard, {}, void 0, false, {
+        fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+        lineNumber: 40,
+        columnNumber: 12
+      }, this),
+      children: [
+        { path: "/app", element: /* @__PURE__ */ jsxDEV(WelcomeOverlayPage, {}, void 0, false, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+          lineNumber: 42,
+          columnNumber: 28
+        }, this) },
+        { path: "/verify/employer", element: /* @__PURE__ */ jsxDEV(VerifyWalletPage, { role: "employer" }, void 0, false, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+          lineNumber: 44,
+          columnNumber: 40
+        }, this) },
+        { path: "/verify/employee", element: /* @__PURE__ */ jsxDEV(VerifyWalletPage, { role: "employee" }, void 0, false, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+          lineNumber: 45,
+          columnNumber: 40
+        }, this) },
+        { path: "/onboarding/employer", element: /* @__PURE__ */ jsxDEV(EmployerOnboardingPage, {}, void 0, false, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+          lineNumber: 47,
+          columnNumber: 44
+        }, this) },
+        { path: "/onboarding/employee", element: /* @__PURE__ */ jsxDEV(EmployeeOnboardingPage, {}, void 0, false, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+          lineNumber: 48,
+          columnNumber: 44
+        }, this) },
+        { path: "/account", element: /* @__PURE__ */ jsxDEV(AccountPage, {}, void 0, false, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+          lineNumber: 50,
+          columnNumber: 32
+        }, this) },
+        {
+          path: "/employer",
+          element: /* @__PURE__ */ jsxDEV(RequireOnboarding, { role: "employer", children: /* @__PURE__ */ jsxDEV(EmployerDashboardPage, {}, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+            lineNumber: 56,
+            columnNumber: 13
+          }, this) }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+            lineNumber: 55,
+            columnNumber: 5
+          }, this)
+        },
+        {
+          path: "/employer/templates/new",
+          element: /* @__PURE__ */ jsxDEV(RequireOnboarding, { role: "employer", children: /* @__PURE__ */ jsxDEV(CreateTemplatePage, {}, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+            lineNumber: 64,
+            columnNumber: 13
+          }, this) }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+            lineNumber: 63,
+            columnNumber: 5
+          }, this)
+        },
+        {
+          path: "/employer/templates/:id",
+          element: /* @__PURE__ */ jsxDEV(RequireOnboarding, { role: "employer", children: /* @__PURE__ */ jsxDEV(TemplateDetailPage, {}, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+            lineNumber: 72,
+            columnNumber: 13
+          }, this) }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+            lineNumber: 71,
+            columnNumber: 5
+          }, this)
+        },
+        {
+          path: "/employer/runs/:runId",
+          element: /* @__PURE__ */ jsxDEV(RequireOnboarding, { role: "employer", children: /* @__PURE__ */ jsxDEV(RunDetailPage, {}, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+            lineNumber: 80,
+            columnNumber: 13
+          }, this) }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+            lineNumber: 79,
+            columnNumber: 5
+          }, this)
+        },
+        {
+          path: "/employee/claims",
+          element: /* @__PURE__ */ jsxDEV(RequireOnboarding, { role: "employee", children: /* @__PURE__ */ jsxDEV(ClaimsDashboardPage, {}, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+            lineNumber: 88,
+            columnNumber: 13
+          }, this) }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+            lineNumber: 87,
+            columnNumber: 5
+          }, this)
+        },
+        {
+          path: "/employee/claims/:claimId",
+          element: /* @__PURE__ */ jsxDEV(RequireOnboarding, { role: "employee", children: /* @__PURE__ */ jsxDEV(ClaimDetailPage, {}, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+            lineNumber: 96,
+            columnNumber: 13
+          }, this) }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+            lineNumber: 95,
+            columnNumber: 5
+          }, this)
+        }
+      ]
+    },
+    { path: "*", element: /* @__PURE__ */ jsxDEV(NotFound, {}, void 0, false, {
+      fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx",
+      lineNumber: 103,
+      columnNumber: 23
+    }, this) }
+  ]
+);
+var _c, _c2;
+$RefreshReg$(_c, "NotFound");
+$RefreshReg$(_c2, "WelcomeOverlayPage");
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+function $RefreshReg$(type, id) {
+  return RefreshRuntime.register(type, "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/app/router.tsx " + id);
+}
+function $RefreshSig$() {
+  return RefreshRuntime.createSignatureFunctionForTransform();
+}
+
+//# sourceMappingURL=data:application/json;base64,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QUMsd0JBQUQ7QUFBQTtBQUFBO0FBQUE7QUFBQSxpQkFBbUIsS0FEckI7QUFBQTtBQUFBO0FBQUE7QUFBQSxpQkFFQTtBQUFBLFFBRUo7QUFBQSxRQUNBO0FBQUEsVUFDRUQsTUFBTTtBQUFBLFVBQ05DLFNBQ0UsdUJBQUMscUJBQWtCLE1BQUssWUFDdEIsaUNBQUMsbUJBQUQ7QUFBQTtBQUFBO0FBQUE7QUFBQSxpQkFBYyxLQURoQjtBQUFBO0FBQUE7QUFBQTtBQUFBLGlCQUVBO0FBQUEsUUFFSjtBQUFBLFFBQ0E7QUFBQSxVQUNFRCxNQUFNO0FBQUEsVUFDTkMsU0FDRSx1QkFBQyxxQkFBa0IsTUFBSyxZQUN0QixpQ0FBQyx5QkFBRDtBQUFBO0FBQUE7QUFBQTtBQUFBLGlCQUFvQixLQUR0QjtBQUFBO0FBQUE7QUFBQTtBQUFBLGlCQUVBO0FBQUEsUUFFSjtBQUFBLFFBQ0E7QUFBQSxVQUNFRCxNQUFNO0FBQUEsVUFDTkMsU0FDRSx1QkFBQyxxQkFBa0IsTUFBSyxZQUN0QixpQ0FBQyxxQkFBRDtBQUFBO0FBQUE7QUFBQTtBQUFBLGlCQUFnQixLQURsQjtBQUFBO0FBQUE7QUFBQTtBQUFBLGlCQUVBO0FBQUEsUUFFSjtBQUFBLE1BQUM7QUFBQSxJQUVMO0FBQUEsSUFFQSxFQUFFRCxNQUFNLEtBQUtDLFNBQVMsdUJBQUMsY0FBRDtBQUFBO0FBQUE7QUFBQTtBQUFBLFdBQVMsRUFBSTtBQUFBLEVBQUM7QUFDckM7QUFBRSxJQUFBTCxJQUFBRTtBQUFBLGFBQUFGLElBQUE7QUFBQSxhQUFBRSxLQUFBIiwibmFtZXMiOlsiY3JlYXRlQnJvd3NlclJvdXRlciIsIkFwcERhc2hib2FyZCIsIkxhbmRpbmdQYWdlIiwiV2VsY29tZVBhZ2UiLCJWZXJpZnlXYWxsZXRQYWdlIiwiRW1wbG95ZXJPbmJvYXJkaW5nUGFnZSIsIkVtcGxveWVlT25ib2FyZGluZ1BhZ2UiLCJBY2NvdW50UGFnZSIsIkVtcGxveWVyRGFzaGJvYXJkUGFnZSIsIkNyZWF0ZVRlbXBsYXRlUGFnZSIsIlRlbXBsYXRlRGV0YWlsUGFnZSIsIlJ1bkRldGFpbFBhZ2UiLCJDbGFpbXNEYXNoYm9hcmRQYWdlIiwiQ2xhaW1EZXRhaWxQYWdlIiwiUmVxdWlyZU9uYm9hcmRpbmciLCJOb3RGb3VuZCIsIm1hcmdpbiIsIm1heFdpZHRoIiwidGV4dEFsaWduIiwiX2MiLCJXZWxjb21lT3ZlcmxheVBhZ2UiLCJfYzIiLCJyb3V0ZXIiLCJwYXRoIiwiZWxlbWVudCIsImNoaWxkcmVuIl0sImlnbm9yZUxpc3QiOltdLCJzb3VyY2VzIjpbInJvdXRlci50c3giXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgY3JlYXRlQnJvd3NlclJvdXRlciB9IGZyb20gXCJyZWFjdC1yb3V0ZXItZG9tXCI7XG5pbXBvcnQgeyBBcHBEYXNoYm9hcmQgfSBmcm9tIFwiLi9BcHBEYXNoYm9hcmRcIjtcbmltcG9ydCB7IExhbmRpbmdQYWdlIH0gZnJvbSBcIi4uL3BhZ2VzL0xhbmRpbmdQYWdlXCI7XG5pbXBvcnQgeyBXZWxjb21lUGFnZSB9IGZyb20gXCIuLi9wYWdlcy9XZWxjb21lUGFnZVwiO1xuaW1wb3J0IHsgVmVyaWZ5V2FsbGV0UGFnZSB9IGZyb20gXCIuLi9wYWdlcy9vbmJvYXJkaW5nL1ZlcmlmeVdhbGxldFwiO1xuaW1wb3J0IHsgRW1wbG95ZXJPbmJvYXJkaW5nUGFnZSB9IGZyb20gXCIuLi9wYWdlcy9vbmJvYXJkaW5nL0VtcGxveWVyT25ib2FyZGluZ1wiO1xuaW1wb3J0IHsgRW1wbG95ZWVPbmJvYXJkaW5nUGFnZSB9IGZyb20gXCIuLi9wYWdlcy9vbmJvYXJkaW5nL0VtcGxveWVlT25ib2FyZGluZ1wiO1xuaW1wb3J0IHsgQWNjb3VudFBhZ2UgfSBmcm9tIFwiLi4vcGFnZXMvQWNjb3VudFBhZ2VcIjtcbmltcG9ydCB7IEVtcGxveWVyRGFzaGJvYXJkUGFnZSB9IGZyb20gXCIuLi9wYWdlcy9lbXBsb3llci9FbXBsb3llckRhc2hib2FyZFwiO1xuaW1wb3J0IHsgQ3JlYXRlVGVtcGxhdGVQYWdlIH0gZnJvbSBcIi4uL3BhZ2VzL2VtcGxveWVyL0NyZWF0ZVRlbXBsYXRlXCI7XG5pbXBvcnQgeyBUZW1wbGF0ZURldGFpbFBhZ2UgfSBmcm9tIFwiLi4vcGFnZXMvZW1wbG95ZXIvVGVtcGxhdGVEZXRhaWxcIjtcbmltcG9ydCB7IFJ1bkRldGFpbFBhZ2UgfSBmcm9tIFwiLi4vcGFnZXMvZW1wbG95ZXIvUnVuRGV0YWlsXCI7XG5pbXBvcnQgeyBDbGFpbXNEYXNoYm9hcmRQYWdlIH0gZnJvbSBcIi4uL3BhZ2VzL2VtcGxveWVlL0NsYWltc0Rhc2hib2FyZFwiO1xuaW1wb3J0IHsgQ2xhaW1EZXRhaWxQYWdlIH0gZnJvbSBcIi4uL3BhZ2VzL2VtcGxveWVlL0NsYWltRGV0YWlsXCI7XG5pbXBvcnQgeyBSZXF1aXJlT25ib2FyZGluZyB9IGZyb20gXCIuLi9jb21wb25lbnRzL1JlcXVpcmVPbmJvYXJkaW5nXCI7XG5cbmZ1bmN0aW9uIE5vdEZvdW5kKCkge1xuICByZXR1cm4gKFxuICAgIDxkaXYgY2xhc3NOYW1lPVwiY2FyZFwiIHN0eWxlPXt7IG1hcmdpbjogXCIycmVtIGF1dG9cIiwgbWF4V2lkdGg6IDQwMCwgdGV4dEFsaWduOiBcImNlbnRlclwiIH19PlxuICAgICAgPGgyPlBhZ2Ugbm90IGZvdW5kPC9oMj5cbiAgICA8L2Rpdj5cbiAgKTtcbn1cblxuZnVuY3Rpb24gV2VsY29tZU92ZXJsYXlQYWdlKCkge1xuICByZXR1cm4gKFxuICAgIDxkaXYgY2xhc3NOYW1lPVwid2VsY29tZS1tb2RhbC1yb3V0ZVwiPlxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJ3ZWxjb21lLW1vZGFsLWJhY2tncm91bmRcIiBhcmlhLWhpZGRlbj1cInRydWVcIj5cbiAgICAgICAgPEVtcGxveWVyRGFzaGJvYXJkUGFnZSAvPlxuICAgICAgPC9kaXY+XG4gICAgICA8V2VsY29tZVBhZ2UgLz5cbiAgICA8L2Rpdj5cbiAgKTtcbn1cblxuZXhwb3J0IGNvbnN0IHJvdXRlciA9IGNyZWF0ZUJyb3dzZXJSb3V0ZXIoW1xuICB7IHBhdGg6IFwiL1wiLCBlbGVtZW50OiA8TGFuZGluZ1BhZ2UgLz4gfSxcblxuICB7XG4gICAgZWxlbWVudDogPEFwcERhc2hib2FyZCAvPixcbiAgICBjaGlsZHJlbjogW1xuICAgICAgeyBwYXRoOiBcIi9hcHBcIiwgZWxlbWVudDogPFdlbGNvbWVPdmVybGF5UGFnZSAvPiB9LFxuXG4gICAgICB7IHBhdGg6IFwiL3ZlcmlmeS9lbXBsb3llclwiLCBlbGVtZW50OiA8VmVyaWZ5V2FsbGV0UGFnZSByb2xlPVwiZW1wbG95ZXJcIiAvPiB9LFxuICAgICAgeyBwYXRoOiBcIi92ZXJpZnkvZW1wbG95ZWVcIiwgZWxlbWVudDogPFZlcmlmeVdhbGxldFBhZ2Ugcm9sZT1cImVtcGxveWVlXCIgLz4gfSxcblxuICAgICAgeyBwYXRoOiBcIi9vbmJvYXJkaW5nL2VtcGxveWVyXCIsIGVsZW1lbnQ6IDxFbXBsb3llck9uYm9hcmRpbmdQYWdlIC8+IH0sXG4gICAgICB7IHBhdGg6IFwiL29uYm9hcmRpbmcvZW1wbG95ZWVcIiwgZWxlbWVudDogPEVtcGxveWVlT25ib2FyZGluZ1BhZ2UgLz4gfSxcblxuICAgICAgeyBwYXRoOiBcIi9hY2NvdW50XCIsIGVsZW1lbnQ6IDxBY2NvdW50UGFnZSAvPiB9LFxuXG4gICAgICB7XG4gICAgICAgIHBhdGg6IFwiL2VtcGxveWVyXCIsXG4gICAgICAgIGVsZW1lbnQ6IChcbiAgICAgICAgICA8UmVxdWlyZU9uYm9hcmRpbmcgcm9sZT1cImVtcGxveWVyXCI+XG4gICAgICAgICAgICA8RW1wbG95ZXJEYXNoYm9hcmRQYWdlIC8+XG4gICAgICAgICAgPC9SZXF1aXJlT25ib2FyZGluZz5cbiAgICAgICAgKSxcbiAgICAgIH0sXG4gICAgICB7XG4gICAgICAgIHBhdGg6IFwiL2VtcGxveWVyL3RlbXBsYXRlcy9uZXdcIixcbiAgICAgICAgZWxlbWVudDogKFxuICAgICAgICAgIDxSZXF1aXJlT25ib2FyZGluZyByb2xlPVwiZW1wbG95ZXJcIj5cbiAgICAgICAgICAgIDxDcmVhdGVUZW1wbGF0ZVBhZ2UgLz5cbiAgICAgICAgICA8L1JlcXVpcmVPbmJvYXJkaW5nPlxuICAgICAgICApLFxuICAgICAgfSxcbiAgICAgIHtcbiAgICAgICAgcGF0aDogXCIvZW1wbG95ZXIvdGVtcGxhdGVzLzppZFwiLFxuICAgICAgICBlbGVtZW50OiAoXG4gICAgICAgICAgPFJlcXVpcmVPbmJvYXJkaW5nIHJvbGU9XCJlbXBsb3llclwiPlxuICAgICAgICAgICAgPFRlbXBsYXRlRGV0YWlsUGFnZSAvPlxuICAgICAgICAgIDwvUmVxdWlyZU9uYm9hcmRpbmc+XG4gICAgICAgICksXG4gICAgICB9LFxuICAgICAge1xuICAgICAgICBwYXRoOiBcIi9lbXBsb3llci9ydW5zLzpydW5JZFwiLFxuICAgICAgICBlbGVtZW50OiAoXG4gICAgICAgICAgPFJlcXVpcmVPbmJvYXJkaW5nIHJvbGU9XCJlbXBsb3llclwiPlxuICAgICAgICAgICAgPFJ1bkRldGFpbFBhZ2UgLz5cbiAgICAgICAgICA8L1JlcXVpcmVPbmJvYXJkaW5nPlxuICAgICAgICApLFxuICAgICAgfSxcbiAgICAgIHtcbiAgICAgICAgcGF0aDogXCIvZW1wbG95ZWUvY2xhaW1zXCIsXG4gICAgICAgIGVsZW1lbnQ6IChcbiAgICAgICAgICA8UmVxdWlyZU9uYm9hcmRpbmcgcm9sZT1cImVtcGxveWVlXCI+XG4gICAgICAgICAgICA8Q2xhaW1zRGFzaGJvYXJkUGFnZSAvPlxuICAgICAgICAgIDwvUmVxdWlyZU9uYm9hcmRpbmc+XG4gICAgICAgICksXG4gICAgICB9LFxuICAgICAge1xuICAgICAgICBwYXRoOiBcIi9lbXBsb3llZS9jbGFpbXMvOmNsYWltSWRcIixcbiAgICAgICAgZWxlbWVudDogKFxuICAgICAgICAgIDxSZXF1aXJlT25ib2FyZGluZyByb2xlPVwiZW1wbG95ZWVcIj5cbiAgICAgICAgICAgIDxDbGFpbURldGFpbFBhZ2UgLz5cbiAgICAgICAgICA8L1JlcXVpcmVPbmJvYXJkaW5nPlxuICAgICAgICApLFxuICAgICAgfSxcbiAgICBdLFxuICB9LFxuXG4gIHsgcGF0aDogXCIqXCIsIGVsZW1lbnQ6IDxOb3RGb3VuZCAvPiB9LFxuXSk7XG4iXSwiZmlsZSI6IkM6L1VzZXJzL2Nhc2hraW5rL0Rvd25sb2Fkcy96YWxhcnktY29maGUtZnJvbnRlbmQvemFsYXJ5LWNvZmhlLWZyb250ZW5kL3NyYy9hcHAvcm91dGVyLnRzeCJ9

@@ -1,0 +1,323 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/pages/onboarding/VerifyWallet.tsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=f27aff5b"; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+var _s = $RefreshSig$();
+import __vite__cjsImport1_react from "/node_modules/.vite/deps/react.js?v=f27aff5b"; const React = __vite__cjsImport1_react.__esModule ? __vite__cjsImport1_react.default : __vite__cjsImport1_react;
+import { useNavigate } from "/node_modules/.vite/deps/react-router-dom.js?v=ebe01aab";
+import { ArrowRight, Wallet } from "/node_modules/.vite/deps/lucide-react.js?v=84e8ad2e";
+import { Button, Card, useToast } from "/src/components/ui.tsx";
+import { WalletConnectButton } from "/src/components/WalletConnectButton.tsx?t=1778924501090";
+import {
+  employeeCompleted,
+  useOnboarding
+} from "/src/lib/onboarding.tsx?t=1778924501090";
+import { formatAddress } from "/src/lib/utils.ts";
+import { useWallet } from "/src/lib/wallet.tsx";
+function dashboardFor(role) {
+  return role === "employer" ? "/employer" : "/employee/claims";
+}
+function onboardingFor(role) {
+  return role === "employer" ? "/onboarding/employer" : "/onboarding/employee";
+}
+function roleTitle(role) {
+  return role === "employer" ? "Employer" : "Employee";
+}
+function verifyTitle(role) {
+  return role === "employer" ? "Verify your employer wallet" : "Verify your claim wallet";
+}
+function signButtonText(role) {
+  return role === "employer" ? "Verify Employer Wallet" : "Verify Claim Wallet";
+}
+function verifyKicker(role) {
+  return role === "employer" ? "Employer verification" : "Claim verification";
+}
+function profileIsCompleted(profile, role) {
+  if (!profile.email_verified) return false;
+  if (role === "employer") {
+    return Boolean(
+      profile.employer?.onboarding_completed && profile.employer?.company_name && profile.employer?.work_email
+    );
+  }
+  return employeeCompleted(profile);
+}
+export function VerifyWalletPage({ role }) {
+  _s();
+  const navigate = useNavigate();
+  const toast = useToast();
+  const { wallet } = useWallet();
+  const {
+    loading,
+    token,
+    profile,
+    refresh,
+    loginWithWallet,
+    isOnboarded
+  } = useOnboarding();
+  const [busy, setBusy] = React.useState(false);
+  const [checking, setChecking] = React.useState(true);
+  React.useEffect(() => {
+    let alive = true;
+    async function check() {
+      try {
+        await refresh();
+      } finally {
+        if (alive) setChecking(false);
+      }
+    }
+    void check();
+    return () => {
+      alive = false;
+    };
+  }, [refresh]);
+  React.useEffect(() => {
+    if (loading || checking) return;
+    if (token && profile && isOnboarded(role)) {
+      navigate(dashboardFor(role), { replace: true });
+      return;
+    }
+    if (token && profile && !isOnboarded(role)) {
+      navigate(onboardingFor(role), { replace: true });
+    }
+  }, [loading, checking, token, profile, role, isOnboarded, navigate]);
+  async function handleVerifyWallet() {
+    if (!wallet) {
+      toast.push({
+        kind: "error",
+        title: "Wallet not connected",
+        message: "Connect your wallet first, then sign to verify your identity."
+      });
+      return;
+    }
+    setBusy(true);
+    try {
+      const verifiedProfile = await loginWithWallet(role);
+      toast.push({
+        kind: "success",
+        title: "Wallet verified",
+        message: role === "employer" ? "Your employer identity has been verified." : "Your claim identity has been verified."
+      });
+      if (profileIsCompleted(verifiedProfile, role)) {
+        navigate(dashboardFor(role), { replace: true });
+      } else {
+        navigate(onboardingFor(role), { replace: true });
+      }
+    } catch (error) {
+      toast.push({
+        kind: "error",
+        title: "Wallet verification failed",
+        message: error instanceof Error ? error.message : "Try again."
+      });
+    } finally {
+      setBusy(false);
+    }
+  }
+  if (loading || checking) {
+    return /* @__PURE__ */ jsxDEV("div", { className: "onboarding-page employer-onboarding-page verify-wallet-page dashboard-shell", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "employer-onboarding-head", children: /* @__PURE__ */ jsxDEV("div", { children: [
+        /* @__PURE__ */ jsxDEV("div", { className: "employer-kicker", children: verifyKicker(role) }, void 0, false, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+          lineNumber: 148,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("h1", { children: "Checking access" }, void 0, false, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+          lineNumber: 149,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("p", { children: "Confirming this wallet before opening your workspace." }, void 0, false, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+          lineNumber: 150,
+          columnNumber: 13
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+        lineNumber: 147,
+        columnNumber: 11
+      }, this) }, void 0, false, {
+        fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+        lineNumber: 146,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { className: "onboarding-grid employer-onboarding-grid verify-wallet-grid", children: /* @__PURE__ */ jsxDEV(
+        Card,
+        {
+          className: "employer-onboarding-card",
+          title: "Wallet status",
+          subtitle: "Please wait.",
+          children: /* @__PURE__ */ jsxDEV("div", { className: "success-box employer-onboarding-note", children: "Checking verification status..." }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+            lineNumber: 160,
+            columnNumber: 13
+          }, this)
+        },
+        void 0,
+        false,
+        {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+          lineNumber: 155,
+          columnNumber: 11
+        },
+        this
+      ) }, void 0, false, {
+        fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+        lineNumber: 154,
+        columnNumber: 9
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+      lineNumber: 145,
+      columnNumber: 7
+    }, this);
+  }
+  return /* @__PURE__ */ jsxDEV("div", { className: "onboarding-page employer-onboarding-page verify-wallet-page dashboard-shell", children: /* @__PURE__ */ jsxDEV("div", { className: "employer-onboarding-carousel verify-wallet-shell", children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "employer-onboarding-head verify-wallet-hero", children: /* @__PURE__ */ jsxDEV("div", { children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "employer-kicker", children: verifyKicker(role) }, void 0, false, {
+        fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+        lineNumber: 174,
+        columnNumber: 13
+      }, this),
+      /* @__PURE__ */ jsxDEV("h1", { children: verifyTitle(role) }, void 0, false, {
+        fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+        lineNumber: 175,
+        columnNumber: 13
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+      lineNumber: 173,
+      columnNumber: 11
+    }, this) }, void 0, false, {
+      fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+      lineNumber: 172,
+      columnNumber: 9
+    }, this),
+    /* @__PURE__ */ jsxDEV(Card, { className: "employer-onboarding-card verify-wallet-card", children: /* @__PURE__ */ jsxDEV("div", { className: "form-stack verify-wallet-stack", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "verify-wallet-field", children: [
+        /* @__PURE__ */ jsxDEV("span", { className: "verify-wallet-field-label", children: "Wallet address" }, void 0, false, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+          lineNumber: 182,
+          columnNumber: 15
+        }, this),
+        wallet ? /* @__PURE__ */ jsxDEV("div", { className: "employer-onboarding-wallet-card", children: [
+          /* @__PURE__ */ jsxDEV("span", { className: "verify-wallet-field-icon", "aria-hidden": "true", children: /* @__PURE__ */ jsxDEV(Wallet, { size: 24, strokeWidth: 1.8 }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+            lineNumber: 187,
+            columnNumber: 21
+          }, this) }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+            lineNumber: 186,
+            columnNumber: 19
+          }, this),
+          /* @__PURE__ */ jsxDEV("strong", { children: formatAddress(wallet) }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+            lineNumber: 189,
+            columnNumber: 19
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+          lineNumber: 185,
+          columnNumber: 15
+        }, this) : /* @__PURE__ */ jsxDEV("div", { className: "verify-wallet-connect", children: [
+          /* @__PURE__ */ jsxDEV("span", { className: "verify-wallet-field-icon", "aria-hidden": "true", children: /* @__PURE__ */ jsxDEV(Wallet, { size: 24, strokeWidth: 1.8 }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+            lineNumber: 194,
+            columnNumber: 21
+          }, this) }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+            lineNumber: 193,
+            columnNumber: 19
+          }, this),
+          /* @__PURE__ */ jsxDEV("p", { className: "muted", children: "No wallet connected" }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+            lineNumber: 196,
+            columnNumber: 19
+          }, this),
+          /* @__PURE__ */ jsxDEV(WalletConnectButton, {}, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+            lineNumber: 197,
+            columnNumber: 19
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+          lineNumber: 192,
+          columnNumber: 15
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+        lineNumber: 181,
+        columnNumber: 13
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { className: "employer-onboarding-slide-actions", children: /* @__PURE__ */ jsxDEV(
+        Button,
+        {
+          disabled: !wallet || busy,
+          onClick: () => void handleVerifyWallet(),
+          children: [
+            busy ? "Verifying..." : signButtonText(role),
+            /* @__PURE__ */ jsxDEV(ArrowRight, { size: 15, strokeWidth: 1.8 }, void 0, false, {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+              lineNumber: 208,
+              columnNumber: 17
+            }, this)
+          ]
+        },
+        void 0,
+        true,
+        {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+          lineNumber: 203,
+          columnNumber: 15
+        },
+        this
+      ) }, void 0, false, {
+        fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+        lineNumber: 202,
+        columnNumber: 13
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+      lineNumber: 180,
+      columnNumber: 11
+    }, this) }, void 0, false, {
+      fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+      lineNumber: 179,
+      columnNumber: 9
+    }, this)
+  ] }, void 0, true, {
+    fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+    lineNumber: 171,
+    columnNumber: 7
+  }, this) }, void 0, false, {
+    fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx",
+    lineNumber: 170,
+    columnNumber: 5
+  }, this);
+}
+_s(VerifyWalletPage, "LVk3x1rZV7izJRRwhzO7NFdpt6k=", false, function() {
+  return [useNavigate, useToast, useWallet, useOnboarding];
+});
+_c = VerifyWalletPage;
+var _c;
+$RefreshReg$(_c, "VerifyWalletPage");
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+function $RefreshReg$(type, id) {
+  return RefreshRuntime.register(type, "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/onboarding/VerifyWallet.tsx " + id);
+}
+function $RefreshSig$() {
+  return RefreshRuntime.createSignatureFunctionForTransform();
+}
+
+//# sourceMappingURL=data:application/json;base64,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QUVKO0FBQUNlLEdBaktlRCxrQkFBZ0I7QUFBQSxVQUNiMUIsYUFDSEssVUFDS0ssV0FTZkYsYUFBYTtBQUFBO0FBQUEsS0FaSGtCO0FBQWdCLElBQUEyQjtBQUFBLGFBQUFBLElBQUEiLCJuYW1lcyI6WyJSZWFjdCIsInVzZU5hdmlnYXRlIiwiQXJyb3dSaWdodCIsIldhbGxldCIsIkJ1dHRvbiIsIkNhcmQiLCJ1c2VUb2FzdCIsIldhbGxldENvbm5lY3RCdXR0b24iLCJlbXBsb3llZUNvbXBsZXRlZCIsInVzZU9uYm9hcmRpbmciLCJmb3JtYXRBZGRyZXNzIiwidXNlV2FsbGV0IiwiZGFzaGJvYXJkRm9yIiwicm9sZSIsIm9uYm9hcmRpbmdGb3IiLCJyb2xlVGl0bGUiLCJ2ZXJpZnlUaXRsZSIsInNpZ25CdXR0b25UZXh0IiwidmVyaWZ5S2lja2VyIiwicHJvZmlsZUlzQ29tcGxldGVkIiwicHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIiwiQm9vbGVhbiIsImVtcGxveWVyIiwib25ib2FyZGluZ19jb21wbGV0ZWQiLCJjb21wYW55X25hbWUiLCJ3b3JrX2VtYWlsIiwiVmVyaWZ5V2FsbGV0UGFnZSIsIl9zIiwibmF2aWdhdGUiLCJ0b2FzdCIsIndhbGxldCIsImxvYWRpbmciLCJ0b2tlbiIsInJlZnJlc2giLCJsb2dpbldpdGhXYWxsZXQiLCJpc09uYm9hcmRlZCIsImJ1c3kiLCJzZXRCdXN5IiwidXNlU3RhdGUiLCJjaGVja2luZyIsInNldENoZWNraW5nIiwidXNlRWZmZWN0IiwiYWxpdmUiLCJjaGVjayIsInJlcGxhY2UiLCJoYW5kbGVWZXJpZnlXYWxsZXQiLCJwdXNoIiwia2luZCIsInRpdGxlIiwibWVzc2FnZSIsInZlcmlmaWVkUHJvZmlsZSIsImVycm9yIiwiRXJyb3IiLCJfYyJdLCJpZ25vcmVMaXN0IjpbXSwic291cmNlcyI6WyJWZXJpZnlXYWxsZXQudHN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCB7IHVzZU5hdmlnYXRlIH0gZnJvbSBcInJlYWN0LXJvdXRlci1kb21cIjtcbmltcG9ydCB7IEFycm93UmlnaHQsIFdhbGxldCB9IGZyb20gXCJsdWNpZGUtcmVhY3RcIjtcbmltcG9ydCB7IEJ1dHRvbiwgQ2FyZCwgdXNlVG9hc3QgfSBmcm9tIFwiLi4vLi4vY29tcG9uZW50cy91aVwiO1xuaW1wb3J0IHsgV2FsbGV0Q29ubmVjdEJ1dHRvbiB9IGZyb20gXCIuLi8uLi9jb21wb25lbnRzL1dhbGxldENvbm5lY3RCdXR0b25cIjtcbmltcG9ydCB7XG4gIGVtcGxveWVlQ29tcGxldGVkLFxuICB1c2VPbmJvYXJkaW5nLFxuICB0eXBlIE9uYm9hcmRpbmdQcm9maWxlLFxuICB0eXBlIE9uYm9hcmRpbmdSb2xlLFxufSBmcm9tIFwiLi4vLi4vbGliL29uYm9hcmRpbmdcIjtcbmltcG9ydCB7IGZvcm1hdEFkZHJlc3MgfSBmcm9tIFwiLi4vLi4vbGliL3V0aWxzXCI7XHJcbmltcG9ydCB7IHVzZVdhbGxldCB9IGZyb20gXCIuLi8uLi9saWIvd2FsbGV0XCI7XHJcblxyXG5mdW5jdGlvbiBkYXNoYm9hcmRGb3Iocm9sZTogT25ib2FyZGluZ1JvbGUpIHtcclxuICByZXR1cm4gcm9sZSA9PT0gXCJlbXBsb3llclwiID8gXCIvZW1wbG95ZXJcIiA6IFwiL2VtcGxveWVlL2NsYWltc1wiO1xyXG59XHJcblxyXG5mdW5jdGlvbiBvbmJvYXJkaW5nRm9yKHJvbGU6IE9uYm9hcmRpbmdSb2xlKSB7XHJcbiAgcmV0dXJuIHJvbGUgPT09IFwiZW1wbG95ZXJcIiA/IFwiL29uYm9hcmRpbmcvZW1wbG95ZXJcIiA6IFwiL29uYm9hcmRpbmcvZW1wbG95ZWVcIjtcclxufVxyXG5cclxuZnVuY3Rpb24gcm9sZVRpdGxlKHJvbGU6IE9uYm9hcmRpbmdSb2xlKSB7XHJcbiAgcmV0dXJuIHJvbGUgPT09IFwiZW1wbG95ZXJcIiA/IFwiRW1wbG95ZXJcIiA6IFwiRW1wbG95ZWVcIjtcclxufVxyXG5cclxuZnVuY3Rpb24gdmVyaWZ5VGl0bGUocm9sZTogT25ib2FyZGluZ1JvbGUpIHtcbiAgcmV0dXJuIHJvbGUgPT09IFwiZW1wbG95ZXJcIlxuICAgID8gXCJWZXJpZnkgeW91ciBlbXBsb3llciB3YWxsZXRcIlxuICAgIDogXCJWZXJpZnkgeW91ciBjbGFpbSB3YWxsZXRcIjtcbn1cblxuZnVuY3Rpb24gc2lnbkJ1dHRvblRleHQocm9sZTogT25ib2FyZGluZ1JvbGUpIHtcbiAgcmV0dXJuIHJvbGUgPT09IFwiZW1wbG95ZXJcIiA/IFwiVmVyaWZ5IEVtcGxveWVyIFdhbGxldFwiIDogXCJWZXJpZnkgQ2xhaW0gV2FsbGV0XCI7XG59XG5cbmZ1bmN0aW9uIHZlcmlmeUtpY2tlcihyb2xlOiBPbmJvYXJkaW5nUm9sZSkge1xuICByZXR1cm4gcm9sZSA9PT0gXCJlbXBsb3llclwiID8gXCJFbXBsb3llciB2ZXJpZmljYXRpb25cIiA6IFwiQ2xhaW0gdmVyaWZpY2F0aW9uXCI7XG59XG5cbmZ1bmN0aW9uIHByb2ZpbGVJc0NvbXBsZXRlZChwcm9maWxlOiBPbmJvYXJkaW5nUHJvZmlsZSwgcm9sZTogT25ib2FyZGluZ1JvbGUpIHtcbiAgaWYgKCFwcm9maWxlLmVtYWlsX3ZlcmlmaWVkKSByZXR1cm4gZmFsc2U7XHJcblxyXG4gIGlmIChyb2xlID09PSBcImVtcGxveWVyXCIpIHtcclxuICAgIHJldHVybiBCb29sZWFuKFxyXG4gICAgICBwcm9maWxlLmVtcGxveWVyPy5vbmJvYXJkaW5nX2NvbXBsZXRlZCAmJlxyXG4gICAgICAgIHByb2ZpbGUuZW1wbG95ZXI/LmNvbXBhbnlfbmFtZSAmJlxyXG4gICAgICAgIHByb2ZpbGUuZW1wbG95ZXI/LndvcmtfZW1haWxcclxuICAgICk7XHJcbiAgfVxyXG5cclxuICByZXR1cm4gZW1wbG95ZWVDb21wbGV0ZWQocHJvZmlsZSk7XG59XG5cclxuZXhwb3J0IGZ1bmN0aW9uIFZlcmlmeVdhbGxldFBhZ2UoeyByb2xlIH06IHsgcm9sZTogT25ib2FyZGluZ1JvbGUgfSkge1xyXG4gIGNvbnN0IG5hdmlnYXRlID0gdXNlTmF2aWdhdGUoKTtcclxuICBjb25zdCB0b2FzdCA9IHVzZVRvYXN0KCk7XHJcbiAgY29uc3QgeyB3YWxsZXQgfSA9IHVzZVdhbGxldCgpO1xyXG5cclxuICBjb25zdCB7XHJcbiAgICBsb2FkaW5nLFxyXG4gICAgdG9rZW4sXHJcbiAgICBwcm9maWxlLFxyXG4gICAgcmVmcmVzaCxcclxuICAgIGxvZ2luV2l0aFdhbGxldCxcclxuICAgIGlzT25ib2FyZGVkLFxyXG4gIH0gPSB1c2VPbmJvYXJkaW5nKCk7XHJcblxyXG4gIGNvbnN0IFtidXN5LCBzZXRCdXN5XSA9IFJlYWN0LnVzZVN0YXRlKGZhbHNlKTtcbiAgY29uc3QgW2NoZWNraW5nLCBzZXRDaGVja2luZ10gPSBSZWFjdC51c2VTdGF0ZSh0cnVlKTtcblxuICBSZWFjdC51c2VFZmZlY3QoKCkgPT4ge1xuICAgIGxldCBhbGl2ZSA9IHRydWU7XHJcblxyXG4gICAgYXN5bmMgZnVuY3Rpb24gY2hlY2soKSB7XHJcbiAgICAgIHRyeSB7XHJcbiAgICAgICAgYXdhaXQgcmVmcmVzaCgpO1xyXG4gICAgICB9IGZpbmFsbHkge1xyXG4gICAgICAgIGlmIChhbGl2ZSkgc2V0Q2hlY2tpbmcoZmFsc2UpO1xyXG4gICAgICB9XHJcbiAgICB9XHJcblxyXG4gICAgdm9pZCBjaGVjaygpO1xyXG5cclxuICAgIHJldHVybiAoKSA9PiB7XHJcbiAgICAgIGFsaXZlID0gZmFsc2U7XHJcbiAgICB9O1xyXG4gIH0sIFtyZWZyZXNoXSk7XHJcblxyXG4gIFJlYWN0LnVzZUVmZmVjdCgoKSA9PiB7XHJcbiAgICBpZiAobG9hZGluZyB8fCBjaGVja2luZykgcmV0dXJuO1xyXG5cclxuICAgIGlmICh0b2tlbiAmJiBwcm9maWxlICYmIGlzT25ib2FyZGVkKHJvbGUpKSB7XHJcbiAgICAgIG5hdmlnYXRlKGRhc2hib2FyZEZvcihyb2xlKSwgeyByZXBsYWNlOiB0cnVlIH0pO1xyXG4gICAgICByZXR1cm47XHJcbiAgICB9XHJcblxyXG4gICAgaWYgKHRva2VuICYmIHByb2ZpbGUgJiYgIWlzT25ib2FyZGVkKHJvbGUpKSB7XHJcbiAgICAgIG5hdmlnYXRlKG9uYm9hcmRpbmdGb3Iocm9sZSksIHsgcmVwbGFjZTogdHJ1ZSB9KTtcclxuICAgIH1cclxuICB9LCBbbG9hZGluZywgY2hlY2tpbmcsIHRva2VuLCBwcm9maWxlLCByb2xlLCBpc09uYm9hcmRlZCwgbmF2aWdhdGVdKTtcclxuXHJcbiAgYXN5bmMgZnVuY3Rpb24gaGFuZGxlVmVyaWZ5V2FsbGV0KCkge1xyXG4gICAgaWYgKCF3YWxsZXQpIHtcclxuICAgICAgdG9hc3QucHVzaCh7XHJcbiAgICAgICAga2luZDogXCJlcnJvclwiLFxyXG4gICAgICAgIHRpdGxlOiBcIldhbGxldCBub3QgY29ubmVjdGVkXCIsXHJcbiAgICAgICAgbWVzc2FnZTogXCJDb25uZWN0IHlvdXIgd2FsbGV0IGZpcnN0LCB0aGVuIHNpZ24gdG8gdmVyaWZ5IHlvdXIgaWRlbnRpdHkuXCIsXHJcbiAgICAgIH0pO1xyXG4gICAgICByZXR1cm47XHJcbiAgICB9XHJcblxyXG4gICAgc2V0QnVzeSh0cnVlKTtcclxuXHJcbiAgICB0cnkge1xyXG4gICAgICBjb25zdCB2ZXJpZmllZFByb2ZpbGUgPSBhd2FpdCBsb2dpbldpdGhXYWxsZXQocm9sZSk7XHJcblxyXG4gICAgICB0b2FzdC5wdXNoKHtcclxuICAgICAgICBraW5kOiBcInN1Y2Nlc3NcIixcclxuICAgICAgICB0aXRsZTogXCJXYWxsZXQgdmVyaWZpZWRcIixcclxuICAgICAgICBtZXNzYWdlOlxyXG4gICAgICAgICAgcm9sZSA9PT0gXCJlbXBsb3llclwiXHJcbiAgICAgICAgICAgID8gXCJZb3VyIGVtcGxveWVyIGlkZW50aXR5IGhhcyBiZWVuIHZlcmlmaWVkLlwiXHJcbiAgICAgICAgICAgIDogXCJZb3VyIGNsYWltIGlkZW50aXR5IGhhcyBiZWVuIHZlcmlmaWVkLlwiLFxyXG4gICAgICB9KTtcclxuXHJcbiAgICAgIGlmIChwcm9maWxlSXNDb21wbGV0ZWQodmVyaWZpZWRQcm9maWxlLCByb2xlKSkge1xyXG4gICAgICAgIG5hdmlnYXRlKGRhc2hib2FyZEZvcihyb2xlKSwgeyByZXBsYWNlOiB0cnVlIH0pO1xyXG4gICAgICB9IGVsc2Uge1xyXG4gICAgICAgIG5hdmlnYXRlKG9uYm9hcmRpbmdGb3Iocm9sZSksIHsgcmVwbGFjZTogdHJ1ZSB9KTtcclxuICAgICAgfVxyXG4gICAgfSBjYXRjaCAoZXJyb3IpIHtcclxuICAgICAgdG9hc3QucHVzaCh7XHJcbiAgICAgICAga2luZDogXCJlcnJvclwiLFxyXG4gICAgICAgIHRpdGxlOiBcIldhbGxldCB2ZXJpZmljYXRpb24gZmFpbGVkXCIsXHJcbiAgICAgICAgbWVzc2FnZTogZXJyb3IgaW5zdGFuY2VvZiBFcnJvciA/IGVycm9yLm1lc3NhZ2UgOiBcIlRyeSBhZ2Fpbi5cIixcclxuICAgICAgfSk7XHJcbiAgICB9IGZpbmFsbHkge1xyXG4gICAgICBzZXRCdXN5KGZhbHNlKTtcclxuICAgIH1cclxuICB9XHJcblxyXG4gIGlmIChsb2FkaW5nIHx8IGNoZWNraW5nKSB7XG4gICAgcmV0dXJuIChcbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwib25ib2FyZGluZy1wYWdlIGVtcGxveWVyLW9uYm9hcmRpbmctcGFnZSB2ZXJpZnktd2FsbGV0LXBhZ2UgZGFzaGJvYXJkLXNoZWxsXCI+XG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZW1wbG95ZXItb25ib2FyZGluZy1oZWFkXCI+XG4gICAgICAgICAgPGRpdj5cbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZW1wbG95ZXIta2lja2VyXCI+e3ZlcmlmeUtpY2tlcihyb2xlKX08L2Rpdj5cbiAgICAgICAgICAgIDxoMT5DaGVja2luZyBhY2Nlc3M8L2gxPlxuICAgICAgICAgICAgPHA+Q29uZmlybWluZyB0aGlzIHdhbGxldCBiZWZvcmUgb3BlbmluZyB5b3VyIHdvcmtzcGFjZS48L3A+XG4gICAgICAgICAgPC9kaXY+XG4gICAgICAgIDwvZGl2PlxuXG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwib25ib2FyZGluZy1ncmlkIGVtcGxveWVyLW9uYm9hcmRpbmctZ3JpZCB2ZXJpZnktd2FsbGV0LWdyaWRcIj5cbiAgICAgICAgICA8Q2FyZFxuICAgICAgICAgICAgY2xhc3NOYW1lPVwiZW1wbG95ZXItb25ib2FyZGluZy1jYXJkXCJcbiAgICAgICAgICAgIHRpdGxlPVwiV2FsbGV0IHN0YXR1c1wiXG4gICAgICAgICAgICBzdWJ0aXRsZT1cIlBsZWFzZSB3YWl0LlwiXG4gICAgICAgICAgPlxuICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJzdWNjZXNzLWJveCBlbXBsb3llci1vbmJvYXJkaW5nLW5vdGVcIj5cbiAgICAgICAgICAgICAgQ2hlY2tpbmcgdmVyaWZpY2F0aW9uIHN0YXR1cy4uLlxuICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgPC9DYXJkPlxuICAgICAgICA8L2Rpdj5cbiAgICAgIDwvZGl2PlxuICAgICk7XHJcbiAgfVxyXG5cbiAgcmV0dXJuIChcbiAgICA8ZGl2IGNsYXNzTmFtZT1cIm9uYm9hcmRpbmctcGFnZSBlbXBsb3llci1vbmJvYXJkaW5nLXBhZ2UgdmVyaWZ5LXdhbGxldC1wYWdlIGRhc2hib2FyZC1zaGVsbFwiPlxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJlbXBsb3llci1vbmJvYXJkaW5nLWNhcm91c2VsIHZlcmlmeS13YWxsZXQtc2hlbGxcIj5cbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJlbXBsb3llci1vbmJvYXJkaW5nLWhlYWQgdmVyaWZ5LXdhbGxldC1oZXJvXCI+XG4gICAgICAgICAgPGRpdj5cbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZW1wbG95ZXIta2lja2VyXCI+e3ZlcmlmeUtpY2tlcihyb2xlKX08L2Rpdj5cbiAgICAgICAgICAgIDxoMT57dmVyaWZ5VGl0bGUocm9sZSl9PC9oMT5cbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgPC9kaXY+XG5cbiAgICAgICAgPENhcmQgY2xhc3NOYW1lPVwiZW1wbG95ZXItb25ib2FyZGluZy1jYXJkIHZlcmlmeS13YWxsZXQtY2FyZFwiPlxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZm9ybS1zdGFjayB2ZXJpZnktd2FsbGV0LXN0YWNrXCI+XG4gICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInZlcmlmeS13YWxsZXQtZmllbGRcIj5cbiAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPVwidmVyaWZ5LXdhbGxldC1maWVsZC1sYWJlbFwiPldhbGxldCBhZGRyZXNzPC9zcGFuPlxuXG4gICAgICAgICAgICAgIHt3YWxsZXQgPyAoXG4gICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJlbXBsb3llci1vbmJvYXJkaW5nLXdhbGxldC1jYXJkXCI+XG4gICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJ2ZXJpZnktd2FsbGV0LWZpZWxkLWljb25cIiBhcmlhLWhpZGRlbj1cInRydWVcIj5cbiAgICAgICAgICAgICAgICAgICAgPFdhbGxldCBzaXplPXsyNH0gc3Ryb2tlV2lkdGg9ezEuOH0gLz5cbiAgICAgICAgICAgICAgICAgIDwvc3Bhbj5cbiAgICAgICAgICAgICAgICAgIDxzdHJvbmc+e2Zvcm1hdEFkZHJlc3Mod2FsbGV0KX08L3N0cm9uZz5cbiAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgKSA6IChcbiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInZlcmlmeS13YWxsZXQtY29ubmVjdFwiPlxuICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPVwidmVyaWZ5LXdhbGxldC1maWVsZC1pY29uXCIgYXJpYS1oaWRkZW49XCJ0cnVlXCI+XG4gICAgICAgICAgICAgICAgICAgIDxXYWxsZXQgc2l6ZT17MjR9IHN0cm9rZVdpZHRoPXsxLjh9IC8+XG4gICAgICAgICAgICAgICAgICA8L3NwYW4+XG4gICAgICAgICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJtdXRlZFwiPk5vIHdhbGxldCBjb25uZWN0ZWQ8L3A+XG4gICAgICAgICAgICAgICAgICA8V2FsbGV0Q29ubmVjdEJ1dHRvbiAvPlxuICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICApfVxuICAgICAgICAgICAgPC9kaXY+XG5cbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZW1wbG95ZXItb25ib2FyZGluZy1zbGlkZS1hY3Rpb25zXCI+XG4gICAgICAgICAgICAgIDxCdXR0b25cbiAgICAgICAgICAgICAgICBkaXNhYmxlZD17IXdhbGxldCB8fCBidXN5fVxuICAgICAgICAgICAgICAgIG9uQ2xpY2s9eygpID0+IHZvaWQgaGFuZGxlVmVyaWZ5V2FsbGV0KCl9XG4gICAgICAgICAgICAgID5cbiAgICAgICAgICAgICAgICB7YnVzeSA/IFwiVmVyaWZ5aW5nLi4uXCIgOiBzaWduQnV0dG9uVGV4dChyb2xlKX1cbiAgICAgICAgICAgICAgICA8QXJyb3dSaWdodCBzaXplPXsxNX0gc3Ryb2tlV2lkdGg9ezEuOH0gLz5cbiAgICAgICAgICAgICAgPC9CdXR0b24+XG4gICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgPC9DYXJkPlxuICAgICAgPC9kaXY+XG4gICAgPC9kaXY+XHJcbiAgKTtcclxufVxuIl0sImZpbGUiOiJDOi9Vc2Vycy9jYXNoa2luay9Eb3dubG9hZHMvemFsYXJ5LWNvZmhlLWZyb250ZW5kL3phbGFyeS1jb2ZoZS1mcm9udGVuZC9zcmMvcGFnZXMvb25ib2FyZGluZy9WZXJpZnlXYWxsZXQudHN4In0=

@@ -1,0 +1,716 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/pages/AccountPage.tsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=f27aff5b"; const Fragment = __vite__cjsImport0_react_jsxDevRuntime["Fragment"]; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+var _s = $RefreshSig$();
+import __vite__cjsImport1_react from "/node_modules/.vite/deps/react.js?v=f27aff5b"; const React = __vite__cjsImport1_react.__esModule ? __vite__cjsImport1_react.default : __vite__cjsImport1_react;
+import {
+  ArrowLeft,
+  ArrowRight,
+  Building2,
+  Copy,
+  LogOut,
+  Mail,
+  User,
+  Wallet
+} from "/node_modules/.vite/deps/lucide-react.js?v=84e8ad2e";
+import { useNavigate } from "/node_modules/.vite/deps/react-router-dom.js?v=ebe01aab";
+import { useToast } from "/src/components/ui.tsx";
+import { WalletConnectButton } from "/src/components/WalletConnectButton.tsx?t=1778924501090";
+import { useOnboarding } from "/src/lib/onboarding.tsx?t=1778924501090";
+import { formatAddress } from "/src/lib/utils.ts";
+import { useWallet } from "/src/lib/wallet.tsx";
+export function AccountPage() {
+  _s();
+  const navigate = useNavigate();
+  const toast = useToast();
+  const { wallet, disconnect } = useWallet();
+  const {
+    token,
+    profile,
+    loading,
+    refresh,
+    loginWithWallet,
+    logout,
+    isOnboarded
+  } = useOnboarding();
+  const [unlockingProfile, setUnlockingProfile] = React.useState(false);
+  const lastProfileRefreshWallet = React.useRef("");
+  const employerReady = Boolean(token && profile && isOnboarded("employer"));
+  const employeeReady = Boolean(token && profile && isOnboarded("employee"));
+  const shouldRefreshMissingProfile = Boolean(wallet && !loading && !profile);
+  React.useEffect(() => {
+    if (!wallet) {
+      lastProfileRefreshWallet.current = "";
+      return;
+    }
+    if (shouldRefreshMissingProfile && lastProfileRefreshWallet.current !== wallet) {
+      lastProfileRefreshWallet.current = wallet;
+      void refresh();
+    }
+  }, [refresh, shouldRefreshMissingProfile, wallet]);
+  function handleLogout() {
+    logout();
+    disconnect();
+    navigate("/app", { replace: true });
+  }
+  async function handleLoadProfile() {
+    if (!wallet) return;
+    setUnlockingProfile(true);
+    try {
+      await loginWithWallet("employer");
+      toast.push({
+        kind: "success",
+        title: "Profile loaded",
+        message: "Your Zalary profile is now available."
+      });
+    } catch (error) {
+      toast.push({
+        kind: "error",
+        title: "Could not load profile",
+        message: error instanceof Error ? error.message : "Please try again with your connected wallet."
+      });
+    } finally {
+      setUnlockingProfile(false);
+    }
+  }
+  async function handleCopyWallet() {
+    const address = wallet || profile?.wallet_address;
+    if (!address) return;
+    try {
+      if (!navigator.clipboard) {
+        throw new Error("Clipboard unavailable");
+      }
+      await navigator.clipboard.writeText(address);
+      toast.push({
+        kind: "success",
+        title: "Wallet copied",
+        message: "The wallet address has been copied."
+      });
+    } catch {
+      toast.push({
+        kind: "error",
+        title: "Could not copy wallet",
+        message: "Please copy the address manually."
+      });
+    }
+  }
+  if (loading && wallet) {
+    return /* @__PURE__ */ jsxDEV("div", { className: "account-premium-page dashboard-shell employer-dashboard-redesign account-dashboard-redesign", children: /* @__PURE__ */ jsxDEV("div", { className: "employer-task-card account-dashboard-card account-premium-card account-premium-connect-card", children: /* @__PURE__ */ jsxDEV("p", { className: "account-premium-loading", children: "Loading your Zalary profile..." }, void 0, false, {
+      fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+      lineNumber: 110,
+      columnNumber: 11
+    }, this) }, void 0, false, {
+      fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+      lineNumber: 109,
+      columnNumber: 9
+    }, this) }, void 0, false, {
+      fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+      lineNumber: 108,
+      columnNumber: 7
+    }, this);
+  }
+  if (!token || !profile) {
+    return /* @__PURE__ */ jsxDEV("div", { className: "account-premium-page dashboard-shell employer-dashboard-redesign account-dashboard-redesign", children: [
+      /* @__PURE__ */ jsxDEV(
+        "button",
+        {
+          type: "button",
+          className: "template-detail-back-link account-premium-back",
+          onClick: () => navigate("/app"),
+          children: [
+            /* @__PURE__ */ jsxDEV(ArrowLeft, { size: 14, strokeWidth: 2 }, void 0, false, {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 124,
+              columnNumber: 11
+            }, this),
+            /* @__PURE__ */ jsxDEV("span", { children: "Back" }, void 0, false, {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 125,
+              columnNumber: 11
+            }, this)
+          ]
+        },
+        void 0,
+        true,
+        {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+          lineNumber: 119,
+          columnNumber: 9
+        },
+        this
+      ),
+      /* @__PURE__ */ jsxDEV("section", { className: "employer-task-hero account-dashboard-hero", children: [
+        /* @__PURE__ */ jsxDEV("div", { className: "employer-task-hero-copy account-dashboard-hero-copy", children: [
+          /* @__PURE__ */ jsxDEV("h1", { children: "Profile" }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 130,
+            columnNumber: 13
+          }, this),
+          /* @__PURE__ */ jsxDEV("p", { className: "employer-task-hero-subtitle", children: "Connect your wallet and unlock your Zalary workspace profile." }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 131,
+            columnNumber: 13
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+          lineNumber: 129,
+          columnNumber: 11
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { className: "employer-task-hero-metrics account-dashboard-hero-metrics", children: [
+          /* @__PURE__ */ jsxDEV("div", { className: "employer-task-hero-metric", children: [
+            /* @__PURE__ */ jsxDEV("span", { children: "Wallet" }, void 0, false, {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 138,
+              columnNumber: 15
+            }, this),
+            /* @__PURE__ */ jsxDEV("strong", { children: wallet ? formatAddress(wallet) : "Not connected" }, void 0, false, {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 139,
+              columnNumber: 15
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 137,
+            columnNumber: 13
+          }, this),
+          /* @__PURE__ */ jsxDEV("div", { className: "employer-task-hero-metric", children: [
+            /* @__PURE__ */ jsxDEV("span", { children: "Profile" }, void 0, false, {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 142,
+              columnNumber: 15
+            }, this),
+            /* @__PURE__ */ jsxDEV("strong", { children: wallet ? "Sign required" : "Locked" }, void 0, false, {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 143,
+              columnNumber: 15
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 141,
+            columnNumber: 13
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+          lineNumber: 136,
+          columnNumber: 11
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+        lineNumber: 128,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { className: "employer-task-card account-dashboard-card account-premium-card account-premium-connect-card", children: [
+        /* @__PURE__ */ jsxDEV("p", { className: "account-premium-connect-desc", children: wallet ? "Wallet connected. Sign once to unlock your Zalary profile for this browser session." : "Connect your wallet to access the Zalary profile attached to your workspace." }, void 0, false, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+          lineNumber: 149,
+          columnNumber: 11
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { className: "account-premium-connect-actions", children: !wallet ? /* @__PURE__ */ jsxDEV(WalletConnectButton, {}, void 0, false, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+          lineNumber: 156,
+          columnNumber: 13
+        }, this) : /* @__PURE__ */ jsxDEV(Fragment, { children: [
+          /* @__PURE__ */ jsxDEV(
+            "button",
+            {
+              type: "button",
+              className: "account-premium-action-btn account-premium-action-btn-primary",
+              disabled: unlockingProfile,
+              onClick: () => void handleLoadProfile(),
+              children: unlockingProfile ? "Loading..." : "Load Profile"
+            },
+            void 0,
+            false,
+            {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 159,
+              columnNumber: 17
+            },
+            this
+          ),
+          /* @__PURE__ */ jsxDEV(
+            "button",
+            {
+              type: "button",
+              className: "account-premium-action-btn account-premium-action-btn-danger",
+              onClick: handleLogout,
+              children: "Disconnect"
+            },
+            void 0,
+            false,
+            {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 167,
+              columnNumber: 17
+            },
+            this
+          )
+        ] }, void 0, true, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+          lineNumber: 158,
+          columnNumber: 13
+        }, this) }, void 0, false, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+          lineNumber: 154,
+          columnNumber: 11
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+        lineNumber: 148,
+        columnNumber: 9
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+      lineNumber: 118,
+      columnNumber: 7
+    }, this);
+  }
+  const accountWallet = wallet || profile.wallet_address;
+  const accountEmail = profile.email || profile.employer?.work_email || profile.employee?.notification_email || "Not set";
+  const employerName = profile.employer?.company_name || "Zalary";
+  const employeeName = profile.employee?.display_name || "Employee";
+  return /* @__PURE__ */ jsxDEV("div", { className: "account-premium-page dashboard-shell employer-dashboard-redesign account-dashboard-redesign", children: [
+    /* @__PURE__ */ jsxDEV(
+      "button",
+      {
+        type: "button",
+        className: "template-detail-back-link account-premium-back",
+        onClick: () => navigate("/app"),
+        children: [
+          /* @__PURE__ */ jsxDEV(ArrowLeft, { size: 14, strokeWidth: 2 }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 198,
+            columnNumber: 9
+          }, this),
+          /* @__PURE__ */ jsxDEV("span", { children: "Back" }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 199,
+            columnNumber: 9
+          }, this)
+        ]
+      },
+      void 0,
+      true,
+      {
+        fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+        lineNumber: 193,
+        columnNumber: 7
+      },
+      this
+    ),
+    /* @__PURE__ */ jsxDEV("section", { className: "employer-task-hero account-dashboard-hero", children: /* @__PURE__ */ jsxDEV("div", { className: "employer-task-hero-copy account-dashboard-hero-copy", children: [
+      /* @__PURE__ */ jsxDEV("h1", { children: "Profile" }, void 0, false, {
+        fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+        lineNumber: 204,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV("p", { className: "employer-task-hero-subtitle", children: "Manage wallet identity, verification, and workspace access." }, void 0, false, {
+        fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+        lineNumber: 205,
+        columnNumber: 11
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+      lineNumber: 203,
+      columnNumber: 9
+    }, this) }, void 0, false, {
+      fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+      lineNumber: 202,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV("section", { className: "employer-task-card account-dashboard-card account-profile-panel", children: [
+      /* @__PURE__ */ jsxDEV("article", { className: "account-profile-card account-profile-details-card", children: /* @__PURE__ */ jsxDEV("table", { className: "account-profile-details-table", children: /* @__PURE__ */ jsxDEV("tbody", { children: [
+        /* @__PURE__ */ jsxDEV("tr", { children: [
+          /* @__PURE__ */ jsxDEV("th", { scope: "row", children: [
+            /* @__PURE__ */ jsxDEV("span", { className: "account-profile-icon account-profile-icon-accent", children: /* @__PURE__ */ jsxDEV(Wallet, { size: 17, strokeWidth: 1.8 }, void 0, false, {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 219,
+              columnNumber: 21
+            }, this) }, void 0, false, {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 218,
+              columnNumber: 19
+            }, this),
+            /* @__PURE__ */ jsxDEV("span", { children: "Wallet" }, void 0, false, {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 221,
+              columnNumber: 19
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 217,
+            columnNumber: 17
+          }, this),
+          /* @__PURE__ */ jsxDEV("td", { children: /* @__PURE__ */ jsxDEV("span", { className: "account-profile-wallet-full", children: accountWallet }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 224,
+            columnNumber: 19
+          }, this) }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 223,
+            columnNumber: 17
+          }, this),
+          /* @__PURE__ */ jsxDEV("td", { className: "account-profile-details-action", children: /* @__PURE__ */ jsxDEV(
+            "button",
+            {
+              type: "button",
+              className: "account-profile-copy-btn",
+              "aria-label": "Copy wallet address",
+              onClick: () => void handleCopyWallet(),
+              children: /* @__PURE__ */ jsxDEV(Copy, { size: 15, strokeWidth: 1.8 }, void 0, false, {
+                fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+                lineNumber: 233,
+                columnNumber: 21
+              }, this)
+            },
+            void 0,
+            false,
+            {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 227,
+              columnNumber: 19
+            },
+            this
+          ) }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 226,
+            columnNumber: 17
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+          lineNumber: 216,
+          columnNumber: 15
+        }, this),
+        /* @__PURE__ */ jsxDEV("tr", { children: [
+          /* @__PURE__ */ jsxDEV("th", { scope: "row", children: [
+            /* @__PURE__ */ jsxDEV("span", { className: "account-profile-icon", children: /* @__PURE__ */ jsxDEV(Mail, { size: 17, strokeWidth: 1.8 }, void 0, false, {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 241,
+              columnNumber: 21
+            }, this) }, void 0, false, {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 240,
+              columnNumber: 19
+            }, this),
+            /* @__PURE__ */ jsxDEV("span", { children: "Email" }, void 0, false, {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 243,
+              columnNumber: 19
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 239,
+            columnNumber: 17
+          }, this),
+          /* @__PURE__ */ jsxDEV("td", { colSpan: 2, children: /* @__PURE__ */ jsxDEV("strong", { children: accountEmail }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 246,
+            columnNumber: 19
+          }, this) }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 245,
+            columnNumber: 17
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+          lineNumber: 238,
+          columnNumber: 15
+        }, this),
+        /* @__PURE__ */ jsxDEV("tr", { children: [
+          /* @__PURE__ */ jsxDEV("th", { scope: "row", children: [
+            /* @__PURE__ */ jsxDEV("span", { className: "account-profile-icon", children: /* @__PURE__ */ jsxDEV(Mail, { size: 17, strokeWidth: 1.8 }, void 0, false, {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 253,
+              columnNumber: 21
+            }, this) }, void 0, false, {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 252,
+              columnNumber: 19
+            }, this),
+            /* @__PURE__ */ jsxDEV("span", { children: "Email status" }, void 0, false, {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 255,
+              columnNumber: 19
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 251,
+            columnNumber: 17
+          }, this),
+          /* @__PURE__ */ jsxDEV("td", { colSpan: 2, children: /* @__PURE__ */ jsxDEV(
+            "strong",
+            {
+              className: `account-profile-status-pill${profile.email_verified ? "" : " account-profile-status-pill-warning"}`,
+              children: profile.email_verified ? "Verified" : "Pending"
+            },
+            void 0,
+            false,
+            {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 258,
+              columnNumber: 19
+            },
+            this
+          ) }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 257,
+            columnNumber: 17
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+          lineNumber: 250,
+          columnNumber: 15
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+        lineNumber: 215,
+        columnNumber: 13
+      }, this) }, void 0, false, {
+        fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+        lineNumber: 214,
+        columnNumber: 11
+      }, this) }, void 0, false, {
+        fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+        lineNumber: 213,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV("article", { className: "account-profile-card account-profile-workspace-card", children: [
+        /* @__PURE__ */ jsxDEV("div", { className: "account-profile-card-eyebrow", children: [
+          /* @__PURE__ */ jsxDEV(Building2, { size: 15, strokeWidth: 1.8 }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 273,
+            columnNumber: 13
+          }, this),
+          /* @__PURE__ */ jsxDEV("span", { children: "Workspace Access" }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 274,
+            columnNumber: 13
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+          lineNumber: 272,
+          columnNumber: 11
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { className: "account-profile-workspace-row", children: [
+          /* @__PURE__ */ jsxDEV("span", { className: "account-profile-workspace-icon account-profile-workspace-icon-employer", children: /* @__PURE__ */ jsxDEV(Building2, { size: 18, strokeWidth: 1.8 }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 279,
+            columnNumber: 15
+          }, this) }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 278,
+            columnNumber: 13
+          }, this),
+          /* @__PURE__ */ jsxDEV("div", { className: "account-profile-workspace-info", children: [
+            /* @__PURE__ */ jsxDEV("strong", { children: "Employer" }, void 0, false, {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 282,
+              columnNumber: 15
+            }, this),
+            /* @__PURE__ */ jsxDEV("span", { children: employerName }, void 0, false, {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 283,
+              columnNumber: 15
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 281,
+            columnNumber: 13
+          }, this),
+          /* @__PURE__ */ jsxDEV("div", { className: "account-profile-workspace-actions", children: [
+            /* @__PURE__ */ jsxDEV(
+              "span",
+              {
+                className: `account-profile-status-pill${employerReady ? "" : " account-profile-status-pill-warning"}`,
+                children: employerReady ? "Ready" : "Setup"
+              },
+              void 0,
+              false,
+              {
+                fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+                lineNumber: 286,
+                columnNumber: 15
+              },
+              this
+            ),
+            /* @__PURE__ */ jsxDEV(
+              "button",
+              {
+                type: "button",
+                className: "account-profile-open-btn",
+                "aria-label": employerReady ? "Open employer workspace" : "Set up employer workspace",
+                onClick: () => navigate(employerReady ? "/employer" : "/onboarding/employer"),
+                children: /* @__PURE__ */ jsxDEV(ArrowRight, { size: 14, strokeWidth: 2.5 }, void 0, false, {
+                  fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+                  lineNumber: 301,
+                  columnNumber: 17
+                }, this)
+              },
+              void 0,
+              false,
+              {
+                fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+                lineNumber: 293,
+                columnNumber: 15
+              },
+              this
+            )
+          ] }, void 0, true, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 285,
+            columnNumber: 13
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+          lineNumber: 277,
+          columnNumber: 11
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { className: "account-profile-workspace-row", children: [
+          /* @__PURE__ */ jsxDEV("span", { className: "account-profile-workspace-icon account-profile-workspace-icon-employee", children: /* @__PURE__ */ jsxDEV(User, { size: 18, strokeWidth: 1.8 }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 308,
+            columnNumber: 15
+          }, this) }, void 0, false, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 307,
+            columnNumber: 13
+          }, this),
+          /* @__PURE__ */ jsxDEV("div", { className: "account-profile-workspace-info", children: [
+            /* @__PURE__ */ jsxDEV("strong", { children: "Employee" }, void 0, false, {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 311,
+              columnNumber: 15
+            }, this),
+            /* @__PURE__ */ jsxDEV("span", { children: employeeName }, void 0, false, {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 312,
+              columnNumber: 15
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 310,
+            columnNumber: 13
+          }, this),
+          /* @__PURE__ */ jsxDEV("div", { className: "account-profile-workspace-actions", children: [
+            /* @__PURE__ */ jsxDEV(
+              "span",
+              {
+                className: `account-profile-status-pill${employeeReady ? "" : " account-profile-status-pill-warning"}`,
+                children: employeeReady ? "Ready" : "Setup"
+              },
+              void 0,
+              false,
+              {
+                fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+                lineNumber: 315,
+                columnNumber: 15
+              },
+              this
+            ),
+            /* @__PURE__ */ jsxDEV(
+              "button",
+              {
+                type: "button",
+                className: "account-profile-open-btn",
+                "aria-label": employeeReady ? "Open employee workspace" : "Set up employee workspace",
+                onClick: () => navigate(
+                  employeeReady ? "/employee/claims" : "/onboarding/employee"
+                ),
+                children: /* @__PURE__ */ jsxDEV(ArrowRight, { size: 14, strokeWidth: 2.5 }, void 0, false, {
+                  fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+                  lineNumber: 332,
+                  columnNumber: 17
+                }, this)
+              },
+              void 0,
+              false,
+              {
+                fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+                lineNumber: 322,
+                columnNumber: 15
+              },
+              this
+            )
+          ] }, void 0, true, {
+            fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+            lineNumber: 314,
+            columnNumber: 13
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+          lineNumber: 306,
+          columnNumber: 11
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+        lineNumber: 271,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { className: "account-profile-footer", children: /* @__PURE__ */ jsxDEV(
+        "button",
+        {
+          type: "button",
+          className: "account-premium-action-btn account-premium-action-btn-danger",
+          onClick: handleLogout,
+          children: [
+            /* @__PURE__ */ jsxDEV(LogOut, { size: 13, strokeWidth: 2 }, void 0, false, {
+              fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+              lineNumber: 344,
+              columnNumber: 13
+            }, this),
+            "Log out"
+          ]
+        },
+        void 0,
+        true,
+        {
+          fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+          lineNumber: 339,
+          columnNumber: 11
+        },
+        this
+      ) }, void 0, false, {
+        fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+        lineNumber: 338,
+        columnNumber: 9
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+      lineNumber: 212,
+      columnNumber: 7
+    }, this)
+  ] }, void 0, true, {
+    fileName: "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx",
+    lineNumber: 192,
+    columnNumber: 5
+  }, this);
+}
+_s(AccountPage, "IiOSDdmXasWGDL9UfU5FhQxd74g=", false, function() {
+  return [useNavigate, useToast, useWallet, useOnboarding];
+});
+_c = AccountPage;
+var _c;
+$RefreshReg$(_c, "AccountPage");
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+function $RefreshReg$(type, id) {
+  return RefreshRuntime.register(type, "C:/Users/cashkink/Downloads/zalary-cofhe-frontend/zalary-cofhe-frontend/src/pages/AccountPage.tsx " + id);
+}
+function $RefreshSig$() {
+  return RefreshRuntime.createSignatureFunctionForTransform();
+}
+
+//# sourceMappingURL=data:application/json;base64,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QUFBLGVBbkJGO0FBQUE7QUFBQTtBQUFBO0FBQUEsaUJBb0JBO0FBQUEsYUE1QkY7QUFBQTtBQUFBO0FBQUE7QUFBQSxlQTZCQTtBQUFBLFdBaEVGO0FBQUE7QUFBQTtBQUFBO0FBQUEsYUFpRUE7QUFBQSxNQUVBLHVCQUFDLFNBQUksV0FBVSwwQkFDYjtBQUFBLFFBQUM7QUFBQTtBQUFBLFVBQ0MsTUFBSztBQUFBLFVBQ0wsV0FBVTtBQUFBLFVBQ1YsU0FBU0k7QUFBQUEsVUFFVDtBQUFBLG1DQUFDLFVBQU8sTUFBTSxJQUFJLGFBQWEsS0FBL0I7QUFBQTtBQUFBO0FBQUE7QUFBQSxtQkFBaUM7QUFBQTtBQUFBO0FBQUE7QUFBQSxRQUxuQztBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUEsTUFPQSxLQVJGO0FBQUE7QUFBQTtBQUFBO0FBQUEsYUFTQTtBQUFBLFNBdklGO0FBQUE7QUFBQTtBQUFBO0FBQUEsV0F3SUE7QUFBQSxPQTVKRjtBQUFBO0FBQUE7QUFBQTtBQUFBLFNBNkpBO0FBRUo7QUFBQ3ZCLEdBNVVlRCxhQUFXO0FBQUEsVUFDUk4sYUFDSEMsVUFDaUJJLFdBUzNCRixhQUFhO0FBQUE7QUFBQSxLQVpIRztBQUFXLElBQUFtRDtBQUFBLGFBQUFBLElBQUEiLCJuYW1lcyI6WyJSZWFjdCIsIkFycm93TGVmdCIsIkFycm93UmlnaHQiLCJCdWlsZGluZzIiLCJDb3B5IiwiTG9nT3V0IiwiTWFpbCIsIlVzZXIiLCJXYWxsZXQiLCJ1c2VOYXZpZ2F0ZSIsInVzZVRvYXN0IiwiV2FsbGV0Q29ubmVjdEJ1dHRvbiIsInVzZU9uYm9hcmRpbmciLCJmb3JtYXRBZGRyZXNzIiwidXNlV2FsbGV0IiwiQWNjb3VudFBhZ2UiLCJfcyIsIm5hdmlnYXRlIiwidG9hc3QiLCJ3YWxsZXQiLCJkaXNjb25uZWN0IiwidG9rZW4iLCJwcm9maWxlIiwibG9hZGluZyIsInJlZnJlc2giLCJsb2dpbldpdGhXYWxsZXQiLCJsb2dvdXQiLCJpc09uYm9hcmRlZCIsInVubG9ja2luZ1Byb2ZpbGUiLCJzZXRVbmxvY2tpbmdQcm9maWxlIiwidXNlU3RhdGUiLCJsYXN0UHJvZmlsZVJlZnJlc2hXYWxsZXQiLCJ1c2VSZWYiLCJlbXBsb3llclJlYWR5IiwiQm9vbGVhbiIsImVtcGxveWVlUmVhZHkiLCJzaG91bGRSZWZyZXNoTWlzc2luZ1Byb2ZpbGUiLCJ1c2VFZmZlY3QiLCJjdXJyZW50IiwiaGFuZGxlTG9nb3V0IiwicmVwbGFjZSIsImhhbmRsZUxvYWRQcm9maWxlIiwicHVzaCIsImtpbmQiLCJ0aXRsZSIsIm1lc3NhZ2UiLCJlcnJvciIsIkVycm9yIiwiaGFuZGxlQ29weVdhbGxldCIsImFkZHJlc3MiLCJ3YWxsZXRfYWRkcmVzcyIsIm5hdmlnYXRvciIsImNsaXBib2FyZCIsIndyaXRlVGV4dCIsImFjY291bnRXYWxsZXQiLCJhY2NvdW50RW1haWwiLCJlbWFpbCIsImVtcGxveWVyIiwid29ya19lbWFpbCIsImVtcGxveWVlIiwibm90aWZpY2F0aW9uX2VtYWlsIiwiZW1wbG95ZXJOYW1lIiwiY29tcGFueV9uYW1lIiwiZW1wbG95ZWVOYW1lIiwiZGlzcGxheV9uYW1lIiwiZW1haWxfdmVyaWZpZWQiLCJfYyJdLCJpZ25vcmVMaXN0IjpbXSwic291cmNlcyI6WyJBY2NvdW50UGFnZS50c3giXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHtcbiAgQXJyb3dMZWZ0LFxuICBBcnJvd1JpZ2h0LFxuICBCdWlsZGluZzIsXG4gIENvcHksXG4gIExvZ091dCxcbiAgTWFpbCxcbiAgVXNlcixcbiAgV2FsbGV0LFxufSBmcm9tIFwibHVjaWRlLXJlYWN0XCI7XG5pbXBvcnQgeyB1c2VOYXZpZ2F0ZSB9IGZyb20gXCJyZWFjdC1yb3V0ZXItZG9tXCI7XG5pbXBvcnQgeyB1c2VUb2FzdCB9IGZyb20gXCIuLi9jb21wb25lbnRzL3VpXCI7XG5pbXBvcnQgeyBXYWxsZXRDb25uZWN0QnV0dG9uIH0gZnJvbSBcIi4uL2NvbXBvbmVudHMvV2FsbGV0Q29ubmVjdEJ1dHRvblwiO1xuaW1wb3J0IHsgdXNlT25ib2FyZGluZyB9IGZyb20gXCIuLi9saWIvb25ib2FyZGluZ1wiO1xuaW1wb3J0IHsgZm9ybWF0QWRkcmVzcyB9IGZyb20gXCIuLi9saWIvdXRpbHNcIjtcbmltcG9ydCB7IHVzZVdhbGxldCB9IGZyb20gXCIuLi9saWIvd2FsbGV0XCI7XG5cbmV4cG9ydCBmdW5jdGlvbiBBY2NvdW50UGFnZSgpIHtcbiAgY29uc3QgbmF2aWdhdGUgPSB1c2VOYXZpZ2F0ZSgpO1xuICBjb25zdCB0b2FzdCA9IHVzZVRvYXN0KCk7XG4gIGNvbnN0IHsgd2FsbGV0LCBkaXNjb25uZWN0IH0gPSB1c2VXYWxsZXQoKTtcbiAgY29uc3Qge1xuICAgIHRva2VuLFxuICAgIHByb2ZpbGUsXG4gICAgbG9hZGluZyxcbiAgICByZWZyZXNoLFxuICAgIGxvZ2luV2l0aFdhbGxldCxcbiAgICBsb2dvdXQsXG4gICAgaXNPbmJvYXJkZWQsXG4gIH0gPSB1c2VPbmJvYXJkaW5nKCk7XG4gIGNvbnN0IFt1bmxvY2tpbmdQcm9maWxlLCBzZXRVbmxvY2tpbmdQcm9maWxlXSA9IFJlYWN0LnVzZVN0YXRlKGZhbHNlKTtcbiAgY29uc3QgbGFzdFByb2ZpbGVSZWZyZXNoV2FsbGV0ID0gUmVhY3QudXNlUmVmKFwiXCIpO1xuXG4gIGNvbnN0IGVtcGxveWVyUmVhZHkgPSBCb29sZWFuKHRva2VuICYmIHByb2ZpbGUgJiYgaXNPbmJvYXJkZWQoXCJlbXBsb3llclwiKSk7XG4gIGNvbnN0IGVtcGxveWVlUmVhZHkgPSBCb29sZWFuKHRva2VuICYmIHByb2ZpbGUgJiYgaXNPbmJvYXJkZWQoXCJlbXBsb3llZVwiKSk7XG4gIGNvbnN0IHNob3VsZFJlZnJlc2hNaXNzaW5nUHJvZmlsZSA9IEJvb2xlYW4od2FsbGV0ICYmICFsb2FkaW5nICYmICFwcm9maWxlKTtcblxuICBSZWFjdC51c2VFZmZlY3QoKCkgPT4ge1xuICAgIGlmICghd2FsbGV0KSB7XG4gICAgICBsYXN0UHJvZmlsZVJlZnJlc2hXYWxsZXQuY3VycmVudCA9IFwiXCI7XG4gICAgICByZXR1cm47XG4gICAgfVxuICAgIGlmIChcbiAgICAgIHNob3VsZFJlZnJlc2hNaXNzaW5nUHJvZmlsZSAmJlxuICAgICAgbGFzdFByb2ZpbGVSZWZyZXNoV2FsbGV0LmN1cnJlbnQgIT09IHdhbGxldFxuICAgICkge1xuICAgICAgbGFzdFByb2ZpbGVSZWZyZXNoV2FsbGV0LmN1cnJlbnQgPSB3YWxsZXQ7XG4gICAgICB2b2lkIHJlZnJlc2goKTtcbiAgICB9XG4gIH0sIFtyZWZyZXNoLCBzaG91bGRSZWZyZXNoTWlzc2luZ1Byb2ZpbGUsIHdhbGxldF0pO1xuXG4gIGZ1bmN0aW9uIGhhbmRsZUxvZ291dCgpIHtcbiAgICBsb2dvdXQoKTtcbiAgICBkaXNjb25uZWN0KCk7XG4gICAgbmF2aWdhdGUoXCIvYXBwXCIsIHsgcmVwbGFjZTogdHJ1ZSB9KTtcbiAgfVxuXG4gIGFzeW5jIGZ1bmN0aW9uIGhhbmRsZUxvYWRQcm9maWxlKCkge1xuICAgIGlmICghd2FsbGV0KSByZXR1cm47XG4gICAgc2V0VW5sb2NraW5nUHJvZmlsZSh0cnVlKTtcbiAgICB0cnkge1xuICAgICAgYXdhaXQgbG9naW5XaXRoV2FsbGV0KFwiZW1wbG95ZXJcIik7XG4gICAgICB0b2FzdC5wdXNoKHtcbiAgICAgICAga2luZDogXCJzdWNjZXNzXCIsXG4gICAgICAgIHRpdGxlOiBcIlByb2ZpbGUgbG9hZGVkXCIsXG4gICAgICAgIG1lc3NhZ2U6IFwiWW91ciBaYWxhcnkgcHJvZmlsZSBpcyBub3cgYXZhaWxhYmxlLlwiLFxuICAgICAgfSk7XG4gICAgfSBjYXRjaCAoZXJyb3IpIHtcbiAgICAgIHRvYXN0LnB1c2goe1xuICAgICAgICBraW5kOiBcImVycm9yXCIsXG4gICAgICAgIHRpdGxlOiBcIkNvdWxkIG5vdCBsb2FkIHByb2ZpbGVcIixcbiAgICAgICAgbWVzc2FnZTpcbiAgICAgICAgICBlcnJvciBpbnN0YW5jZW9mIEVycm9yXG4gICAgICAgICAgICA/IGVycm9yLm1lc3NhZ2VcbiAgICAgICAgICAgIDogXCJQbGVhc2UgdHJ5IGFnYWluIHdpdGggeW91ciBjb25uZWN0ZWQgd2FsbGV0LlwiLFxuICAgICAgfSk7XG4gICAgfSBmaW5hbGx5IHtcbiAgICAgIHNldFVubG9ja2luZ1Byb2ZpbGUoZmFsc2UpO1xuICAgIH1cbiAgfVxuXG4gIGFzeW5jIGZ1bmN0aW9uIGhhbmRsZUNvcHlXYWxsZXQoKSB7XG4gICAgY29uc3QgYWRkcmVzcyA9IHdhbGxldCB8fCBwcm9maWxlPy53YWxsZXRfYWRkcmVzcztcbiAgICBpZiAoIWFkZHJlc3MpIHJldHVybjtcblxuICAgIHRyeSB7XG4gICAgICBpZiAoIW5hdmlnYXRvci5jbGlwYm9hcmQpIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKFwiQ2xpcGJvYXJkIHVuYXZhaWxhYmxlXCIpO1xuICAgICAgfVxuICAgICAgYXdhaXQgbmF2aWdhdG9yLmNsaXBib2FyZC53cml0ZVRleHQoYWRkcmVzcyk7XG4gICAgICB0b2FzdC5wdXNoKHtcbiAgICAgICAga2luZDogXCJzdWNjZXNzXCIsXG4gICAgICAgIHRpdGxlOiBcIldhbGxldCBjb3BpZWRcIixcbiAgICAgICAgbWVzc2FnZTogXCJUaGUgd2FsbGV0IGFkZHJlc3MgaGFzIGJlZW4gY29waWVkLlwiLFxuICAgICAgfSk7XG4gICAgfSBjYXRjaCB7XG4gICAgICB0b2FzdC5wdXNoKHtcbiAgICAgICAga2luZDogXCJlcnJvclwiLFxuICAgICAgICB0aXRsZTogXCJDb3VsZCBub3QgY29weSB3YWxsZXRcIixcbiAgICAgICAgbWVzc2FnZTogXCJQbGVhc2UgY29weSB0aGUgYWRkcmVzcyBtYW51YWxseS5cIixcbiAgICAgIH0pO1xuICAgIH1cbiAgfVxuXG4gIGlmIChsb2FkaW5nICYmIHdhbGxldCkge1xuICAgIHJldHVybiAoXG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cImFjY291bnQtcHJlbWl1bS1wYWdlIGRhc2hib2FyZC1zaGVsbCBlbXBsb3llci1kYXNoYm9hcmQtcmVkZXNpZ24gYWNjb3VudC1kYXNoYm9hcmQtcmVkZXNpZ25cIj5cbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJlbXBsb3llci10YXNrLWNhcmQgYWNjb3VudC1kYXNoYm9hcmQtY2FyZCBhY2NvdW50LXByZW1pdW0tY2FyZCBhY2NvdW50LXByZW1pdW0tY29ubmVjdC1jYXJkXCI+XG4gICAgICAgICAgPHAgY2xhc3NOYW1lPVwiYWNjb3VudC1wcmVtaXVtLWxvYWRpbmdcIj5Mb2FkaW5nIHlvdXIgWmFsYXJ5IHByb2ZpbGUuLi48L3A+XG4gICAgICAgIDwvZGl2PlxuICAgICAgPC9kaXY+XG4gICAgKTtcbiAgfVxuXG4gIGlmICghdG9rZW4gfHwgIXByb2ZpbGUpIHtcbiAgICByZXR1cm4gKFxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJhY2NvdW50LXByZW1pdW0tcGFnZSBkYXNoYm9hcmQtc2hlbGwgZW1wbG95ZXItZGFzaGJvYXJkLXJlZGVzaWduIGFjY291bnQtZGFzaGJvYXJkLXJlZGVzaWduXCI+XG4gICAgICAgIDxidXR0b25cbiAgICAgICAgICB0eXBlPVwiYnV0dG9uXCJcbiAgICAgICAgICBjbGFzc05hbWU9XCJ0ZW1wbGF0ZS1kZXRhaWwtYmFjay1saW5rIGFjY291bnQtcHJlbWl1bS1iYWNrXCJcbiAgICAgICAgICBvbkNsaWNrPXsoKSA9PiBuYXZpZ2F0ZShcIi9hcHBcIil9XG4gICAgICAgID5cbiAgICAgICAgICA8QXJyb3dMZWZ0IHNpemU9ezE0fSBzdHJva2VXaWR0aD17Mn0gLz5cbiAgICAgICAgICA8c3Bhbj5CYWNrPC9zcGFuPlxuICAgICAgICA8L2J1dHRvbj5cblxuICAgICAgICA8c2VjdGlvbiBjbGFzc05hbWU9XCJlbXBsb3llci10YXNrLWhlcm8gYWNjb3VudC1kYXNoYm9hcmQtaGVyb1wiPlxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZW1wbG95ZXItdGFzay1oZXJvLWNvcHkgYWNjb3VudC1kYXNoYm9hcmQtaGVyby1jb3B5XCI+XG4gICAgICAgICAgICA8aDE+UHJvZmlsZTwvaDE+XG4gICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJlbXBsb3llci10YXNrLWhlcm8tc3VidGl0bGVcIj5cbiAgICAgICAgICAgICAgQ29ubmVjdCB5b3VyIHdhbGxldCBhbmQgdW5sb2NrIHlvdXIgWmFsYXJ5IHdvcmtzcGFjZSBwcm9maWxlLlxuICAgICAgICAgICAgPC9wPlxuICAgICAgICAgIDwvZGl2PlxuXG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJlbXBsb3llci10YXNrLWhlcm8tbWV0cmljcyBhY2NvdW50LWRhc2hib2FyZC1oZXJvLW1ldHJpY3NcIj5cbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZW1wbG95ZXItdGFzay1oZXJvLW1ldHJpY1wiPlxuICAgICAgICAgICAgICA8c3Bhbj5XYWxsZXQ8L3NwYW4+XG4gICAgICAgICAgICAgIDxzdHJvbmc+e3dhbGxldCA/IGZvcm1hdEFkZHJlc3Mod2FsbGV0KSA6IFwiTm90IGNvbm5lY3RlZFwifTwvc3Ryb25nPlxuICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImVtcGxveWVyLXRhc2staGVyby1tZXRyaWNcIj5cbiAgICAgICAgICAgICAgPHNwYW4+UHJvZmlsZTwvc3Bhbj5cbiAgICAgICAgICAgICAgPHN0cm9uZz57d2FsbGV0ID8gXCJTaWduIHJlcXVpcmVkXCIgOiBcIkxvY2tlZFwifTwvc3Ryb25nPlxuICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgPC9kaXY+XG4gICAgICAgIDwvc2VjdGlvbj5cblxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImVtcGxveWVyLXRhc2stY2FyZCBhY2NvdW50LWRhc2hib2FyZC1jYXJkIGFjY291bnQtcHJlbWl1bS1jYXJkIGFjY291bnQtcHJlbWl1bS1jb25uZWN0LWNhcmRcIj5cbiAgICAgICAgICA8cCBjbGFzc05hbWU9XCJhY2NvdW50LXByZW1pdW0tY29ubmVjdC1kZXNjXCI+XG4gICAgICAgICAgICB7d2FsbGV0XG4gICAgICAgICAgICAgID8gXCJXYWxsZXQgY29ubmVjdGVkLiBTaWduIG9uY2UgdG8gdW5sb2NrIHlvdXIgWmFsYXJ5IHByb2ZpbGUgZm9yIHRoaXMgYnJvd3NlciBzZXNzaW9uLlwiXG4gICAgICAgICAgICAgIDogXCJDb25uZWN0IHlvdXIgd2FsbGV0IHRvIGFjY2VzcyB0aGUgWmFsYXJ5IHByb2ZpbGUgYXR0YWNoZWQgdG8geW91ciB3b3Jrc3BhY2UuXCJ9XG4gICAgICAgICAgPC9wPlxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYWNjb3VudC1wcmVtaXVtLWNvbm5lY3QtYWN0aW9uc1wiPlxuICAgICAgICAgICAgeyF3YWxsZXQgPyAoXG4gICAgICAgICAgICAgIDxXYWxsZXRDb25uZWN0QnV0dG9uIC8+XG4gICAgICAgICAgICApIDogKFxuICAgICAgICAgICAgICA8PlxuICAgICAgICAgICAgICAgIDxidXR0b25cbiAgICAgICAgICAgICAgICAgIHR5cGU9XCJidXR0b25cIlxuICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPVwiYWNjb3VudC1wcmVtaXVtLWFjdGlvbi1idG4gYWNjb3VudC1wcmVtaXVtLWFjdGlvbi1idG4tcHJpbWFyeVwiXG4gICAgICAgICAgICAgICAgICBkaXNhYmxlZD17dW5sb2NraW5nUHJvZmlsZX1cbiAgICAgICAgICAgICAgICAgIG9uQ2xpY2s9eygpID0+IHZvaWQgaGFuZGxlTG9hZFByb2ZpbGUoKX1cbiAgICAgICAgICAgICAgICA+XG4gICAgICAgICAgICAgICAgICB7dW5sb2NraW5nUHJvZmlsZSA/IFwiTG9hZGluZy4uLlwiIDogXCJMb2FkIFByb2ZpbGVcIn1cbiAgICAgICAgICAgICAgICA8L2J1dHRvbj5cbiAgICAgICAgICAgICAgICA8YnV0dG9uXG4gICAgICAgICAgICAgICAgICB0eXBlPVwiYnV0dG9uXCJcbiAgICAgICAgICAgICAgICAgIGNsYXNzTmFtZT1cImFjY291bnQtcHJlbWl1bS1hY3Rpb24tYnRuIGFjY291bnQtcHJlbWl1bS1hY3Rpb24tYnRuLWRhbmdlclwiXG4gICAgICAgICAgICAgICAgICBvbkNsaWNrPXtoYW5kbGVMb2dvdXR9XG4gICAgICAgICAgICAgICAgPlxuICAgICAgICAgICAgICAgICAgRGlzY29ubmVjdFxuICAgICAgICAgICAgICAgIDwvYnV0dG9uPlxuICAgICAgICAgICAgICA8Lz5cbiAgICAgICAgICAgICl9XG4gICAgICAgICAgPC9kaXY+XG4gICAgICAgIDwvZGl2PlxuICAgICAgPC9kaXY+XG4gICAgKTtcbiAgfVxuXG4gIGNvbnN0IGFjY291bnRXYWxsZXQgPSB3YWxsZXQgfHwgcHJvZmlsZS53YWxsZXRfYWRkcmVzcztcbiAgY29uc3QgYWNjb3VudEVtYWlsID1cbiAgICBwcm9maWxlLmVtYWlsIHx8XG4gICAgcHJvZmlsZS5lbXBsb3llcj8ud29ya19lbWFpbCB8fFxuICAgIHByb2ZpbGUuZW1wbG95ZWU/Lm5vdGlmaWNhdGlvbl9lbWFpbCB8fFxuICAgIFwiTm90IHNldFwiO1xuICBjb25zdCBlbXBsb3llck5hbWUgPSBwcm9maWxlLmVtcGxveWVyPy5jb21wYW55X25hbWUgfHwgXCJaYWxhcnlcIjtcbiAgY29uc3QgZW1wbG95ZWVOYW1lID0gcHJvZmlsZS5lbXBsb3llZT8uZGlzcGxheV9uYW1lIHx8IFwiRW1wbG95ZWVcIjtcblxuICByZXR1cm4gKFxuICAgIDxkaXYgY2xhc3NOYW1lPVwiYWNjb3VudC1wcmVtaXVtLXBhZ2UgZGFzaGJvYXJkLXNoZWxsIGVtcGxveWVyLWRhc2hib2FyZC1yZWRlc2lnbiBhY2NvdW50LWRhc2hib2FyZC1yZWRlc2lnblwiPlxuICAgICAgPGJ1dHRvblxuICAgICAgICB0eXBlPVwiYnV0dG9uXCJcbiAgICAgICAgY2xhc3NOYW1lPVwidGVtcGxhdGUtZGV0YWlsLWJhY2stbGluayBhY2NvdW50LXByZW1pdW0tYmFja1wiXG4gICAgICAgIG9uQ2xpY2s9eygpID0+IG5hdmlnYXRlKFwiL2FwcFwiKX1cbiAgICAgID5cbiAgICAgICAgPEFycm93TGVmdCBzaXplPXsxNH0gc3Ryb2tlV2lkdGg9ezJ9IC8+XG4gICAgICAgIDxzcGFuPkJhY2s8L3NwYW4+XG4gICAgICA8L2J1dHRvbj5cblxuICAgICAgPHNlY3Rpb24gY2xhc3NOYW1lPVwiZW1wbG95ZXItdGFzay1oZXJvIGFjY291bnQtZGFzaGJvYXJkLWhlcm9cIj5cbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJlbXBsb3llci10YXNrLWhlcm8tY29weSBhY2NvdW50LWRhc2hib2FyZC1oZXJvLWNvcHlcIj5cbiAgICAgICAgICA8aDE+UHJvZmlsZTwvaDE+XG4gICAgICAgICAgPHAgY2xhc3NOYW1lPVwiZW1wbG95ZXItdGFzay1oZXJvLXN1YnRpdGxlXCI+XG4gICAgICAgICAgICBNYW5hZ2Ugd2FsbGV0IGlkZW50aXR5LCB2ZXJpZmljYXRpb24sIGFuZCB3b3Jrc3BhY2UgYWNjZXNzLlxuICAgICAgICAgIDwvcD5cbiAgICAgICAgPC9kaXY+XG5cbiAgICAgIDwvc2VjdGlvbj5cblxuICAgICAgPHNlY3Rpb24gY2xhc3NOYW1lPVwiZW1wbG95ZXItdGFzay1jYXJkIGFjY291bnQtZGFzaGJvYXJkLWNhcmQgYWNjb3VudC1wcm9maWxlLXBhbmVsXCI+XG4gICAgICAgIDxhcnRpY2xlIGNsYXNzTmFtZT1cImFjY291bnQtcHJvZmlsZS1jYXJkIGFjY291bnQtcHJvZmlsZS1kZXRhaWxzLWNhcmRcIj5cbiAgICAgICAgICA8dGFibGUgY2xhc3NOYW1lPVwiYWNjb3VudC1wcm9maWxlLWRldGFpbHMtdGFibGVcIj5cbiAgICAgICAgICAgIDx0Ym9keT5cbiAgICAgICAgICAgICAgPHRyPlxuICAgICAgICAgICAgICAgIDx0aCBzY29wZT1cInJvd1wiPlxuICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPVwiYWNjb3VudC1wcm9maWxlLWljb24gYWNjb3VudC1wcm9maWxlLWljb24tYWNjZW50XCI+XG4gICAgICAgICAgICAgICAgICAgIDxXYWxsZXQgc2l6ZT17MTd9IHN0cm9rZVdpZHRoPXsxLjh9IC8+XG4gICAgICAgICAgICAgICAgICA8L3NwYW4+XG4gICAgICAgICAgICAgICAgICA8c3Bhbj5XYWxsZXQ8L3NwYW4+XG4gICAgICAgICAgICAgICAgPC90aD5cbiAgICAgICAgICAgICAgICA8dGQ+XG4gICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJhY2NvdW50LXByb2ZpbGUtd2FsbGV0LWZ1bGxcIj57YWNjb3VudFdhbGxldH08L3NwYW4+XG4gICAgICAgICAgICAgICAgPC90ZD5cbiAgICAgICAgICAgICAgICA8dGQgY2xhc3NOYW1lPVwiYWNjb3VudC1wcm9maWxlLWRldGFpbHMtYWN0aW9uXCI+XG4gICAgICAgICAgICAgICAgICA8YnV0dG9uXG4gICAgICAgICAgICAgICAgICAgIHR5cGU9XCJidXR0b25cIlxuICAgICAgICAgICAgICAgICAgICBjbGFzc05hbWU9XCJhY2NvdW50LXByb2ZpbGUtY29weS1idG5cIlxuICAgICAgICAgICAgICAgICAgICBhcmlhLWxhYmVsPVwiQ29weSB3YWxsZXQgYWRkcmVzc1wiXG4gICAgICAgICAgICAgICAgICAgIG9uQ2xpY2s9eygpID0+IHZvaWQgaGFuZGxlQ29weVdhbGxldCgpfVxuICAgICAgICAgICAgICAgICAgPlxuICAgICAgICAgICAgICAgICAgICA8Q29weSBzaXplPXsxNX0gc3Ryb2tlV2lkdGg9ezEuOH0gLz5cbiAgICAgICAgICAgICAgICAgIDwvYnV0dG9uPlxuICAgICAgICAgICAgICAgIDwvdGQ+XG4gICAgICAgICAgICAgIDwvdHI+XG5cbiAgICAgICAgICAgICAgPHRyPlxuICAgICAgICAgICAgICAgIDx0aCBzY29wZT1cInJvd1wiPlxuICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPVwiYWNjb3VudC1wcm9maWxlLWljb25cIj5cbiAgICAgICAgICAgICAgICAgICAgPE1haWwgc2l6ZT17MTd9IHN0cm9rZVdpZHRoPXsxLjh9IC8+XG4gICAgICAgICAgICAgICAgICA8L3NwYW4+XG4gICAgICAgICAgICAgICAgICA8c3Bhbj5FbWFpbDwvc3Bhbj5cbiAgICAgICAgICAgICAgICA8L3RoPlxuICAgICAgICAgICAgICAgIDx0ZCBjb2xTcGFuPXsyfT5cbiAgICAgICAgICAgICAgICAgIDxzdHJvbmc+e2FjY291bnRFbWFpbH08L3N0cm9uZz5cbiAgICAgICAgICAgICAgICA8L3RkPlxuICAgICAgICAgICAgICA8L3RyPlxuXG4gICAgICAgICAgICAgIDx0cj5cbiAgICAgICAgICAgICAgICA8dGggc2NvcGU9XCJyb3dcIj5cbiAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cImFjY291bnQtcHJvZmlsZS1pY29uXCI+XG4gICAgICAgICAgICAgICAgICAgIDxNYWlsIHNpemU9ezE3fSBzdHJva2VXaWR0aD17MS44fSAvPlxuICAgICAgICAgICAgICAgICAgPC9zcGFuPlxuICAgICAgICAgICAgICAgICAgPHNwYW4+RW1haWwgc3RhdHVzPC9zcGFuPlxuICAgICAgICAgICAgICAgIDwvdGg+XG4gICAgICAgICAgICAgICAgPHRkIGNvbFNwYW49ezJ9PlxuICAgICAgICAgICAgICAgICAgPHN0cm9uZ1xuICAgICAgICAgICAgICAgICAgICBjbGFzc05hbWU9e2BhY2NvdW50LXByb2ZpbGUtc3RhdHVzLXBpbGwke1xuICAgICAgICAgICAgICAgICAgICAgIHByb2ZpbGUuZW1haWxfdmVyaWZpZWQgPyBcIlwiIDogXCIgYWNjb3VudC1wcm9maWxlLXN0YXR1cy1waWxsLXdhcm5pbmdcIlxuICAgICAgICAgICAgICAgICAgICB9YH1cbiAgICAgICAgICAgICAgICAgID5cbiAgICAgICAgICAgICAgICAgICAge3Byb2ZpbGUuZW1haWxfdmVyaWZpZWQgPyBcIlZlcmlmaWVkXCIgOiBcIlBlbmRpbmdcIn1cbiAgICAgICAgICAgICAgICAgIDwvc3Ryb25nPlxuICAgICAgICAgICAgICAgIDwvdGQ+XG4gICAgICAgICAgICAgIDwvdHI+XG4gICAgICAgICAgICA8L3Rib2R5PlxuICAgICAgICAgIDwvdGFibGU+XG4gICAgICAgIDwvYXJ0aWNsZT5cblxuICAgICAgICA8YXJ0aWNsZSBjbGFzc05hbWU9XCJhY2NvdW50LXByb2ZpbGUtY2FyZCBhY2NvdW50LXByb2ZpbGUtd29ya3NwYWNlLWNhcmRcIj5cbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImFjY291bnQtcHJvZmlsZS1jYXJkLWV5ZWJyb3dcIj5cbiAgICAgICAgICAgIDxCdWlsZGluZzIgc2l6ZT17MTV9IHN0cm9rZVdpZHRoPXsxLjh9IC8+XG4gICAgICAgICAgICA8c3Bhbj5Xb3Jrc3BhY2UgQWNjZXNzPC9zcGFuPlxuICAgICAgICAgIDwvZGl2PlxuXG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJhY2NvdW50LXByb2ZpbGUtd29ya3NwYWNlLXJvd1wiPlxuICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPVwiYWNjb3VudC1wcm9maWxlLXdvcmtzcGFjZS1pY29uIGFjY291bnQtcHJvZmlsZS13b3Jrc3BhY2UtaWNvbi1lbXBsb3llclwiPlxuICAgICAgICAgICAgICA8QnVpbGRpbmcyIHNpemU9ezE4fSBzdHJva2VXaWR0aD17MS44fSAvPlxuICAgICAgICAgICAgPC9zcGFuPlxuICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJhY2NvdW50LXByb2ZpbGUtd29ya3NwYWNlLWluZm9cIj5cbiAgICAgICAgICAgICAgPHN0cm9uZz5FbXBsb3llcjwvc3Ryb25nPlxuICAgICAgICAgICAgICA8c3Bhbj57ZW1wbG95ZXJOYW1lfTwvc3Bhbj5cbiAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJhY2NvdW50LXByb2ZpbGUtd29ya3NwYWNlLWFjdGlvbnNcIj5cbiAgICAgICAgICAgICAgPHNwYW5cbiAgICAgICAgICAgICAgICBjbGFzc05hbWU9e2BhY2NvdW50LXByb2ZpbGUtc3RhdHVzLXBpbGwke1xuICAgICAgICAgICAgICAgICAgZW1wbG95ZXJSZWFkeSA/IFwiXCIgOiBcIiBhY2NvdW50LXByb2ZpbGUtc3RhdHVzLXBpbGwtd2FybmluZ1wiXG4gICAgICAgICAgICAgICAgfWB9XG4gICAgICAgICAgICAgID5cbiAgICAgICAgICAgICAgICB7ZW1wbG95ZXJSZWFkeSA/IFwiUmVhZHlcIiA6IFwiU2V0dXBcIn1cbiAgICAgICAgICAgICAgPC9zcGFuPlxuICAgICAgICAgICAgICA8YnV0dG9uXG4gICAgICAgICAgICAgICAgdHlwZT1cImJ1dHRvblwiXG4gICAgICAgICAgICAgICAgY2xhc3NOYW1lPVwiYWNjb3VudC1wcm9maWxlLW9wZW4tYnRuXCJcbiAgICAgICAgICAgICAgICBhcmlhLWxhYmVsPXtlbXBsb3llclJlYWR5ID8gXCJPcGVuIGVtcGxveWVyIHdvcmtzcGFjZVwiIDogXCJTZXQgdXAgZW1wbG95ZXIgd29ya3NwYWNlXCJ9XG4gICAgICAgICAgICAgICAgb25DbGljaz17KCkgPT5cbiAgICAgICAgICAgICAgICAgIG5hdmlnYXRlKGVtcGxveWVyUmVhZHkgPyBcIi9lbXBsb3llclwiIDogXCIvb25ib2FyZGluZy9lbXBsb3llclwiKVxuICAgICAgICAgICAgICAgIH1cbiAgICAgICAgICAgICAgPlxuICAgICAgICAgICAgICAgIDxBcnJvd1JpZ2h0IHNpemU9ezE0fSBzdHJva2VXaWR0aD17Mi41fSAvPlxuICAgICAgICAgICAgICA8L2J1dHRvbj5cbiAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgIDwvZGl2PlxuXG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJhY2NvdW50LXByb2ZpbGUtd29ya3NwYWNlLXJvd1wiPlxuICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPVwiYWNjb3VudC1wcm9maWxlLXdvcmtzcGFjZS1pY29uIGFjY291bnQtcHJvZmlsZS13b3Jrc3BhY2UtaWNvbi1lbXBsb3llZVwiPlxuICAgICAgICAgICAgICA8VXNlciBzaXplPXsxOH0gc3Ryb2tlV2lkdGg9ezEuOH0gLz5cbiAgICAgICAgICAgIDwvc3Bhbj5cbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYWNjb3VudC1wcm9maWxlLXdvcmtzcGFjZS1pbmZvXCI+XG4gICAgICAgICAgICAgIDxzdHJvbmc+RW1wbG95ZWU8L3N0cm9uZz5cbiAgICAgICAgICAgICAgPHNwYW4+e2VtcGxveWVlTmFtZX08L3NwYW4+XG4gICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYWNjb3VudC1wcm9maWxlLXdvcmtzcGFjZS1hY3Rpb25zXCI+XG4gICAgICAgICAgICAgIDxzcGFuXG4gICAgICAgICAgICAgICAgY2xhc3NOYW1lPXtgYWNjb3VudC1wcm9maWxlLXN0YXR1cy1waWxsJHtcbiAgICAgICAgICAgICAgICAgIGVtcGxveWVlUmVhZHkgPyBcIlwiIDogXCIgYWNjb3VudC1wcm9maWxlLXN0YXR1cy1waWxsLXdhcm5pbmdcIlxuICAgICAgICAgICAgICAgIH1gfVxuICAgICAgICAgICAgICA+XG4gICAgICAgICAgICAgICAge2VtcGxveWVlUmVhZHkgPyBcIlJlYWR5XCIgOiBcIlNldHVwXCJ9XG4gICAgICAgICAgICAgIDwvc3Bhbj5cbiAgICAgICAgICAgICAgPGJ1dHRvblxuICAgICAgICAgICAgICAgIHR5cGU9XCJidXR0b25cIlxuICAgICAgICAgICAgICAgIGNsYXNzTmFtZT1cImFjY291bnQtcHJvZmlsZS1vcGVuLWJ0blwiXG4gICAgICAgICAgICAgICAgYXJpYS1sYWJlbD17ZW1wbG95ZWVSZWFkeSA/IFwiT3BlbiBlbXBsb3llZSB3b3Jrc3BhY2VcIiA6IFwiU2V0IHVwIGVtcGxveWVlIHdvcmtzcGFjZVwifVxuICAgICAgICAgICAgICAgIG9uQ2xpY2s9eygpID0+XG4gICAgICAgICAgICAgICAgICBuYXZpZ2F0ZShcbiAgICAgICAgICAgICAgICAgICAgZW1wbG95ZWVSZWFkeSA/IFwiL2VtcGxveWVlL2NsYWltc1wiIDogXCIvb25ib2FyZGluZy9lbXBsb3llZVwiXG4gICAgICAgICAgICAgICAgICApXG4gICAgICAgICAgICAgICAgfVxuICAgICAgICAgICAgICA+XG4gICAgICAgICAgICAgICAgPEFycm93UmlnaHQgc2l6ZT17MTR9IHN0cm9rZVdpZHRoPXsyLjV9IC8+XG4gICAgICAgICAgICAgIDwvYnV0dG9uPlxuICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgPC9kaXY+XG4gICAgICAgIDwvYXJ0aWNsZT5cblxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImFjY291bnQtcHJvZmlsZS1mb290ZXJcIj5cbiAgICAgICAgICA8YnV0dG9uXG4gICAgICAgICAgICB0eXBlPVwiYnV0dG9uXCJcbiAgICAgICAgICAgIGNsYXNzTmFtZT1cImFjY291bnQtcHJlbWl1bS1hY3Rpb24tYnRuIGFjY291bnQtcHJlbWl1bS1hY3Rpb24tYnRuLWRhbmdlclwiXG4gICAgICAgICAgICBvbkNsaWNrPXtoYW5kbGVMb2dvdXR9XG4gICAgICAgICAgPlxuICAgICAgICAgICAgPExvZ091dCBzaXplPXsxM30gc3Ryb2tlV2lkdGg9ezJ9IC8+XG4gICAgICAgICAgICBMb2cgb3V0XG4gICAgICAgICAgPC9idXR0b24+XG4gICAgICAgIDwvZGl2PlxuICAgICAgPC9zZWN0aW9uPlxuICAgIDwvZGl2PlxuICApO1xufVxuIl0sImZpbGUiOiJDOi9Vc2Vycy9jYXNoa2luay9Eb3dubG9hZHMvemFsYXJ5LWNvZmhlLWZyb250ZW5kL3phbGFyeS1jb2ZoZS1mcm9udGVuZC9zcmMvcGFnZXMvQWNjb3VudFBhZ2UudHN4In0=
