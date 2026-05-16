@@ -103,7 +103,7 @@ const OnboardingContext = React.createContext<OnboardingContextValue | null>(
 );
 
 async function requestNonce(wallet_address: string) {
-  const res = await api.post("/onboarding/auth/nonce/", {
+  const res = await api.post("/api/v1/onboarding/auth/nonce/", {
     wallet_address,
   });
 
@@ -119,7 +119,7 @@ async function verifySignature(payload: {
   signature: string;
   role: OnboardingRole;
 }) {
-  const res = await api.post("/onboarding/auth/verify/", payload);
+  const res = await api.post("/api/v1/onboarding/auth/verify/", payload);
 
   return res.data as {
     token: string;
@@ -191,7 +191,7 @@ export function OnboardingProvider({
     }
 
     try {
-      const res = await api.get<OnboardingProfile>("/onboarding/profile/");
+      const res = await api.get<OnboardingProfile>("/api/v1/onboarding/profile/");
       const freshProfile = res.data;
 
       if (!profileMatchesWallet(freshProfile, currentWallet)) {
@@ -279,7 +279,7 @@ export function OnboardingProvider({
     email: string;
     company_size?: string;
   }) {
-    const res = await api.post("/onboarding/profile/employer/", payload);
+    const res = await api.post("/api/v1/onboarding/profile/employer/", payload);
     setProfile(res.data.profile);
 
     return res.data as {
@@ -292,7 +292,7 @@ export function OnboardingProvider({
     display_name?: string;
     email: string;
   }) {
-    const res = await api.post("/onboarding/profile/employee/", payload);
+    const res = await api.post("/api/v1/onboarding/profile/employee/", payload);
     setProfile(res.data.profile);
 
     return res.data as {
@@ -302,7 +302,7 @@ export function OnboardingProvider({
   }
 
   async function verifyEmail(payload: { code: string; email?: string }) {
-    const res = await api.post("/onboarding/email/verify/", payload);
+    const res = await api.post("/api/v1/onboarding/email/verify/", payload);
     setProfile(res.data.profile);
 
     return res.data.profile as OnboardingProfile;
@@ -310,7 +310,7 @@ export function OnboardingProvider({
 
   async function markEmployeePrivateAccess() {
     const res = await api.post(
-      "/onboarding/profile/employee/private-access/",
+      "/api/v1/onboarding/profile/employee/private-access/",
       {}
     );
 
@@ -362,3 +362,4 @@ export function useOnboarding() {
 
   return ctx;
 }
+
