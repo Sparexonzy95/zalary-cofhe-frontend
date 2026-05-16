@@ -10,6 +10,41 @@ function onboardingPathFor(role: OnboardingRole) {
   return role === "employer" ? "/onboarding/employer" : "/onboarding/employee";
 }
 
+function normalizeAddress(value?: string | null) {
+  return String(value ?? "").toLowerCase();
+}
+
+function employerProfileComplete(profile: any) {
+  const employer = profile?.employer ?? profile?.employer_profile;
+
+  return Boolean(
+    profile?.wallet_address &&
+      profile?.email_verified &&
+      employer &&
+      employer.onboarding_completed
+  );
+}
+
+function employeeProfileComplete(profile: any) {
+  const employee = profile?.employee ?? profile?.employee_profile;
+
+  return Boolean(
+    profile?.wallet_address &&
+      profile?.email_verified &&
+      employee &&
+      String(employee.notification_email ?? profile?.email ?? "").trim() &&
+      employee.private_access_enabled
+  );
+}
+
+function fallbackIsOnboarded(profile: any, role: OnboardingRole) {
+  if (role === "employer") {
+    return employerProfileComplete(profile);
+  }
+
+  return employeeProfileComplete(profile);
+}
+
 export function RequireOnboarding({
   role,
   children,
@@ -18,12 +53,18 @@ export function RequireOnboarding({
   children: React.ReactNode;
 }) {
   const location = useLocation();
+
   const { loading, token, profile, activeWallet, isOnboarded } =
     useOnboarding();
+
   const profileMatchesActiveWallet = Boolean(
     profile &&
       activeWallet &&
-      profile.wallet_address.toLowerCase() === activeWallet.toLowerCase()
+      normalizeAddress(profile.wallet_address) === normalizeAddress(activeWallet)
+  );
+
+  const ready = Boolean(
+    profile && (isOnboarded(role) || fallbackIsOnboarded(profile, role))
   );
 
   if (loading) {
@@ -45,7 +86,7 @@ export function RequireOnboarding({
     );
   }
 
-  if (!isOnboarded(role)) {
+  if (!ready) {
     return (
       <Navigate
         to={onboardingPathFor(role)}

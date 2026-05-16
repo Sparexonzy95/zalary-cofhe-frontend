@@ -474,14 +474,14 @@ export function EmployeeOnboardingPage() {
 
                     <div className="employer-onboarding-slide-actions">
                       <Button
-                        type="button"
-                        onClick={() =>
-                          navigate("/employee/claims", { replace: true })
-                        }
-                      >
-                        Go to Claims Dashboard
-                        <ArrowRight size={15} strokeWidth={1.8} />
-                      </Button>
+  type="button"
+  onClick={() =>
+    navigate("/employee/claims", { replace: true })
+  }
+>
+  Go to Claims Dashboard
+  <ArrowRight size={15} strokeWidth={1.8} />
+</Button>
                     </div>
                   </div>
                 ) : (
