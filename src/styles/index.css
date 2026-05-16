@@ -18743,9 +18743,15 @@ a.address-pill:hover {
 }
 
 .account-dashboard-redesign .account-premium-action-btn-danger {
-  border-color: rgba(239, 68, 68, 0.34) !important;
-  background: rgba(239, 68, 68, 0.11) !important;
-  color: #f28782 !important;
+  border-color: rgba(239, 68, 68, 0.18) !important;
+  background: rgba(239, 68, 68, 0.055) !important;
+  color: rgba(242, 135, 130, 0.74) !important;
+}
+
+.account-dashboard-redesign .account-premium-action-btn-danger:hover {
+  border-color: rgba(239, 68, 68, 0.3) !important;
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: rgba(242, 135, 130, 0.9) !important;
 }
 
 .account-dashboard-redesign .account-premium-connect-card {
@@ -19464,13 +19470,15 @@ a.address-pill:hover {
 
 /* Verify wallet page: compact modern verification form */
 .app-dashboard-verify {
-  height: 100vh !important;
-  height: 100dvh !important;
-  overflow: hidden !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
 }
 
 .app-content-verify {
-  overflow: hidden !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
 }
 
 .app-content-verify .app-mobile-topbar {
@@ -19479,13 +19487,14 @@ a.address-pill:hover {
 
 .app-route-verify {
   width: 100% !important;
-  height: 100% !important;
-  min-height: 0 !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
   display: grid !important;
   place-items: center !important;
   margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
+  padding: clamp(1rem, 3.5vh, 2.25rem) 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
   animation: none !important;
 }
 
@@ -19496,8 +19505,9 @@ a.address-pill:hover {
 html:has(.onboarding-page.verify-wallet-page),
 body:has(.onboarding-page.verify-wallet-page),
 #root:has(.onboarding-page.verify-wallet-page) {
-  height: 100% !important;
-  overflow: hidden !important;
+  min-height: 100% !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
   scrollbar-width: none !important;
 }
 
@@ -19515,15 +19525,12 @@ body:has(.onboarding-page.verify-wallet-page) *::-webkit-scrollbar {
 
 .onboarding-page.verify-wallet-page.dashboard-shell {
   position: relative !important;
-  width: min(90vw, 560px) !important;
+  width: min(calc(100vw - 2rem), 560px) !important;
   max-width: 560px !important;
-  height: 100vh !important;
-  height: 100dvh !important;
-  min-height: 100vh !important;
-  min-height: 100dvh !important;
-  display: grid !important;
-  place-items: center !important;
-  overflow: hidden !important;
+  height: auto !important;
+  min-height: 0 !important;
+  display: block !important;
+  overflow: visible !important;
   margin-inline: auto !important;
   padding: 0 !important;
   background: transparent !important;
@@ -19576,10 +19583,9 @@ body:has(.onboarding-page.verify-wallet-page) *::-webkit-scrollbar {
   display: block !important;
   position: static !important;
   width: 100% !important;
-  max-height: calc(100vh - 1.5rem) !important;
-  max-height: calc(100dvh - 1.5rem) !important;
+  max-height: none !important;
   transform: none !important;
-  overflow: hidden !important;
+  overflow: visible !important;
   min-height: 0 !important;
   margin-top: 0 !important;
   padding: clamp(1.35rem, 3vw, 2rem) clamp(1.25rem, 3.5vw, 2rem) !important;
@@ -19749,7 +19755,13 @@ body:has(.onboarding-page.verify-wallet-page) *::-webkit-scrollbar {
   gap: 1rem !important;
 }
 
+.onboarding-page.verify-wallet-page .verify-wallet-connect .verify-wallet-field-icon {
+  grid-column: 1 !important;
+  grid-row: auto !important;
+}
+
 .onboarding-page.verify-wallet-page .verify-wallet-connect .muted {
+  grid-column: 2 !important;
   min-width: 0 !important;
   margin: 0 !important;
   color: #a8afb7 !important;
@@ -19785,14 +19797,19 @@ body:has(.onboarding-page.verify-wallet-page) *::-webkit-scrollbar {
 }
 
 @media (max-width: 560px) {
+  .app-route-verify {
+    place-items: start center !important;
+    padding: clamp(0.85rem, 3.8vh, 1.35rem) 0 !important;
+  }
+
   .onboarding-page.verify-wallet-page.dashboard-shell {
-    width: 90vw !important;
-    max-width: 90vw !important;
+    width: min(calc(100vw - 1rem), 34rem) !important;
+    max-width: calc(100vw - 1rem) !important;
     padding: 0 !important;
   }
 
   .onboarding-page.verify-wallet-page .verify-wallet-shell {
-    padding: 1.35rem !important;
+    padding: 1rem !important;
     border-radius: 18px !important;
   }
 
@@ -19808,14 +19825,67 @@ body:has(.onboarding-page.verify-wallet-page) *::-webkit-scrollbar {
 
   .onboarding-page.verify-wallet-page .verify-wallet-connect {
     grid-template-columns: 1fr !important;
+    justify-items: stretch !important;
+    text-align: center !important;
+  }
+
+  .onboarding-page.verify-wallet-page .verify-wallet-connect .verify-wallet-field-icon,
+  .onboarding-page.verify-wallet-page .verify-wallet-connect .muted {
+    grid-column: 1 !important;
+    justify-self: center !important;
   }
 
   .onboarding-page.verify-wallet-page .employer-onboarding-wallet-card {
-    grid-template-columns: auto minmax(0, 1fr) !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    justify-items: stretch !important;
+    column-gap: 0.75rem !important;
+  }
+
+  .onboarding-page.verify-wallet-page .employer-onboarding-wallet-card strong {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    justify-self: start !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-align: left !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .onboarding-page.verify-wallet-page .employer-onboarding-wallet-card .verify-wallet-field-icon {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    justify-self: end !important;
   }
 
   .onboarding-page.verify-wallet-page .verify-wallet-connect .btn {
     width: 100% !important;
+  }
+}
+
+@media (max-height: 620px) {
+  .app-route-verify {
+    place-items: start center !important;
+    padding: 0.75rem 0 !important;
+  }
+
+  .onboarding-page.verify-wallet-page .verify-wallet-shell {
+    padding: 1rem !important;
+  }
+
+  .onboarding-page.verify-wallet-page .verify-wallet-hero {
+    padding-bottom: 0.9rem !important;
+  }
+
+  .onboarding-page.verify-wallet-page .employer-onboarding-head h1 {
+    margin-top: 0.55rem !important;
+    font-size: clamp(1.35rem, 6vh, 1.75rem) !important;
+  }
+
+  .onboarding-page.verify-wallet-page .verify-wallet-card.card {
+    padding-top: 0.85rem !important;
   }
 }
 
