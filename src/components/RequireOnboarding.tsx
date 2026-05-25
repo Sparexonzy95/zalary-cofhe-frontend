@@ -34,14 +34,19 @@ function employerReady(profile: any) {
 
 function employeeReady(profile: any) {
   const employee = getEmployee(profile);
+  const notificationEmail = String(employee?.notification_email ?? "")
+    .trim()
+    .toLowerCase();
+  const verifiedEmail = String(profile?.email ?? "").trim().toLowerCase();
 
   return Boolean(
     profile?.wallet_address &&
+      profile?.email_verified === true &&
       employee &&
-      (
-        employee.private_access_enabled === true ||
-        employee.onboarding_completed === true
-      )
+      String(employee.display_name ?? "").trim() &&
+      notificationEmail &&
+      notificationEmail === verifiedEmail &&
+      employee.private_access_enabled === true
   );
 }
 

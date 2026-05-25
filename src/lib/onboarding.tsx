@@ -40,7 +40,7 @@ type OnboardingContextValue = {
     company_size?: string;
   }) => Promise<{ profile: OnboardingProfile; dev_email_code?: string }>;
   saveEmployeeProfile: (payload: {
-    display_name?: string;
+    display_name: string;
     email: string;
   }) => Promise<{ profile: OnboardingProfile; dev_email_code?: string }>;
   verifyEmail: (payload: {
@@ -55,6 +55,10 @@ type OnboardingContextValue = {
 const TOKEN_KEY = "zalary_onboarding_token";
 
 function normalizeAddress(value?: string | null) {
+  return (value || "").trim().toLowerCase();
+}
+
+function normalizeEmail(value?: string | null) {
   return (value || "").trim().toLowerCase();
 }
 
@@ -167,10 +171,14 @@ function employerCompleted(profile: OnboardingProfile | null) {
 export function employeeCompleted(profile: OnboardingProfile | null) {
   if (!profile) return false;
 
+  const notificationEmail = normalizeEmail(profile.employee?.notification_email);
+
   return Boolean(
     profile.wallet_address &&
       profile.email_verified === true &&
-      profile.employee?.notification_email &&
+      profile.employee?.display_name?.trim() &&
+      notificationEmail &&
+      notificationEmail === normalizeEmail(profile.email) &&
       profile.employee?.private_access_enabled === true
   );
 }
@@ -305,18 +313,23 @@ export function OnboardingProvider({
     };
   }
 
-async function saveEmployeeProfile(payload: {
-    display_name?: string;
+  async function saveEmployeeProfile(payload: {
+    display_name: string;
     email: string;
   }) {
+    const displayName = payload.display_name.trim();
     const email = payload.email.trim().toLowerCase();
+
+    if (!displayName) {
+      throw new Error("Employee name is required.");
+    }
 
     if (!email) {
       throw new Error("Notification email is required.");
     }
 
     const res = await api.post("/api/v1/onboarding/profile/employee/", {
-      display_name: payload.display_name ?? "",
+      display_name: displayName,
       email,
       notification_email: email,
     });

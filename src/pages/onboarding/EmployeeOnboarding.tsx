@@ -54,7 +54,6 @@ export function EmployeeOnboardingPage() {
   const [code, setCode] = React.useState("");
   const [busy, setBusy] = React.useState(false);
   const [checking, setChecking] = React.useState(true);
-  const [profileSubmitted, setProfileSubmitted] = React.useState(false);
   const [completionRedirecting, setCompletionRedirecting] = React.useState(false);
   const [onboardingStep, setOnboardingStep] =
     React.useState<EmployeeOnboardingStep>(1);
@@ -84,11 +83,20 @@ export function EmployeeOnboardingPage() {
     }
   }, [profile]);
 
-  const profileSaved =
-    profileSubmitted ||
-    Boolean(profile?.employee?.notification_email || profile?.email);
+  const profileSaved = Boolean(
+    profile?.employee?.display_name?.trim() &&
+      profile?.employee?.notification_email?.trim()
+  );
 
-  const emailVerified = Boolean(profile?.email_verified);
+  const notificationEmail =
+    profile?.employee?.notification_email?.trim().toLowerCase() ?? "";
+  const verifiedEmail = profile?.email?.trim().toLowerCase() ?? "";
+  const emailVerified = Boolean(
+    profileSaved &&
+      profile?.email_verified &&
+      notificationEmail &&
+      notificationEmail === verifiedEmail
+  );
 
   const privateAccessEnabled = Boolean(
     profile?.employee?.private_access_enabled
@@ -105,23 +113,18 @@ export function EmployeeOnboardingPage() {
   React.useEffect(() => {
     if (!profile) return;
 
-    if (privateAccessEnabled || employeeReady) {
-      setOnboardingStep(3);
+    if (!profileSaved) {
+      setOnboardingStep(1);
       return;
     }
 
-    if (emailVerified) {
-      setOnboardingStep(3);
-      return;
-    }
-
-    if (profileSaved) {
+    if (!emailVerified) {
       setOnboardingStep(2);
       return;
     }
 
-    setOnboardingStep(1);
-  }, [emailVerified, privateAccessEnabled, employeeReady, profile, profileSaved]);
+    setOnboardingStep(3);
+  }, [emailVerified, profile, profileSaved]);
 
   React.useEffect(() => {
     if (loading || checking) return;
@@ -178,22 +181,51 @@ export function EmployeeOnboardingPage() {
 
   async function handleProfileSubmit(e: React.FormEvent) {
     e.preventDefault();
+    const employeeName = displayName.trim();
+    const notificationEmail = email.trim();
+
+    if (!employeeName) {
+      toast.push({
+        kind: "error",
+        title: "Employee name required",
+        message: "Enter your name before continuing.",
+      });
+      return;
+    }
+
+    if (!notificationEmail) {
+      toast.push({
+        kind: "error",
+        title: "Notification email required",
+        message: "Enter an email address for salary claim notices.",
+      });
+      return;
+    }
+
     setBusy(true);
 
     try {
-      await saveEmployeeProfile({
-        display_name: displayName,
-        email,
+      const result = await saveEmployeeProfile({
+        display_name: employeeName,
+        email: notificationEmail,
       });
+      const savedNotificationEmail =
+        result.profile.employee?.notification_email?.trim().toLowerCase() ?? "";
+      const canReuseVerifiedEmail = Boolean(
+        result.profile.email_verified &&
+          savedNotificationEmail &&
+          savedNotificationEmail === result.profile.email?.trim().toLowerCase()
+      );
 
       toast.push({
         kind: "success",
-        title: "Notification email saved",
-        message: "Check your email for the verification code.",
+        title: "Employee profile saved",
+        message: canReuseVerifiedEmail
+          ? "Your verified email can be used for employee alerts."
+          : "Check your email for the verification code.",
       });
 
-      setProfileSubmitted(true);
-      setOnboardingStep(2);
+      setOnboardingStep(canReuseVerifiedEmail ? 3 : 2);
       await refresh();
     } catch (error) {
       toast.push({
@@ -233,6 +265,26 @@ export function EmployeeOnboardingPage() {
   }
 
   async function handlePrivateAccess() {
+    if (!profileSaved) {
+      toast.push({
+        kind: "error",
+        title: "Employee profile incomplete",
+        message: "Add your name and notification email before continuing.",
+      });
+      setOnboardingStep(1);
+      return;
+    }
+
+    if (!emailVerified) {
+      toast.push({
+        kind: "error",
+        title: "Verify your email first",
+        message: "Confirm your notification email before enabling private access.",
+      });
+      setOnboardingStep(2);
+      return;
+    }
+
     setBusy(true);
 
     try {
@@ -264,8 +316,8 @@ export function EmployeeOnboardingPage() {
 
   function canOpenStep(step: EmployeeOnboardingStep) {
     if (step < 2) return true;
-    if (step === 2) return profileSaved || emailVerified || privateAccessEnabled;
-    return emailVerified || privateAccessEnabled;
+    if (step === 2) return profileSaved;
+    return profileSaved && emailVerified;
   }
 
   function goToStep(step: EmployeeOnboardingStep) {
@@ -384,11 +436,12 @@ export function EmployeeOnboardingPage() {
                 subtitle="Where payroll claim notices should reach you."
               >
                 <form className="form-stack" onSubmit={handleProfileSubmit}>
-                  <Field label="Display name optional">
+                  <Field label="Employee name">
                     <input
                       value={displayName}
                       onChange={(e) => setDisplayName(e.target.value)}
                       placeholder="David"
+                      required
                     />
                   </Field>
 
@@ -466,7 +519,35 @@ export function EmployeeOnboardingPage() {
                 title="Private salary access"
                 subtitle="Enable browser access for private claim details."
               >
-                {profile.employee?.private_access_enabled ? (
+                {!profileSaved ? (
+                  <div className="form-stack">
+                    <div className="success-box employer-onboarding-note">
+                      Complete your employee profile with your name and
+                      notification email before enabling private access.
+                    </div>
+
+                    <div className="employer-onboarding-slide-actions">
+                      <Button type="button" onClick={() => goToStep(1)}>
+                        Complete Profile
+                        <ArrowRight size={15} strokeWidth={1.8} />
+                      </Button>
+                    </div>
+                  </div>
+                ) : !emailVerified ? (
+                  <div className="form-stack">
+                    <div className="success-box employer-onboarding-note">
+                      Verify your notification email before enabling private
+                      access.
+                    </div>
+
+                    <div className="employer-onboarding-slide-actions">
+                      <Button type="button" onClick={() => goToStep(2)}>
+                        Verify Email
+                        <ArrowRight size={15} strokeWidth={1.8} />
+                      </Button>
+                    </div>
+                  </div>
+                ) : profile.employee?.private_access_enabled ? (
                   <div className="form-stack">
                     <div className="success-box employer-onboarding-note">
                       Private salary access enabled.
@@ -503,7 +584,7 @@ export function EmployeeOnboardingPage() {
                       </Button>
                       <Button
                         type="button"
-                        disabled={!profile.email_verified || busy}
+                        disabled={busy}
                         onClick={() => void handlePrivateAccess()}
                       >
                         {busy ? "Enabling..." : "Enable Private Access"}

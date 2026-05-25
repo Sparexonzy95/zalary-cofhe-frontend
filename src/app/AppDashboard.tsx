@@ -278,7 +278,7 @@ export function AppDashboard() {
           <div className="sidebar-item-divider" />
 
           <a
-            href="https://x.com"
+            href="https://x.com/zalaryhq"
             target="_blank"
             rel="noopener noreferrer"
             className="sidebar-nav-item sidebar-footer-action"
