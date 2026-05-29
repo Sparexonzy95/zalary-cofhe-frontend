@@ -3,6 +3,7 @@ import { AppDashboard } from "./AppDashboard";
 import { LandingPage } from "../pages/LandingPage";
 import { BrandKitPage } from "../pages/landing/BrandKitPage";
 import { BlogPage } from "../pages/landing/BlogPage";
+import { BlogDetailPage } from "../pages/landing/BlogDetailPage";
 import { UseCasesPage } from "../pages/landing/UseCasesPage";
 import { WelcomePage } from "../pages/WelcomePage";
 import { VerifyWalletPage } from "../pages/onboarding/VerifyWallet";
@@ -40,6 +41,7 @@ export const router = createBrowserRouter([
   { path: "/", element: <LandingPage /> },
   { path: "/brand-kit", element: <BrandKitPage /> },
   { path: "/blog", element: <BlogPage /> },
+  { path: "/blog/:slug", element: <BlogDetailPage /> },
   { path: "/use-cases", element: <UseCasesPage /> },
 
   {

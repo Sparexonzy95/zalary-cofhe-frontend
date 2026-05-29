@@ -216,7 +216,7 @@ export function BrandKitPage() {
 
         <section className="border-t border-white/10 py-16">
           <div className="max-w-2xl">
-            <p className="font-mono text-xs uppercase tracking-[0.22em] text-white/45">
+            <p className="font-mono text-xs uppercase tracking-[0.22em] text-[#FE9E15]">
               Usage
             </p>
             <h2 className="mt-3 text-3xl font-semibold tracking-normal md:text-4xl">
