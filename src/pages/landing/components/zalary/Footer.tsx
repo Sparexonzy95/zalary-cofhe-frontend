@@ -202,15 +202,22 @@ export function Footer() {
                 payouts, and enterprise payment operations. We’re here to help
                 you launch faster and scale smarter.
               </p>
+
+              <a
+                href="mailto:zalaryhq@gmail.com"
+                className="mt-5 inline-flex font-mono text-sm text-[#FE9E15] transition hover:text-white"
+              >
+                zalaryhq@gmail.com
+              </a>
             </div>
 
-            <Link
-              to="/app"
-              aria-label="Launch Zalary app"
+            <a
+              href="mailto:zalaryhq@gmail.com"
+              aria-label="Email Zalary team"
               className="decrypt-hover-btn group flex h-20 w-20 items-center justify-center rounded-full border border-white/15 bg-lime-300 text-black transition-all duration-300 hover:scale-105"
             >
               <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
+            </a>
           </div>
         </div>
 

@@ -25,6 +25,33 @@ const voice = [
   "Clear verbs. Short sentences. Operational trust.",
 ];
 
+const usageRules = [
+  {
+    label: "Background",
+    title: "Use quiet surfaces",
+    text: "Place the logo on solid black, white, or low-noise surfaces so the mark stays easy to read.",
+    tone: "Do",
+  },
+  {
+    label: "Spacing",
+    title: "Give it room",
+    text: "Leave generous clear space around the mark. Do not crowd it with headlines, body copy, or partner logos.",
+    tone: "Do",
+  },
+  {
+    label: "Integrity",
+    title: "Keep the asset intact",
+    text: "Do not stretch, recolor, rotate, crop, shadow, outline, or add visual effects to the logo.",
+    tone: "Don't",
+  },
+  {
+    label: "Color",
+    title: "Use orange with intent",
+    text: "Reserve Signal Orange for calls to action, status emphasis, and key moments rather than full-page decoration.",
+    tone: "Do",
+  },
+];
+
 function copyText(value: string, toast: ReturnType<typeof useToast>) {
   if (!navigator.clipboard) {
     toast.push({
@@ -187,29 +214,50 @@ export function BrandKitPage() {
           </article>
         </section>
 
-        <section className="grid gap-4 border-t border-white/10 py-16 lg:grid-cols-[0.8fr_1.2fr]">
-          <div>
+        <section className="grid gap-8 border-t border-white/10 py-16 lg:grid-cols-[0.75fr_1.25fr]">
+          <div className="max-w-md">
             <p className="font-mono text-xs uppercase tracking-[0.22em] text-[#FE9E15]">
               Usage
             </p>
             <h2 className="mt-3 text-3xl font-semibold tracking-normal md:text-4xl">
               Keep the mark calm and legible.
             </h2>
+            <p className="mt-4 text-sm leading-6 text-white/55">
+              Treat the logo as a trust signal. It should feel stable, precise,
+              and uncluttered wherever it appears.
+            </p>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            {[
-              "Use the logo on solid black, white, or low-noise surfaces.",
-              "Leave generous space around the mark. Do not crowd it with copy.",
-              "Do not stretch, recolor, rotate, or add effects to the logo.",
-              "Use Signal Orange for calls to action, not full-page decoration.",
-            ].map((rule) => (
-              <div
-                key={rule}
-                className="rounded-[18px] border border-white/10 bg-white/[0.035] p-5 text-sm leading-6 text-white/62"
+          <div className="grid gap-4">
+            {usageRules.map((rule, index) => (
+              <article
+                key={rule.title}
+                className="grid gap-5 rounded-[22px] border border-white/10 bg-white/[0.035] p-5 md:grid-cols-[auto_1fr_auto] md:items-start"
               >
-                {rule}
-              </div>
+                <span className="font-mono text-sm text-[#FE9E15]">
+                  0{index + 1}
+                </span>
+                <div>
+                  <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/38">
+                    {rule.label}
+                  </p>
+                  <h3 className="mt-2 text-xl font-semibold tracking-normal text-white">
+                    {rule.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-6 text-white/58">
+                    {rule.text}
+                  </p>
+                </div>
+                <span
+                  className={`w-fit rounded-full px-3 py-1 text-xs font-semibold ${
+                    rule.tone === "Do"
+                      ? "bg-[#FE9E15] text-black"
+                      : "border border-white/12 bg-black text-white/70"
+                  }`}
+                >
+                  {rule.tone}
+                </span>
+              </article>
             ))}
           </div>
         </section>
