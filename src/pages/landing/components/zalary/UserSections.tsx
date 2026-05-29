@@ -1,7 +1,5 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import dashEmployer from "../../assets/dashboard-employer.jpg";
-import dashEmployee from "../../assets/dashboard-employee.jpg";
 import {
   containerVariant,
   containerFast,
@@ -11,6 +9,11 @@ import {
   itemVariant,
   VP,
 } from "../../lib/animations";
+
+const EMPLOYER_IMAGE =
+  "https://res.cloudinary.com/durncdjje/image/upload/v1780072235/emp_1_fbyoeu.png";
+const EMPLOYEE_IMAGE =
+  "https://res.cloudinary.com/durncdjje/image/upload/v1780072229/empeee_1_f0uehv.png";
 
 function FeatureBlock({
   eyebrow,
@@ -159,7 +162,7 @@ export function EmployerSection() {
         "Track run statuses and operational state",
       ]}
       cta="Start as Employer"
-      image={dashEmployer}
+      image={EMPLOYER_IMAGE}
     />
   );
 }
@@ -182,7 +185,7 @@ export function EmployeeSection() {
         "Track statuses transparently",
       ]}
       cta="Continue as Employee"
-      image={dashEmployee}
+      image={EMPLOYEE_IMAGE}
     />
   );
 }

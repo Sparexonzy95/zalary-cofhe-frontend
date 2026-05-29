@@ -18,58 +18,6 @@ const XLogo = ({ size = 18, className = "" }) => (
   </svg>
 );
 
-const FacebookLogo = ({ size = 18, className = "" }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    className={className}
-    xmlns="http://www.w3.org/2000/svg"
-    aria-hidden="true"
-  >
-    <path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.84c0-2.52 1.49-3.91 3.77-3.91 1.09 0 2.23.2 2.23.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.44 2.91h-2.34V22c4.78-.76 8.44-4.92 8.44-9.94Z" />
-  </svg>
-);
-
-const InstagramLogo = ({ size = 18, className = "" }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    className={className}
-    xmlns="http://www.w3.org/2000/svg"
-    aria-hidden="true"
-  >
-    <rect
-      x="3"
-      y="3"
-      width="18"
-      height="18"
-      rx="5"
-      stroke="currentColor"
-      strokeWidth="2"
-    />
-    <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2" />
-    <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" />
-  </svg>
-);
-
-const LinkedinLogo = ({ size = 18, className = "" }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    className={className}
-    xmlns="http://www.w3.org/2000/svg"
-    aria-hidden="true"
-  >
-    <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5ZM.35 8h4.3v15H.35V8Zm7.65 0h4.12v2.05h.06c.57-1.08 1.96-2.22 4.04-2.22 4.33 0 5.13 2.85 5.13 6.56V23h-4.3v-7.62c0-1.82-.03-4.16-2.54-4.16-2.54 0-2.93 1.98-2.93 4.03V23H8V8Z" />
-  </svg>
-);
-
 const footerLinks = [
   {
     title: "Product",
@@ -113,24 +61,14 @@ const footerLinks = [
 
 const socials = [
   {
-    icon: <FacebookLogo size={18} />,
-    label: "Facebook",
-    href: "#",
+    icon: <Mail size={18} />,
+    label: "Email",
+    href: "mailto:zalaryhq@gmail.com",
   },
   {
     icon: <XLogo size={18} />,
     label: "X",
     href: "https://x.com/zalary.hq",
-  },
-  {
-    icon: <InstagramLogo size={18} />,
-    label: "Instagram",
-    href: "#",
-  },
-  {
-    icon: <LinkedinLogo size={18} />,
-    label: "LinkedIn",
-    href: "#",
   },
 ];
 
