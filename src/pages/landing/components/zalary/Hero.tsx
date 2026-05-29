@@ -5,6 +5,27 @@ import { DecryptingHeadline } from "@/components/zalary/DecryptingHeadline";
 const HERO_IMAGE =
   "https://res.cloudinary.com/dzi3bfl4r/image/upload/v1777235526/ChatGPT_Image_Apr_26_2026_08_57_37_PM_fnh48f.png";
 
+const contentVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.18,
+    },
+  },
+};
+
+const contentItemVariants = {
+  hidden: { opacity: 0, y: 22, filter: "blur(8px)" },
+  show: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.72, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
 export function Hero() {
   const reduceMotion = useReducedMotion();
   const shouldAnimate = !reduceMotion;
@@ -39,16 +60,19 @@ export function Hero() {
         }}
       />
       <motion.div
-        initial={{ opacity: 0, y: 18 }}
+        initial={shouldAnimate ? { opacity: 0, y: 18 } : false}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.76, ease: [0.22, 1, 0.36, 1] }}
         className="mx-auto grid min-h-[calc(100vh-12rem)] w-full max-w-[1320px] grid-cols-1 items-center gap-12 lg:min-h-[calc(100vh-16rem)] lg:grid-cols-[0.88fr_1.12fr]"
       >
-        <div className="relative z-10 max-w-[580px]">
+        <motion.div
+          variants={contentVariants}
+          initial={shouldAnimate ? "hidden" : false}
+          animate="show"
+          className="relative z-10 max-w-[580px]"
+        >
           <motion.h1
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.68, delay: 0.14 }}
+            variants={contentItemVariants}
             className="zl-hero-title break-normal font-sans text-[clamp(2.08rem,8.8vw,4.15rem)] font-extrabold leading-[0.96] tracking-normal text-[#F4F4F1] [word-break:normal] max-[380px]:text-[1.82rem] lg:text-[clamp(3.45rem,4.8vw,4.45rem)]"
           >
             <span className="block whitespace-nowrap text-[#FE9E15]">
@@ -66,9 +90,7 @@ export function Hero() {
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.64, delay: 0.22 }}
+            variants={contentItemVariants}
             className="mt-6 max-w-[620px] font-mono text-[15px] leading-[1.6] tracking-normal text-white/48 sm:text-[17px]"
           >
             Manage salaries, balances, and payouts with full confidentiality
@@ -76,9 +98,7 @@ export function Hero() {
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            variants={contentItemVariants}
             className="mt-8 flex flex-wrap items-center gap-4"
           >
             <Link
@@ -97,12 +117,28 @@ export function Hero() {
               <span className="ml-2 text-white/35">{"->"}</span>
             </a>
           </motion.div>
-        </div>
+        </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, x: 36 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.82, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+          initial={
+            shouldAnimate
+              ? {
+                  opacity: 0,
+                  x: 54,
+                  scale: 0.96,
+                  clipPath: "inset(0 0 0 26%)",
+                  filter: "blur(14px)",
+                }
+              : false
+          }
+          animate={{
+            opacity: 1,
+            x: 0,
+            scale: 1,
+            clipPath: "inset(0 0 0 0%)",
+            filter: "blur(0px)",
+          }}
+          transition={{ duration: 1.08, delay: 0.34, ease: [0.22, 1, 0.36, 1] }}
           className="relative min-h-[360px] lg:min-h-[560px]"
         >
           <motion.div
