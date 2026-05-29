@@ -7,7 +7,6 @@ import { AnnouncementBar } from "./AnnouncementBar";
    DATA
 ---------------------------- */
 const RESOURCES = [
-  { label: "Documentation", href: "https://docs.zalary.xyz" },
   { label: "BrandKit", href: "/brand-kit" },
   { label: "Blog", href: "/blog" },
 ];

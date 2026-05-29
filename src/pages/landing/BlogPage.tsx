@@ -134,8 +134,8 @@ export function BlogPage() {
           </div>
         </section>
 
-        <section className="grid gap-8 border-t border-white/10 py-16 lg:grid-cols-[0.8fr_1.2fr]">
-          <div>
+        <section className="border-t border-white/10 py-16">
+          <div className="max-w-2xl">
             <p className="font-mono text-xs uppercase tracking-[0.22em] text-white/45">
               Editorial Position
             </p>
@@ -144,16 +144,16 @@ export function BlogPage() {
             </h2>
           </div>
 
-          <div className="grid gap-4">
+          <div className="mt-8 grid gap-4 lg:grid-cols-3">
             {briefs.map((brief, index) => (
               <div
                 key={brief}
-                className="grid gap-4 rounded-[22px] border border-white/10 bg-white/[0.035] p-5 md:grid-cols-[auto_1fr]"
+                className="min-h-[170px] rounded-[22px] border border-white/10 bg-white/[0.035] p-5"
               >
                 <span className="font-mono text-sm text-white/35">
                   0{index + 1}
                 </span>
-                <p className="text-lg leading-7 text-white/70">{brief}</p>
+                <p className="mt-8 text-lg leading-7 text-white/70">{brief}</p>
               </div>
             ))}
           </div>
