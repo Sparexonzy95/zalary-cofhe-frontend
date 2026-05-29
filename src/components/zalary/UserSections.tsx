@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { SectionHeader } from "./SectionHeader";
 
 const EMPLOYER_IMAGE =
-  "https://res.cloudinary.com/durncdjje/image/upload/v1780077259/empeee_2_udbnpq.avif";
+  "https://res.cloudinary.com/durncdjje/image/upload/v1780077284/emp_1_lib370.avif";
 const EMPLOYEE_IMAGE =
   "https://res.cloudinary.com/durncdjje/image/upload/v1780077259/empeee_2_udbnpq.avif";
 
