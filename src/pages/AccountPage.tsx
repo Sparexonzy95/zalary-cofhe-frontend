@@ -9,7 +9,7 @@ import {
   User,
   Wallet,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useToast } from "../components/ui";
 import { WalletConnectButton } from "../components/WalletConnectButton";
 import { useOnboarding } from "../lib/onboarding";
@@ -23,6 +23,7 @@ export function AccountPage() {
   const {
     token,
     profile,
+    activeWallet,
     loading,
     refresh,
     loginWithWallet,
@@ -34,6 +35,7 @@ export function AccountPage() {
 
   const employerReady = Boolean(token && profile && isOnboarded("employer"));
   const employeeReady = Boolean(token && profile && isOnboarded("employee"));
+  const connectedWallet = wallet || activeWallet;
   const shouldRefreshMissingProfile = Boolean(wallet && !loading && !profile);
 
   React.useEffect(() => {
@@ -103,7 +105,11 @@ export function AccountPage() {
     }
   }
 
-  if (loading && wallet) {
+  if (!connectedWallet) {
+    return <Navigate to="/verify/employer" replace state={{ from: "/account" }} />;
+  }
+
+  if (loading && connectedWallet) {
     return (
       <div className="account-premium-page dashboard-shell employer-dashboard-redesign account-dashboard-redesign">
         <div className="employer-task-card account-dashboard-card account-premium-card account-premium-connect-card">

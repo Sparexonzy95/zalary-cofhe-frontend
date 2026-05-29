@@ -86,8 +86,78 @@ function getOnboardingRoleFromDetail(detail: string): "employer" | "employee" | 
   return null;
 }
 
-function isOnboardingRoute(pathname: string) {
-  return pathname.startsWith("/verify/") || pathname.startsWith("/onboarding/");
+function verifyPathFor(role: "employer" | "employee") {
+  return role === "employer" ? "/verify/employer" : "/verify/employee";
+}
+
+function onboardingPathFor(role: "employer" | "employee") {
+  return role === "employer" ? "/onboarding/employer" : "/onboarding/employee";
+}
+
+function getRoleFromPath(pathname: string): "employer" | "employee" | null {
+  if (
+    pathname.startsWith("/employee") ||
+    pathname === "/verify/employee" ||
+    pathname === "/onboarding/employee"
+  ) {
+    return "employee";
+  }
+
+  if (
+    pathname.startsWith("/employer") ||
+    pathname === "/verify/employer" ||
+    pathname === "/onboarding/employer"
+  ) {
+    return "employer";
+  }
+
+  return null;
+}
+
+function clearStoredOnboarding() {
+  localStorage.removeItem(ONBOARDING_TOKEN_KEY);
+}
+
+function isVerifyRoute(pathname: string) {
+  return pathname.startsWith("/verify/");
+}
+
+function walletIsMissing(detail: string) {
+  return (
+    detail.includes("wallet address is required") ||
+    detail.includes("wallet is required") ||
+    detail.includes("no wallet connected")
+  );
+}
+
+function redirectToVerify(role: "employer" | "employee") {
+  const currentPath = window.location.pathname;
+  const verifyPath = verifyPathFor(role);
+
+  if (currentPath === verifyPath) return;
+
+  window.location.assign(verifyPath);
+}
+
+function redirectExpiredSessionIfNeeded(error: unknown) {
+  if (!axios.isAxiosError(error)) return false;
+
+  const status = error.response?.status ?? 0;
+  if (status !== 401) return false;
+
+  clearStoredOnboarding();
+
+  const detail = getErrorDetail(error);
+  const role =
+    getOnboardingRoleFromDetail(detail) ??
+    getRoleFromPath(window.location.pathname) ??
+    "employer";
+
+  if (!isVerifyRoute(window.location.pathname)) {
+    redirectToVerify(role);
+  }
+
+  return true;
 }
 
 function redirectToVerifyIfNeeded(error: unknown) {
@@ -103,13 +173,18 @@ function redirectToVerifyIfNeeded(error: unknown) {
 
   const currentPath = window.location.pathname;
 
+  if (walletIsMissing(detail)) {
+    clearStoredOnboarding();
+    redirectToVerify(role);
+    return;
+  }
+
   // Avoid redirect loops when user is already on verification/onboarding pages.
-  if (isOnboardingRoute(currentPath)) return;
+  if (isVerifyRoute(currentPath) || currentPath.startsWith("/onboarding/")) return;
 
   const hasWalletSession = Boolean(localStorage.getItem(ONBOARDING_TOKEN_KEY));
-  const verifyPath = role === "employer" ? "/verify/employer" : "/verify/employee";
-  const onboardingPath =
-    role === "employer" ? "/onboarding/employer" : "/onboarding/employee";
+  const verifyPath = verifyPathFor(role);
+  const onboardingPath = onboardingPathFor(role);
 
   window.location.assign(hasWalletSession ? onboardingPath : verifyPath);
 }
@@ -122,7 +197,9 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    redirectToVerifyIfNeeded(error);
+    if (!redirectExpiredSessionIfNeeded(error)) {
+      redirectToVerifyIfNeeded(error);
+    }
     return Promise.reject(error);
   }
 );

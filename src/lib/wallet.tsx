@@ -124,6 +124,36 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   const [pickerOpen, setPickerOpen] = React.useState(false);
   const seenUuids = React.useRef(new Set<string>());
 
+  const applyWalletAccount = React.useCallback((provider: any, account: string) => {
+    const normalized = normalizeAddress(account);
+
+    if (!normalized) {
+      setWallet("");
+      setError("");
+      _activeProvider = null;
+      localStorage.removeItem(CONNECTED_KEY);
+      return "";
+    }
+
+    _activeProvider = provider;
+    setWallet(normalized);
+    localStorage.setItem(CONNECTED_KEY, "true");
+    return normalized;
+  }, []);
+
+  const revalidateWalletSession = React.useCallback(async () => {
+    const provider = _activeProvider ?? (window as any).ethereum;
+
+    if (!provider) {
+      setWallet("");
+      localStorage.removeItem(CONNECTED_KEY);
+      return "";
+    }
+
+    const account = await getAccountsSilent(provider);
+    return applyWalletAccount(provider, account);
+  }, [applyWalletAccount]);
+
   // ── EIP-6963 wallet discovery ──
   React.useEffect(() => {
     const onAnnounce = (event: Event) => {
@@ -169,20 +199,12 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   // ── Auto-reconnect for returning users ──
   React.useEffect(() => {
     if (localStorage.getItem(CONNECTED_KEY) !== "true") return;
-    const eth = (window as any).ethereum;
-    if (!eth) return;
 
     async function tryReconnect() {
-      const account = await getAccountsSilent(eth);
-      if (account) {
-        _activeProvider = eth;
-        setWallet(account);
-      } else {
-        localStorage.removeItem(CONNECTED_KEY);
-      }
+      await revalidateWalletSession();
     }
     void tryReconnect();
-  }, []);
+  }, [revalidateWalletSession]);
 
   // ── Chain / account change listeners ──
   React.useEffect(() => {
@@ -192,12 +214,9 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     const onAccountsChanged = (accounts: string[]) => {
       const next = normalizeAddress(accounts?.[0]);
       if (!next) {
-        setWallet("");
-        setError("");
-        _activeProvider = null;
-        localStorage.removeItem(CONNECTED_KEY);
+        applyWalletAccount(provider, "");
       } else {
-        setWallet(next);
+        applyWalletAccount(provider, next);
       }
     };
 
@@ -210,15 +229,29 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       provider.removeListener?.("accountsChanged", onAccountsChanged);
       provider.removeListener?.("chainChanged", onChainChanged);
     };
-  }, [wallet]);
+  }, [applyWalletAccount, wallet]);
+
+  React.useEffect(() => {
+    const revalidateIfVisible = () => {
+      if (document.visibilityState === "hidden") return;
+      if (!wallet && localStorage.getItem(CONNECTED_KEY) !== "true") return;
+      void revalidateWalletSession();
+    };
+
+    window.addEventListener("focus", revalidateIfVisible);
+    window.addEventListener("pageshow", revalidateIfVisible);
+    document.addEventListener("visibilitychange", revalidateIfVisible);
+
+    return () => {
+      window.removeEventListener("focus", revalidateIfVisible);
+      window.removeEventListener("pageshow", revalidateIfVisible);
+      document.removeEventListener("visibilitychange", revalidateIfVisible);
+    };
+  }, [revalidateWalletSession, wallet]);
 
   const refreshWallet = React.useCallback(async () => {
-    const provider = _activeProvider ?? (window as any).ethereum;
-    if (!provider) return "";
-    const account = await getAccountsSilent(provider);
-    setWallet(account);
-    return account;
-  }, []);
+    return revalidateWalletSession();
+  }, [revalidateWalletSession]);
 
   // ── connect: opens the picker ──
   function connect() {
@@ -249,9 +282,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
         throw new Error("Please switch to Base Sepolia manually and try again.");
       }
 
-      _activeProvider = provider;
-      setWallet(normalizeAddress(accounts[0]));
-      localStorage.setItem(CONNECTED_KEY, "true");
+      applyWalletAccount(provider, accounts[0]);
       setPickerOpen(false);
     } catch (err: any) {
       const msg = err?.message ?? "Could not connect wallet.";

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { Button, Card, EmptyState, StatusBadge } from "../../components/ui";
+import { Button, EmptyState, StatusBadge } from "../../components/ui";
 import { useCreateClaim, useEmployeeClaimables } from "../../hooks/useClaims";
 import type { EmployeeClaimable } from "../../lib/types";
 import { useWallet } from "../../lib/wallet";
@@ -248,18 +248,6 @@ export function ClaimsDashboardPage() {
           </div>
         )}
       </section>
-
-      {/* ── No wallet ── */}
-      {!wallet && (
-        <Card className="employee-claims-wallet-card">
-          <div style={{ padding: "1rem 0" }}>
-            <EmptyState
-              title="Wallet not connected"
-              description="Connect your employee wallet to see available salary payments."
-            />
-          </div>
-        </Card>
-      )}
 
       {/* ── Claims table ── */}
       {wallet && (

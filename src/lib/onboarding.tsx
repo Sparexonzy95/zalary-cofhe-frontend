@@ -1,7 +1,7 @@
 import React from "react";
 import { AxiosHeaders } from "axios";
 import { api } from "./api";
-import { getActiveProvider, getWalletClients } from "./wallet";
+import { getActiveProvider, getWalletClients, useWallet } from "./wallet";
 
 export type OnboardingRole = "employer" | "employee";
 
@@ -188,10 +188,12 @@ export function OnboardingProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const { wallet } = useWallet();
   const [token, setToken] = React.useState(getStoredToken());
   const [profile, setProfile] = React.useState<OnboardingProfile | null>(null);
   const [activeWallet, setActiveWallet] = React.useState("");
   const [loading, setLoading] = React.useState(true);
+  const previousWalletRef = React.useRef("");
 
   const logout = React.useCallback(() => {
     clearStoredOnboarding();
@@ -241,6 +243,31 @@ export function OnboardingProvider({
   React.useEffect(() => {
     void refresh();
   }, [refresh]);
+
+  React.useEffect(() => {
+    const nextWallet = normalizeAddress(wallet);
+    const previousWallet = previousWalletRef.current;
+    previousWalletRef.current = nextWallet;
+
+    if (nextWallet) {
+      setActiveWallet(nextWallet);
+
+      if (profile && !profileMatchesWallet(profile, nextWallet)) {
+        clearStoredOnboarding();
+        setToken("");
+        setProfile(null);
+      }
+
+      return;
+    }
+
+    if (previousWallet) {
+      clearStoredOnboarding();
+      setToken("");
+      setProfile(null);
+      setActiveWallet("");
+    }
+  }, [wallet, profile]);
 
   React.useEffect(() => {
     const eth = (window as Window & { ethereum?: any }).ethereum;

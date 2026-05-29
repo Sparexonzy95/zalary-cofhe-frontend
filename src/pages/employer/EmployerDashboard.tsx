@@ -20,7 +20,7 @@ import { env } from "../../lib/env";
 import { ERC20_ABI } from "../../lib/abi";
 import { api, toApiError } from "../../lib/api";
 import { routes } from "../../lib/routes";
-import { Card, StatusBadge, EmptyState } from "../../components/ui";
+import { StatusBadge, EmptyState } from "../../components/ui";
 import { effectiveTemplateStatus } from "../../lib/payrollStatus";
 import { formatAtomicToDisplay } from "../../lib/utils";
 import type { PayrollRun } from "../../lib/types";
@@ -247,15 +247,6 @@ export function EmployerDashboardPage() {
 
   return (
     <div className="stack dashboard-shell dashboard-shell-employer employer-dashboard-premium employer-dashboard-redesign">
-      {!wallet && (
-        <Card title="Connect wallet first">
-          <p className="muted">
-            Connect your employer wallet to view payroll, balance,
-            funding needs, and pending actions.
-          </p>
-        </Card>
-      )}
-
       {wallet && (
         <>
           <div className="employer-task-dashboard">

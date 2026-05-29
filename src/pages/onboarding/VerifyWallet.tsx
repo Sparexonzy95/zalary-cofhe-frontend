@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowRight, Wallet } from "lucide-react";
 import { Button, Card, useToast } from "../../components/ui";
 import { WalletConnectButton } from "../../components/WalletConnectButton";
@@ -14,6 +14,26 @@ import { useWallet } from "../../lib/wallet";
 
 function dashboardFor(role: OnboardingRole) {
   return role === "employer" ? "/employer" : "/employee/claims";
+}
+
+function verifiedRedirectFor(role: OnboardingRole, from?: unknown) {
+  const fromPath = typeof from === "string" ? from : "";
+
+  if (
+    fromPath.startsWith("/") &&
+    !fromPath.startsWith("/verify/") &&
+    !fromPath.startsWith("/onboarding/")
+  ) {
+    if (fromPath === "/account") return fromPath;
+    if (role === "employer" && fromPath.startsWith("/employer")) {
+      return fromPath;
+    }
+    if (role === "employee" && fromPath.startsWith("/employee")) {
+      return fromPath;
+    }
+  }
+
+  return dashboardFor(role);
 }
 
 function onboardingFor(role: OnboardingRole) {
@@ -54,8 +74,11 @@ function profileIsCompleted(profile: OnboardingProfile, role: OnboardingRole) {
 
 export function VerifyWalletPage({ role }: { role: OnboardingRole }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const toast = useToast();
   const { wallet } = useWallet();
+  const locationState = location.state as { from?: unknown } | null;
+  const verifiedRedirectPath = verifiedRedirectFor(role, locationState?.from);
 
   const {
     loading,
@@ -91,14 +114,23 @@ export function VerifyWalletPage({ role }: { role: OnboardingRole }) {
     if (loading || checking) return;
 
     if (token && profile && isOnboarded(role)) {
-      navigate(dashboardFor(role), { replace: true });
+      navigate(verifiedRedirectPath, { replace: true });
       return;
     }
 
     if (token && profile && !isOnboarded(role)) {
       navigate(onboardingFor(role), { replace: true });
     }
-  }, [loading, checking, token, profile, role, isOnboarded, navigate]);
+  }, [
+    loading,
+    checking,
+    token,
+    profile,
+    role,
+    isOnboarded,
+    navigate,
+    verifiedRedirectPath,
+  ]);
 
   async function handleVerifyWallet() {
     if (!wallet) {
@@ -125,7 +157,7 @@ export function VerifyWalletPage({ role }: { role: OnboardingRole }) {
       });
 
       if (profileIsCompleted(verifiedProfile, role)) {
-        navigate(dashboardFor(role), { replace: true });
+        navigate(verifiedRedirectPath, { replace: true });
       } else {
         navigate(onboardingFor(role), { replace: true });
       }

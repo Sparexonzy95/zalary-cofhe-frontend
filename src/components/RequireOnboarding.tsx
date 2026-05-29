@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useOnboarding, type OnboardingRole } from "../lib/onboarding";
+import { useWallet } from "../lib/wallet";
 
 function verifyPathFor(role: OnboardingRole) {
   return role === "employer" ? "/verify/employer" : "/verify/employee";
@@ -54,6 +55,18 @@ function fallbackIsOnboarded(profile: any, role: OnboardingRole) {
   return role === "employer" ? employerReady(profile) : employeeReady(profile);
 }
 
+function normalizeAddress(value?: string | null) {
+  return String(value || "").trim().toLowerCase();
+}
+
+function profileMatchesConnectedWallet(profile: any, wallet: string) {
+  return Boolean(
+    profile?.wallet_address &&
+      wallet &&
+      normalizeAddress(profile.wallet_address) === normalizeAddress(wallet)
+  );
+}
+
 export function RequireOnboarding({
   role,
   children,
@@ -62,11 +75,21 @@ export function RequireOnboarding({
   children: React.ReactNode;
 }) {
   const location = useLocation();
+  const { wallet } = useWallet();
 
-  const { loading, token, profile, isOnboarded } = useOnboarding();
+  const { activeWallet, loading, token, profile, isOnboarded } =
+    useOnboarding();
+
+  const connectedWallet = wallet || activeWallet;
+  const walletMatchesProfile = profileMatchesConnectedWallet(
+    profile,
+    connectedWallet
+  );
 
   const ready = Boolean(
-    profile && (isOnboarded(role) || fallbackIsOnboarded(profile, role))
+    walletMatchesProfile &&
+      profile &&
+      (isOnboarded(role) || fallbackIsOnboarded(profile, role))
   );
 
   if (loading) {
@@ -78,7 +101,7 @@ export function RequireOnboarding({
     );
   }
 
-  if (!token || !profile) {
+  if (!connectedWallet || !token || !profile || !walletMatchesProfile) {
     return (
       <Navigate
         to={verifyPathFor(role)}
