@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   containerVariant,
@@ -13,6 +12,8 @@ import {
 const CARDS = [
   {
     id: 1,
+    time: "09:40",
+    tag: "Private",
     title: "Private Payroll",
     subtitle:
       "Secure salary logic, confidential balances, and protected payroll execution without exposing sensitive operations publicly.",
@@ -21,6 +22,8 @@ const CARDS = [
   },
   {
     id: 2,
+    time: "12:15",
+    tag: "Funding",
     title: "Stable Deposit Flow",
     subtitle:
       "Stablecoin deposits move into a privacy-first payroll structure built for smooth funding, payroll runs, and employee claims.",
@@ -29,6 +32,8 @@ const CARDS = [
   },
   {
     id: 3,
+    time: "15:25",
+    tag: "Teams",
     title: "Confidential Operations",
     subtitle:
       "Balances remain protected while employers manage payroll schedules, employee setup, and automated execution flows.",
@@ -37,6 +42,8 @@ const CARDS = [
   },
   {
     id: 4,
+    time: "18:10",
+    tag: "Claims",
     title: "Employee Claims",
     subtitle:
       "Employees discover claimable payroll runs, request payouts, track pending actions, and complete secure wallet withdrawals.",
@@ -45,6 +52,8 @@ const CARDS = [
   },
   {
     id: 5,
+    time: "19:30",
+    tag: "Email",
     title: "Email Notifications",
     subtitle:
       "Employees receive clear email updates when payroll is ready to claim, actions are pending, or payout status changes.",
@@ -54,12 +63,8 @@ const CARDS = [
 ];
 
 export function ProductOverview() {
-  const [activeCard, setActiveCard] = useState(1);
-
   return (
     <section className="relative overflow-hidden bg-[#09090B] py-16 md:py-24 lg:py-28">
-      <div className="pointer-events-none absolute left-1/2 top-1/3 h-[400px] w-[400px] md:h-[500px] md:w-[500px] -translate-x-1/2 rounded-full bg-white/[0.02] blur-[140px]" />
-
       <div className="relative mx-auto max-w-[1500px] px-5 md:px-8">
 
         {/* Heading */}
@@ -89,109 +94,51 @@ export function ProductOverview() {
           </motion.p>
         </motion.div>
 
-        {/* Desktop */}
         <motion.div
           variants={containerFast}
           initial="hidden"
           whileInView="visible"
           viewport={VP_TIGHT}
-          className="hidden lg:flex w-full gap-[2px] md:h-[520px] lg:h-[560px] xl:h-[600px]"
-        >
-          {CARDS.map((card) => {
-            const isActive = activeCard === card.id;
-
-            return (
-              <motion.div
-                key={card.id}
-                layout
-                variants={cardVariant}
-                onMouseEnter={() => setActiveCard(card.id)}
-                className={`
-                  group flex flex-col overflow-hidden
-                  bg-[#111113]
-                  transition-all duration-700 ease-in-out
-                  ${isActive ? "flex-[2.4]" : "flex-1"}
-                `}
-              >
-                {/* Image */}
-                <div className="relative h-1/2 overflow-hidden">
-                  <img
-                    src={card.image}
-                    alt={card.title}
-                    className={`
-                      h-full w-full object-cover transition-all duration-700
-                      ${isActive ? "scale-110" : "scale-100"}
-                    `}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/20 to-black/50" />
-                </div>
-
-                {/* Content (RESTORED SPACING) */}
-                <div
-                  className={`
-                    flex h-1/2 flex-col justify-between px-7 py-8
-                    transition-all duration-500
-                    ${isActive ? "bg-[#1B1B1F]" : "bg-[#111113]"}
-                  `}
-                >
-                  <h3
-                    className={`
-                      font-semibold leading-[1.1] tracking-[-0.03em] text-white
-                      transition-all duration-500
-                      ${isActive ? "text-[26px]" : "text-[20px]"}
-                    `}
-                  >
-                    {card.title}
-                  </h3>
-
-                  <p
-                    className={`
-                      mt-10 max-w-[95%] text-[15px] leading-[1.9]
-                      text-white/60 transition-all duration-500 delay-100
-                      ${
-                        isActive
-                          ? "translate-y-0 opacity-100"
-                          : "translate-y-8 opacity-0"
-                      }
-                    `}
-                  >
-                    {card.subtitle}
-                  </p>
-                </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
-
-        {/* Mobile */}
-        <motion.div
-          variants={containerFast}
-          initial="hidden"
-          whileInView="visible"
-          viewport={VP_TIGHT}
-          className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:hidden"
+          className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
         >
           {CARDS.map((card) => (
             <motion.div
               key={card.id}
               variants={cardVariant}
-              className="overflow-hidden bg-[#111113]"
+              className="group flex min-h-[520px] flex-col overflow-hidden rounded-[28px] border border-white/10 bg-[#151515] p-3 transition duration-500 hover:-translate-y-1 hover:border-white/18 hover:bg-[#191919]"
             >
-              <div className="relative h-[220px] sm:h-[240px] overflow-hidden">
+              <div className="flex items-center justify-between px-2 pb-4 pt-2">
+                <span className="rounded-full bg-white px-3 py-1 font-mono text-[10px] font-semibold text-black">
+                  {card.time}
+                </span>
+                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-white/55">
+                  {card.tag}
+                </span>
+              </div>
+
+              <div className="px-2 pb-6">
+                <h3 className="max-w-[12rem] text-[27px] font-semibold leading-[0.98] tracking-normal text-white">
+                  {card.title}
+                </h3>
+                <p className="mt-4 text-[13.5px] leading-[1.6] text-white/56">
+                  {card.subtitle}
+                </p>
+              </div>
+
+              <div className="relative mt-auto min-h-[245px] overflow-hidden rounded-[22px] bg-black">
                 <img
                   src={card.image}
                   alt={card.title}
-                  className="h-full w-full object-cover transition duration-700"
+                  className="h-full min-h-[245px] w-full object-cover transition duration-700 group-hover:scale-105"
                 />
-              </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
 
-              <div className="bg-[#151518] px-6 py-7">
-                <h3 className="text-[18px] sm:text-[20px] font-semibold text-white">
-                  {card.title}
-                </h3>
-                <p className="mt-6 text-[14px] sm:text-[15px] leading-[1.7] text-white/65">
-                  {card.subtitle}
-                </p>
+                <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/50 px-3 py-2 text-[11px] font-semibold text-white/78 backdrop-blur-md">
+                  Read more
+                  <span className="grid h-5 w-5 place-items-center rounded-full bg-white text-black">
+                    +
+                  </span>
+                </div>
               </div>
             </motion.div>
           ))}
