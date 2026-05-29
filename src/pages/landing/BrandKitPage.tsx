@@ -214,9 +214,9 @@ export function BrandKitPage() {
           </article>
         </section>
 
-        <section className="grid gap-8 border-t border-white/10 py-16 lg:grid-cols-[0.75fr_1.25fr]">
-          <div className="max-w-md">
-            <p className="font-mono text-xs uppercase tracking-[0.22em] text-[#FE9E15]">
+        <section className="border-t border-white/10 py-16">
+          <div className="max-w-2xl">
+            <p className="font-mono text-xs uppercase tracking-[0.22em] text-white/45">
               Usage
             </p>
             <h2 className="mt-3 text-3xl font-semibold tracking-normal md:text-4xl">
@@ -228,30 +228,30 @@ export function BrandKitPage() {
             </p>
           </div>
 
-          <div className="grid gap-4">
+          <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {usageRules.map((rule, index) => (
               <article
                 key={rule.title}
-                className="grid gap-5 rounded-[22px] border border-white/10 bg-white/[0.035] p-5 md:grid-cols-[auto_1fr_auto] md:items-start"
+                className="flex min-h-[260px] flex-col justify-between rounded-[22px] border border-white/10 bg-white/[0.035] p-5"
               >
-                <span className="font-mono text-sm text-[#FE9E15]">
-                  0{index + 1}
-                </span>
                 <div>
-                  <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/38">
-                    {rule.label}
-                  </p>
-                  <h3 className="mt-2 text-xl font-semibold tracking-normal text-white">
+                  <div className="mb-8 flex items-center justify-between gap-3">
+                    <span className="font-mono text-sm text-white/35">
+                      0{index + 1}
+                    </span>
+                    <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/38">
+                      {rule.label}
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-semibold tracking-normal text-white">
                     {rule.title}
                   </h3>
-                  <p className="mt-3 text-sm leading-6 text-white/58">
-                    {rule.text}
-                  </p>
+                  <p className="mt-3 text-sm leading-6 text-white/58">{rule.text}</p>
                 </div>
                 <span
-                  className={`w-fit rounded-full px-3 py-1 text-xs font-semibold ${
+                  className={`mt-6 w-fit rounded-full px-3 py-1 text-xs font-semibold ${
                     rule.tone === "Do"
-                      ? "bg-[#FE9E15] text-black"
+                      ? "border border-white/12 bg-white/[0.04] text-white/62"
                       : "border border-white/12 bg-black text-white/70"
                   }`}
                 >

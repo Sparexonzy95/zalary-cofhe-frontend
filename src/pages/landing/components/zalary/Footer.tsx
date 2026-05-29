@@ -203,12 +203,6 @@ export function Footer() {
                 you launch faster and scale smarter.
               </p>
 
-              <a
-                href="mailto:zalaryhq@gmail.com"
-                className="mt-5 inline-flex font-mono text-sm text-[#FE9E15] transition hover:text-white"
-              >
-                zalaryhq@gmail.com
-              </a>
             </div>
 
             <a
