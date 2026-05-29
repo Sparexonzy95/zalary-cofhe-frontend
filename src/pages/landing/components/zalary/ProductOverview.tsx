@@ -49,7 +49,7 @@ const CARDS = [
     subtitle:
       "Employees receive clear email updates when payroll is ready to claim, actions are pending, or payout status changes.",
     image:
-      "https://res.cloudinary.com/dhjmedwbx/image/upload/v1777126507/ChatGPT_Image_Apr_25_2026_03_10_18_PM_1_mmlxip.png",
+      "https://res.cloudinary.com/dsbmr3xin/image/upload/v1780081262/ChatGPT_Image_May_29_2026_07_56_31_PM_iflszb.png",
   },
 ];
 
