@@ -11,9 +11,9 @@ import {
 } from "../../lib/animations";
 
 const EMPLOYER_IMAGE =
-  "https://res.cloudinary.com/durncdjje/image/upload/v1780072235/emp_1_fbyoeu.png";
+  "https://res.cloudinary.com/durncdjje/image/upload/v1780077259/empeee_2_udbnpq.avif";
 const EMPLOYEE_IMAGE =
-  "https://res.cloudinary.com/durncdjje/image/upload/v1780072229/empeee_1_f0uehv.png";
+  "https://res.cloudinary.com/durncdjje/image/upload/v1780077259/empeee_2_udbnpq.avif";
 
 function FeatureBlock({
   eyebrow,
@@ -119,25 +119,14 @@ function FeatureBlock({
             viewport={VP}
             className="flex-[1.4]"
           >
-            <div className="overflow-hidden rounded-xl border border-border">
-              <div className="flex items-center gap-1.5 border-b border-border bg-background/60 px-4 py-2.5">
-                <span className="h-2 w-2 rounded-full bg-foreground/10" />
-                <span className="h-2 w-2 rounded-full bg-foreground/10" />
-                <span className="h-2 w-2 rounded-full bg-foreground/10" />
-                <span className="ml-3 truncate font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                  app.zalary.xyz {reverse ? "/ employee" : "/ employer"}
-                </span>
-              </div>
-
-              <img
-                src={image}
-                alt={`${title} preview`}
-                className="block w-full"
-                width={1920}
-                height={1080}
-                loading="lazy"
-              />
-            </div>
+            <img
+              src={image}
+              alt={`${title} preview`}
+              className="block w-full object-contain"
+              width={1920}
+              height={1080}
+              loading="lazy"
+            />
           </motion.div>
         </div>
       </div>

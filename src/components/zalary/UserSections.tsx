@@ -2,9 +2,9 @@ import { motion } from "framer-motion";
 import { SectionHeader } from "./SectionHeader";
 
 const EMPLOYER_IMAGE =
-  "https://res.cloudinary.com/durncdjje/image/upload/v1780072235/emp_1_fbyoeu.png";
+  "https://res.cloudinary.com/durncdjje/image/upload/v1780077259/empeee_2_udbnpq.avif";
 const EMPLOYEE_IMAGE =
-  "https://res.cloudinary.com/durncdjje/image/upload/v1780072229/empeee_1_f0uehv.png";
+  "https://res.cloudinary.com/durncdjje/image/upload/v1780077259/empeee_2_udbnpq.avif";
 
 function FeatureBlock({
   eyebrow,
@@ -60,7 +60,7 @@ function FeatureBlock({
             </div>
           </div>
 
-          {/* Image / mockup */}
+          {/* Image */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -68,51 +68,14 @@ function FeatureBlock({
             transition={{ duration: 0.7 }}
             className="relative lg:col-span-7"
           >
-            <div className="pointer-events-none absolute -inset-6 rounded-[40px] bg-primary/8 blur-3xl" />
-            <div className="relative overflow-hidden rounded-[24px] glass-strong grain">
-              {/* faux window chrome */}
-              <div className="flex items-center justify-between border-b border-border px-4 py-3">
-                <div className="flex items-center gap-1.5">
-                  <span className="h-2.5 w-2.5 rounded-full bg-foreground/15" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-foreground/15" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-primary/60" />
-                </div>
-                <div className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground">
-                  app.zalary.xyz {reverse ? "/ employee" : "/ employer"}
-                </div>
-                <div className="h-2.5 w-12" />
-              </div>
-
-              <div className="relative">
-                <img
-                  src={image}
-                  alt={`${title} interface preview`}
-                  className="block w-full"
-                  width={1920}
-                  height={1080}
-                  loading="lazy"
-                />
-                {/* dim overlay to mute the AI text artefacts */}
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/40 via-background/0 to-background/0" />
-              </div>
-            </div>
-
-            {/* floating tag */}
-            <motion.div
-              animate={{ y: [0, -6, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -bottom-5 left-6 hidden glass rounded-2xl px-4 py-3 shadow-soft md:flex md:items-center md:gap-3"
-            >
-              <span className="h-2 w-2 rounded-full bg-primary animate-pulse-glow" />
-              <div>
-                <div className="font-mono text-[9.5px] uppercase tracking-[0.18em] text-muted-foreground">
-                  Status
-                </div>
-                <div className="font-mono text-[12px] text-foreground">
-                  {reverse ? "Claim ready" : "Run funded"}
-                </div>
-              </div>
-            </motion.div>
+            <img
+              src={image}
+              alt={`${title} interface preview`}
+              className="block w-full object-contain"
+              width={1920}
+              height={1080}
+              loading="lazy"
+            />
           </motion.div>
         </div>
       </div>
