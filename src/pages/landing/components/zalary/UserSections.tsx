@@ -71,19 +71,21 @@ function FeatureBlock({
                 {title}
               </motion.h2>
 
-              <motion.p
-                variants={itemVariant}
-                className="mt-4 text-[15px] leading-relaxed text-muted-foreground"
-              >
-                {subtitle}
-              </motion.p>
+              {subtitle && (
+                <motion.p
+                  variants={itemVariant}
+                  className="mt-4 text-[15px] leading-relaxed text-muted-foreground"
+                >
+                  {subtitle}
+                </motion.p>
+              )}
 
               <motion.ul variants={containerFast} className="mt-8 space-y-2.5">
                 {features.map((feature) => (
                   <motion.li
                     key={feature}
                     variants={itemVariant}
-                    className="flex items-center gap-3 text-[14px] text-foreground/75"
+                    className="flex items-center gap-3 text-[14px] text-foreground/70"
                   >
                     <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
                     {feature}
@@ -141,7 +143,7 @@ export function EmployerSection() {
       bg="oklch(0.20 0 0)"
       eyebrow="For employers"
       title="Build payroll once. Run it repeatedly with privacy and control."
-      subtitle="Payroll, schedules, runs, and funding flows — designed for finance teams that need confidentiality without losing operational rigor."
+      subtitle=""
       features={[
         "Create reusable payroll",
         "Configure employees and allocations",
@@ -164,7 +166,7 @@ export function EmployeeSection() {
       reverse
       eyebrow="For employees"
       title="Claim what is yours, without exposing what stays private."
-      subtitle="A clear, wallet-native experience for finding claimable payroll runs and finalizing payouts through confidential flows."
+      subtitle=""
       features={[
         "View claimable payroll runs",
         "Request confidential claims",

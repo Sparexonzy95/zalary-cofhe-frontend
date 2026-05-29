@@ -40,7 +40,7 @@ function FeatureBlock({
 
             <ul className="mt-10 space-y-3.5">
               {features.map((f) => (
-                <li key={f} className="flex items-start gap-3 text-[14.5px] text-foreground/90">
+                <li key={f} className="flex items-start gap-3 text-[14.5px] text-foreground/70">
                   <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary shadow-[0_0_10px_oklch(0.86_0.16_88_/_0.8)]" />
                   {f}
                 </li>
@@ -89,7 +89,7 @@ export function EmployerSection() {
       id="employers"
       eyebrow="For employers"
       title="Build payroll once. Run it repeatedly with privacy and control."
-      subtitle="Payroll, schedules, runs, and funding flows — designed for finance teams that need confidentiality without losing operational rigor."
+      subtitle=""
       features={[
         "Create reusable payroll",
         "Configure employees and allocations",
@@ -111,7 +111,7 @@ export function EmployeeSection() {
       reverse
       eyebrow="For employees"
       title="Claim what is yours, without exposing what stays private."
-      subtitle="A clear, wallet-native experience for finding claimable payroll runs and finalizing payouts through confidential flows."
+      subtitle=""
       features={[
         "View claimable payroll runs",
         "Request confidential claims",
