@@ -18,6 +18,14 @@ export type OnboardingProfile = {
     onboarding_completed: boolean;
     completed_at?: string | null;
   };
+  employer_profile?: {
+    company_name?: string | null;
+    work_email?: string | null;
+    email?: string | null;
+    company_size?: string | null;
+    onboarding_completed?: boolean;
+    completed_at?: string | null;
+  } | null;
   employee: {
     display_name: string;
     notification_email: string;

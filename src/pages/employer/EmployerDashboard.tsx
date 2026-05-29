@@ -19,6 +19,7 @@ import { useWallet } from "../../lib/wallet";
 import { env } from "../../lib/env";
 import { ERC20_ABI } from "../../lib/abi";
 import { api, toApiError } from "../../lib/api";
+import { useOnboarding } from "../../lib/onboarding";
 import { routes } from "../../lib/routes";
 import { StatusBadge, EmptyState } from "../../components/ui";
 import { effectiveTemplateStatus } from "../../lib/payrollStatus";
@@ -63,6 +64,14 @@ function formatDashboardDate(value?: string | null) {
     day: "numeric",
     year: "numeric",
   }).format(date);
+}
+
+function employerCompanyName(profile: ReturnType<typeof useOnboarding>["profile"]) {
+  return (
+    profile?.employer?.company_name?.trim() ||
+    profile?.employer_profile?.company_name?.trim() ||
+    "your company"
+  );
 }
 
 function useEmployerUsdcBalance(wallet?: string) {
@@ -113,6 +122,7 @@ function FilterButton({
 
 export function EmployerDashboardPage() {
   const { wallet } = useWallet();
+  const { profile } = useOnboarding();
 
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<TemplateFilter>("all");
@@ -225,6 +235,7 @@ export function EmployerDashboardPage() {
       .sort((a, b) => runActivityValue(b) - runActivityValue(a))[0];
   }, [templateRunsById]);
 
+  const companyName = employerCompanyName(profile);
   const greeting = "Welcome back";
 
   function goToPage(page: number) {
@@ -253,7 +264,7 @@ export function EmployerDashboardPage() {
             <section className="employer-task-hero" data-tour="employer-hero">
               <div className="employer-task-hero-copy">
                 <h1>
-                  {greeting}, <span>Zalary</span>
+                  {greeting}, <span>{companyName}</span>
                 </h1>
                 <p className="employer-task-hero-subtitle">
                   Manage payroll, track runs, and fund your workspace.

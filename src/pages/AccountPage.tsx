@@ -191,7 +191,10 @@ export function AccountPage() {
     profile.employer?.work_email ||
     profile.employee?.notification_email ||
     "Not set";
-  const employerName = profile.employer?.company_name || "Zalary";
+  const employerName =
+    profile.employer?.company_name?.trim() ||
+    profile.employer_profile?.company_name?.trim() ||
+    "Not set";
   const employeeName = profile.employee?.display_name || "Employee";
 
   return (
