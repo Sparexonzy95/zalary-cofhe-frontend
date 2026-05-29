@@ -43,6 +43,14 @@ const CARDS = [
     image:
       "https://res.cloudinary.com/dhjmedwbx/image/upload/v1777126507/ChatGPT_Image_Apr_25_2026_03_10_18_PM_1_mmlxip.png",
   },
+  {
+    id: 5,
+    title: "Email Notifications",
+    subtitle:
+      "Employees receive clear email updates when payroll is ready to claim, actions are pending, or payout status changes.",
+    image:
+      "https://res.cloudinary.com/dhjmedwbx/image/upload/v1777126507/ChatGPT_Image_Apr_25_2026_03_10_18_PM_1_mmlxip.png",
+  },
 ];
 
 export function ProductOverview() {
