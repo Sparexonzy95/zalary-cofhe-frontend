@@ -7,14 +7,14 @@ import { AnnouncementBar } from "./AnnouncementBar";
    DATA
 ---------------------------- */
 const RESOURCES = [
-  { label: "Documentation", href: "#docs" },
-  { label: "BrandKit", href: "#brandkit" },
-  { label: "Blog", href: "#blog" },
+  { label: "Documentation", href: "https://docs.zalary.xyz" },
+  { label: "BrandKit", href: "/brand-kit" },
+  { label: "Blog", href: "/blog" },
 ];
 
 const NAV_LINKS = [
-  { label: "View Demo", href: "#demo" },
-  { label: "Use Case", href: "#product" },
+  { label: "View Docs", href: "https://docs.zalary.xyz" },
+  { label: "Use Case", href: "/use-cases" },
 ];
 
 const ANNOUNCEMENT_MESSAGE = "UPDATE: USDC NOW SUPPORTED";

@@ -102,10 +102,12 @@ export function Hero() {
               </Link>
 
               <a
-                href="#how"
+                href="https://docs.zalary.xyz"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="decrypt-hover-btn rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-medium text-white transition hover:bg-white/10"
               >
-                View Demo
+                View Docs
               </a>
             </motion.div>
           </motion.div>

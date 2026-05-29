@@ -77,6 +77,7 @@ const footerLinks = [
       { label: "How It Works", href: "#how" },
       { label: "For Employers", href: "#employers" },
       { label: "For Employees", href: "#employees" },
+      { label: "Use Cases", href: "/use-cases" },
       { label: "Security", href: "#security" },
       { label: "FAQ", href: "#faq" },
     ],
@@ -87,7 +88,7 @@ const footerLinks = [
       { label: "About Us", href: "#" },
       { label: "Pricing", href: "#" },
       { label: "Contact", href: "#" },
-      { label: "Blog", href: "#" },
+      { label: "Blog", href: "/blog" },
     ],
   },
   {
@@ -119,7 +120,7 @@ const socials = [
   {
     icon: <XLogo size={18} />,
     label: "X",
-    href: "https://x.com",
+    href: "https://x.com/zalary.hq",
   },
   {
     icon: <InstagramLogo size={18} />,
@@ -241,7 +242,7 @@ export function Footer() {
             </div>
 
             <a
-              href="https://x.com"
+              href="https://x.com/zalary.hq"
               target="_blank"
               rel="noopener noreferrer"
               className="decrypt-hover-btn group flex h-20 w-20 items-center justify-center rounded-full border border-black/10 bg-neutral-200 text-black transition-all duration-300 hover:scale-105"

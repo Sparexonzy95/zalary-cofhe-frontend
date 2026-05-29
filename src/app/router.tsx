@@ -1,6 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import { AppDashboard } from "./AppDashboard";
 import { LandingPage } from "../pages/LandingPage";
+import { BrandKitPage } from "../pages/landing/BrandKitPage";
+import { BlogPage } from "../pages/landing/BlogPage";
+import { UseCasesPage } from "../pages/landing/UseCasesPage";
 import { WelcomePage } from "../pages/WelcomePage";
 import { VerifyWalletPage } from "../pages/onboarding/VerifyWallet";
 import { EmployerOnboardingPage } from "../pages/onboarding/EmployerOnboarding";
@@ -35,6 +38,9 @@ function WelcomeOverlayPage() {
 
 export const router = createBrowserRouter([
   { path: "/", element: <LandingPage /> },
+  { path: "/brand-kit", element: <BrandKitPage /> },
+  { path: "/blog", element: <BlogPage /> },
+  { path: "/use-cases", element: <UseCasesPage /> },
 
   {
     element: <AppDashboard />,
